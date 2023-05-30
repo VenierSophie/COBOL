@@ -1,4 +1,6 @@
-#Énoncé de l'exercice : Dans la bibliothèque userid.SOURCE.DB2, écrire le programme DB2P2 qui édite la liste des employés par bâtiment.
+# Énoncé de l'exercice : Dans la bibliothèque userid.SOURCE.DB2, écrire le programme DB2P2 qui édite la liste des employés par bâtiment.
+# Programme DB2P2 + JCL
+
 
 PROGRAMME DB2P2 :
        IDENTIFICATION DIVISION.
@@ -244,3 +246,57 @@ PROGRAMME DB2P2 :
             EXEC SQL CLOSE LISTE END-EXEC
             STOP RUN
             .
+
+
+JCL du programme DB2P2 :
+//API7DB JOB NOTIFY=&SYSUID,CLASS=A,MSGCLASS=H
+//*
+//PROCLIB JCLLIB ORDER=SDJ.FORM.PROCLIB
+//*
+//        SET SYSUID=API7,
+//            NOMPGM=DB2P2
+//*
+//APPROC  EXEC COMPDB2 
+//STEPDB2.SYSLIB   DD DSN=API7.SOURCE.DCLGEN,DISP=SHR
+//                 DD DSN=API7.SOURCE.COPY,DISP=SHR
+//STEPDB2.SYSIN    DD DSN=API7.SOURCE.DB2(DB2P2),DISP=SHR
+//STEPDB2.DBRMLIB  DD DSN=API7.SOURCE.DBRMLIB(DB2P2),DISP=SHR
+//STEPLNK.SYSLMOD  DD DSN=API7.SOURCE.PGMLIB(DB2P2),DISP=SHR
+//*
+//*--- ETAPE DE BIND --------------------------------------
+//*
+//BIND    EXEC PGM=IKJEFT01,COND=(4,LT)
+//*DBRMLIB         DD DSN=&SYSUID..DB2.DBRMLIB,DISP=SHR
+//DBRMLIB          DD DSN=API7.SOURCE.DBRMLIB,DISP=SHR
+//SYSTSPRT         DD SYSOUT=*,OUTLIM=25000
+//SYSTSIN          DD *
+  DSN SYSTEM (DSN1)
+  BIND PLAN      (DB2P2) -
+       QUALIFIER (API7)     -
+       ACTION    (REPLACE) -
+       MEMBER    (DB2P2) -
+       VALIDATE  (BIND)    -
+       ISOLATION (CS)      -
+       ACQUIRE   (USE)     -
+       RELEASE   (COMMIT)  -
+       EXPLAIN   (NO)
+//*
+//* DELETE DU FICHIER D'EDITION
+//DEL      EXEC PGM=IDCAMS
+//SYSPRINT DD   SYSOUT=*
+//SYSIN    DD   *
+  DELETE API7.EDITION
+  SET MAXCC = 0
+//*
+//* EXECUTION DU PROGRAMME
+//STEPRUN  EXEC PGM=IKJEFT01,COND=(4,LT)
+//STEPLIB  DD DSN=API7.SOURCE.PGMLIB,DISP=SHR
+//EDIT     DD  DSN=API7.EDITION,DISP=(,CATLG,DELETE),
+//         DCB=(DSORG=PS,RECFM=FB,LRECL=133),
+//         SPACE=(TRK,(1))
+//SYSOUT   DD  SYSOUT=*,OUTLIM=1000
+//SYSTSPRT DD  SYSOUT=*,OUTLIM=2500
+//SYSTSIN  DD  *
+  DSN SYSTEM (DSN1)
+  RUN PROGRAM(DB2P2) PLAN (DB2P2) PARMS('11001')
+//
