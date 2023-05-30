@@ -1,1 +1,20 @@
-# 
+# Énoncé de l'exercice : Dans la bibliothèque userid.SOURCE.DB2, écrire le programme DB2P3 qui met à jour la table EMPLOYE en augmentant le salaire des employés en fonction du département dans
+
+# Programme DB2P2 + JCL + SYSOUT + EDITION
+
+
+Dans la bibliothèque userid.SOURCE.DB2, écrire le programme DB2P3 qui met à jour la
+table EMPLOYE en augmentant le salaire des employés en fonction du département dans
+lequel il travaille Augmentation de salaire :
+ département COMMER : augmentation du salaire de 10% et augmentation de la commission de 1000,
+ département PAIE et COMPTA : augmentation du salaire de 15%,
+ département INFO : augmentation du salaire de 20% et augmentation de la commission de
+1500
+2) Création du département Marketing : - NOD = 'M01'
+- NDE = 'MARKET'
+- LIE = 'BAT1'
+- CHE = 70
+3) Changement du chef du département COMMER, le nouveau chef est BARI
+
+
+PROGRAMME DB2P2 :
