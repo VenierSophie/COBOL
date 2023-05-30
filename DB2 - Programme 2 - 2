@@ -2,45 +2,37 @@
 # Programme DB2P2 + JCL + SYSOUT + EDITION
 
 PROGRAMME DB2P2 :
-PROGRAMME
        IDENTIFICATION DIVISION.
        PROGRAM-ID. DB2P2.
-       AUTHOR. OTEUR.
+       AUTHOR. SV.
        DATE-WRITTEN. 26/04/2023.
-      ******************************************************************
-      *  FONCTION DU PROGRAMME: EDITION DES DEPARTEMENTS               *
-      *              AVEC RUPTURE SUR LE BATIMENT ET LE DEPARTEMENT
-      *  260429 : CREATION DU PROGRAMME                                *
-      ******************************************************************
+       
        ENVIRONMENT DIVISION.
        CONFIGURATION SECTION.
        SPECIAL-NAMES.
            DECIMAL-POINT IS COMMA.
        INPUT-OUTPUT SECTION.
+       
        FILE-CONTROL.
-      * DECLARATION DU FICHIER D'EDITION
            SELECT EDIT ASSIGN TO EDIT
                   ORGANIZATION IS SEQUENTIAL
                   ACCESS MODE  IS SEQUENTIAL
                   FILE STATUS  IS FS-EDIT.
+                  
        DATA DIVISION.
-      * DECLARATION DU BUFFER
        FILE SECTION.
        FD  EDIT RECORDING MODE IS F.
        01  ENR-EDIT.
-      * METTRE EN COMMENTAIRE LE CARACTERE DE SAUT SI ON UTILISE
-      * WRITE AFTER ADVANCING
            05 CAR-SAUT       PIC X.
            05 LIG-EDIT       PIC X(132).
+           
        WORKING-STORAGE SECTION.
-      * FILE STATUS
        01  FS-EDIT           PIC 99 VALUE ZEROES.
-      * DECLARATION DE LA TABLE DEPARTEMENT
+
            EXEC SQL INCLUDE DEPT    END-EXEC.
-• DECLARATION DE LA TABLE EMPLOYE EXEC SQL INCLUDE EMPLOYE END-EXEC.
-      * DECLARATION DE LA SQLCA
+           EXEC SQL INCLUDE EMPLOYE END-EXEC.
            EXEC SQL INCLUDE SQLCA   END-EXEC.
-      * DECLARATION DES HOST-VARIABLES DU DEPARTEMENT
+           
        01  HVD-DEPARTEMENT.
  01
 88 FIN-LISTE
@@ -93,6 +85,58 @@ SELECT MAT,
                NDE,
 NOM END-EXEC
 * LIGNES EDITION
+
+* LIGNES EDITION
+        01  L1.
+            05                      PIC X(30) VALUE SPACES.
+            05                      PIC X(18) VALUE 'LISTE DES EMPLOYES'.
+            05                      PIC X(10) VALUE SPACES.
+            05                      PIC X(03) VALUE 'LE'.
+            05 ED-DATJ              PIC X(10) VALUE SPACES.
+
+       01  L2.
+            05                      PIC X(30) VALUE SPACES.
+            05                      PIC X(18) VALUE ALL '-'.
+
+       01  L3.
+            05                      PIC X(11) VALUE 'BATIMENT : '.
+            05 ED-LIE               PIC X(04) VALUE SPACES.
+
+        01  L4.
+            05                      PIC X(03) VALUE 'MAT'.
+            05                      PIC X(03) VALUE SPACES.
+            05                      PIC X(08) VALUE 'NOM EMPL'.
+            05                      PIC X(03) VALUE SPACES.
+            05                      PIC X(08) VALUE 'NUM DEPT'.
+            05                      PIC X(03) VALUE SPACES.
+            05                      PIC X(08) VALUE 'NOM DEPT'.
+            05                      PIC X(03) VALUE SPACES.
+
+        01  L5.
+            05                      PIC X(03) VALUE ALL '-'.
+            05                      PIC X(03) VALUE SPACES.
+            05                      PIC X(08) VALUE ALL '-'.
+            05                      PIC X(03) VALUE SPACES.
+            05                      PIC X(08) VALUE ALL '-'.
+            05                      PIC X(03) VALUE SPACES.
+            05                      PIC X(08) VALUE ALL '-'.
+            05                      PIC X(03) VALUE SPACES.
+
+       01  L6.
+            05 ED-MAT               PIC X(03) VALUE SPACES.
+            05                      PIC X(03) VALUE SPACES.
+            05 ED-NOM               PIC X(08) VALUE SPACES.
+            05                      PIC X(03) VALUE SPACES.
+            05 ED-NOD.              PIC X(08) VALUE SPACES.
+            05                      PIC X(03) VALUE SPACES.
+            05 ED-NDE               PIC X(08) VALUE SPACES.
+            05                      PIC X(03) VALUE SPACES.
+
+
+
+
+
+
  01  L1.
      05          PIC X(30)
      05          PIC X(19)
