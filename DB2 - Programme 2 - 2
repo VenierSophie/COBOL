@@ -1,6 +1,7 @@
 # Énoncé de l'exercice : Dans la bibliothèque userid.SOURCE.DB2, écrire le programme DB2P2 qui édite la liste des employés par bâtiment et par numéro de département.
 # Programme DB2P2 + JCL + SYSOUT + EDITION
 
+
 PROGRAMME DB2P2 :
        IDENTIFICATION DIVISION.
        PROGRAM-ID. DB2P2.
