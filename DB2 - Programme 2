@@ -1,5 +1,5 @@
 # Énoncé de l'exercice : Dans la bibliothèque userid.SOURCE.DB2, écrire le programme DB2P2 qui édite la liste des employés par bâtiment.
-# Programme DB2P2 + JCL
+# Programme DB2P2 + JCL + SYSOUT + EDITION
 
 
 PROGRAMME DB2P2 :
@@ -300,3 +300,30 @@ JCL du programme DB2P2 :
   DSN SYSTEM (DSN1)
   RUN PROGRAM(DB2P2) PLAN (DB2P2) PARMS('11001')
 //
+
+
+SYSOUT :
+NB EMPL LUS : 7
+
+
+EDITION :
+********************************* Top of Data **********************************
+1                              LISTE DES EMPLOYES         LE 26/04/2023
+                               ------------------
+0BATIMENT : BAT1
+ MAT   NOM EMPL   NUM DEPT   NOM DEPT
+ ---   --------   --------   --------
+ 40    JAVA       C04        COMPTA
+0BATIMENT : BAT2
+ MAT   NOM EMPL   NUM DEPT   NOM DEPT
+ ---   --------   --------   --------
+ 30    BARI       P02        COMMER
+ 50    CICS       P02        COMMER
+ 70    NOEL       P02        COMMER
+ 10    DURAND     E10        PAIE
+0BATIMENT : BAT3
+ MAT   NOM EMPL   NUM DEPT   NOM DEPT
+ ---   --------   --------   --------
+ 20    DUPOND     P01        INFO
+ 60    PARIS      P01        INFO
+******************************** Bottom of Data ********************************
