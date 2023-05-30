@@ -286,3 +286,104 @@ FIN-BATIMENT.
      EXEC SQL CLOSE LISTE END-EXEC
      STOP RUN
      .
+
+
+JCL :
+//API7DB JOB NOTIFY=&SYSUID,CLASS=A,MSGCLASS=H
+//*
+//PROCLIB  JCLLIB ORDER=SDJ.FORM.PROCLIB
+//*
+//         SET SYSUID=API7,
+//             NOMPGM=DB2P2
+//*
+//APPROC
+//STEPDB2.SYSLIB   DD DSN=API7.SOURCE.DCLGEN,DISP-SHR
+//                 DD DSN=API7.SOURCE.COPY,DISP-SHR
+//STEPDB2.SYSIN    DD DSN=API7.SOURCE.DB2(DB2P2),DISP-SHR
+//STEPDB2.DBRMLIB  DD DSN=API7.SOURCE.DBRMLIB(DB2P2),DISP=SHR
+//STEPLNK.SYSLMOD  DD DSN=API7.SOURCE.PGMLIB(DB2P2),DISP=SHR
+//*
+//*--- ETAPE DE BIND --------------------------------------
+//*
+//BIND     EXEC PGM=IKJEFT01,COND=(4,LT)
+//*DBRMLIB  DD  DSN=&SYSUID..DB2.DBRMLIB,DISP=SHR
+//DBRMLIB  DD  DSN=API7.SOURCE.DBRMLIB,DISP=SHR
+//SYSTSPRT DD  SYSOUT=*,OUTLIM=25000
+//SYSTSIN  DD  *
+  DSN SYSTEM (DSN1)
+  BIND PLAN      (DB2P2) -
+       QUALIFIER (API7)     -
+       ACTION    (REPLACE) -
+       MEMBER    (DB2P2) -
+       VALIDATE  (BIND)    -
+       ISOLATION (CS)      -
+       ACQUIRE   (USE)     -
+       RELEASE   (COMMIT)  -
+       EXPLAIN   (NO)
+//*
+//* DELETE DU FICHIER D'EDITION
+//DEL      EXEC PGM=IDCAMS
+//SYSPRINT DD   SYSOUT=*
+//SYSIN    DD   *
+  DELETE API7.EDITION
+  SET MAXCC = 0
+//*
+//* EXECUTION DU PROGRAMME
+//STEPRUN  EXEC PGM=IKJEFT01,COND=(4,LT)
+//STEPLIB  DD DSN=API7.SOURCE.PGMLIB,DISP=SHR
+//EDIT     DD  DSN=API7.EDITION,DISP=(,CATLG,DELETE),
+//         DCB=(DSORG=PS,RECFM=FB,LRECL=133),
+//         SPACE=(TRK,(1))
+//SYSOUT   DD  SYSOUT=*,OUTLIM=1000
+//SYSTSPRT DD  SYSOUT=*,OUTLIM=2500
+//SYSTSIN  DD  *
+  DSN SYSTEM (DSN1)
+  RUN PROGRAM(DB2P2) PLAN (DB2P2) PARMS('11001')
+//
+
+
+
+SYSOUT :
+NB EMPL LUS : 7
+
+
+
+EDITION :
+********************************* Top of Data **********************************
+1                              LISTE DES EMPLOYES PAR BAT/DEP          LE 27/04/
+                               ------------------------------
+0BATIMENT : BAT1
+ ---------- ----
+0     DEPARTEMENT : C04  COMPTA
+           MAT   NOM EMPL
+           ---   --------
+           40    JAVA
+      NB EMPLOYES DANS LE DEPARTEMENT : 1
+0NB EMPLOYES DANS LE BATIMENT : 1
+0BATIMENT : BAT2
+ ---------- ----
+0     DEPARTEMENT : P02  COMMER
+           MAT   NOM EMPL
+           ---   --------
+           30    BARI
+           50    CICS
+           70    NOEL
+      NB EMPLOYES DANS LE DEPARTEMENT : 3
+0     DEPARTEMENT : E10  PAIE
+           MAT   NOM EMPL
+           ---   --------
+           10    DURAND
+      NB EMPLOYES DANS LE DEPARTEMENT : 1
+0NB EMPLOYES DANS LE BATIMENT : 4
+0BATIMENT : BAT3
+ ---------- ----
+0     DEPARTEMENT : P01  INFO
+           MAT   NOM EMPL
+           ---   --------
+           20    DUPOND
+           60    PARIS
+      NB EMPLOYES DANS LE DEPARTEMENT : 2
+0NB EMPLOYES DANS LE BATIMENT : 2
+-NB EMPLOYES TOTAL : 7
+******************************** Bottom of Data ********************************
+
