@@ -83,164 +83,164 @@ PROGRAMME DB2P2 :
                      NOM
            END-EXEC
                 
-* LIGNES EDITION
- 01  L1.
-     05                      PIC X(30) VALUE SPACES.
-     05                      PIC X(18) VALUE 'LISTE DES EMPLOYES'.
-     05                      PIC X(10) VALUE SPACES.
-     05                      PIC X(03) VALUE 'LE'.
-     05 ED-DATJ              PIC X(10) VALUE SPACES.
+       * LIGNES EDITION
+        01  L1.
+            05                      PIC X(30) VALUE SPACES.
+            05                      PIC X(18) VALUE 'LISTE DES EMPLOYES'.
+            05                      PIC X(10) VALUE SPACES.
+            05                      PIC X(03) VALUE 'LE'.
+            05 ED-DATJ              PIC X(10) VALUE SPACES.
 
-01  L2.
-     05                      PIC X(30) VALUE SPACES.
-     05                      PIC X(18) VALUE ALL '-'.
+       01  L2.
+            05                      PIC X(30) VALUE SPACES.
+            05                      PIC X(18) VALUE ALL '-'.
 
-01  L3.
-     05                      PIC X(11) VALUE 'BATIMENT : '.
-     05 ED-LIE               PIC X(04) VALUE SPACES.
+       01  L3.
+            05                      PIC X(11) VALUE 'BATIMENT : '.
+            05 ED-LIE               PIC X(04) VALUE SPACES.
 
- 01  L4.
-     05                      PIC X(03) VALUE 'MAT'.
-     05                      PIC X(03) VALUE SPACES.
-     05                      PIC X(08) VALUE 'NOM EMPL'.
-     05                      PIC X(03) VALUE SPACES.
-     05                      PIC X(08) VALUE 'NUM DEPT'.
-     05                      PIC X(03) VALUE SPACES.
-     05                      PIC X(08) VALUE 'NOM DEPT'.
-     05                      PIC X(03) VALUE SPACES.
+        01  L4.
+            05                      PIC X(03) VALUE 'MAT'.
+            05                      PIC X(03) VALUE SPACES.
+            05                      PIC X(08) VALUE 'NOM EMPL'.
+            05                      PIC X(03) VALUE SPACES.
+            05                      PIC X(08) VALUE 'NUM DEPT'.
+            05                      PIC X(03) VALUE SPACES.
+            05                      PIC X(08) VALUE 'NOM DEPT'.
+            05                      PIC X(03) VALUE SPACES.
 
- 01  L5.
-     05                      PIC X(03) VALUE ALL '-'.
-     05                      PIC X(03) VALUE SPACES.
-     05                      PIC X(08) VALUE ALL '-'.
-     05                      PIC X(03) VALUE SPACES.
-     05                      PIC X(08) VALUE ALL '-'.
-     05                      PIC X(03) VALUE SPACES.
-     05                      PIC X(08) VALUE ALL '-'.
-     05                      PIC X(03) VALUE SPACES.
+        01  L5.
+            05                      PIC X(03) VALUE ALL '-'.
+            05                      PIC X(03) VALUE SPACES.
+            05                      PIC X(08) VALUE ALL '-'.
+            05                      PIC X(03) VALUE SPACES.
+            05                      PIC X(08) VALUE ALL '-'.
+            05                      PIC X(03) VALUE SPACES.
+            05                      PIC X(08) VALUE ALL '-'.
+            05                      PIC X(03) VALUE SPACES.
 
-01  L6.
-     05 ED-MAT               PIC X(03) VALUE SPACES.
-     05                      PIC X(03) VALUE SPACES.
-     05 ED-NOM               PIC X(08) VALUE SPACES.
-     05                      PIC X(03) VALUE SPACES.
-     05 ED-NOD.              PIC X(08) VALUE SPACES.
-     05                      PIC X(03) VALUE SPACES.
-     05 ED-NDE               PIC X(08) VALUE SPACES.
-     05                      PIC X(03) VALUE SPACES.
+       01  L6.
+            05 ED-MAT               PIC X(03) VALUE SPACES.
+            05                      PIC X(03) VALUE SPACES.
+            05 ED-NOM               PIC X(08) VALUE SPACES.
+            05                      PIC X(03) VALUE SPACES.
+            05 ED-NOD.              PIC X(08) VALUE SPACES.
+            05                      PIC X(03) VALUE SPACES.
+            05 ED-NDE               PIC X(08) VALUE SPACES.
+            05                      PIC X(03) VALUE SPACES.
 
-PROCEDURE DIVISION.
+       PROCEDURE DIVISION.
 
-     PERFORM DEBUT
-     PERFORM UNTIL FIN-LISTE
-* EDITER LES LIGNES BATIMENT ET SAUVEGARDER LE BATIMENT EN COURS
-        PERFORM LIGNE-BATIMENT
-* --> TEST DE LA RUPTURE SUR LE BATIMENT
-        PERFORM UNTIL HVD-LIE NOT = RES-LIE OR FIN-LISTE
-* EDITER LES LIGNES DETAIL POUR LE MEME BATIMENT
-           PERFORM LIGNE-DETAIL
-           PERFORM FETCH-LISTE
-        END-PERFORM
-     END-PERFORM
-     PERFORM FIN
-     .
-     
-* OUVERTIURE FICHIER EDITION ET CURSEUR, 1ER FETCH, ENTETE
- DEBUT.
-     OPEN OUTPUT EDIT
-     IF FS-EDIT NOT = ZEROES
-        DISPLAY 'ERREUR OPEN EDIT, FS : ' FS-EDIT
-        PERFORM FIN-ERREUR
-     END-IF
-     
-     EXEC SQL OPEN LISTE END-EXEC
-     IF SQLCODE NOT = ZEROES
-        MOVE SQLCODE TO ED-SQLCODE
-        DISPLAY 'ERREUR OPEN CURSEUR LISTE, SQLCODE : '
-                ED-SQLCODE
-        PERFORM FIN-ERREUR
-     END-IF
-     
-* 1ERE LECTURE DU CURSEUR LISTE
-     PERFORM FETCH-LISTE
-     
-* RECUPERATION DE LA DATE DU JOUR
-     MOVE FUNCTION CURRENT-DATE(7 : 2) TO ED-DATJ(1 : 2)
-     MOVE '/'                          TO ED-DATJ(3 : 1)
-     MOVE FUNCTION CURRENT-DATE(5 : 2) TO ED-DATJ(4 : 2)
-     MOVE '/'                          TO ED-DATJ(6 : 1)
-     MOVE FUNCTION CURRENT-DATE(1 : 4) TO ED-DATJ(7 : 4)
-     
-* EDITION DE L'ENTETE
-     MOVE '1'     TO CAR-SAUT
-     MOVE L1      TO LIG-EDIT
-     WRITE ENR-EDIT
-     MOVE ' '     TO CAR-SAUT
-     MOVE L2      TO LIG-EDIT
-     WRITE ENR-EDIT
-     .
-     
-* EDITION DES LIGNES DU BATIMENT
-LIGNE-BATIMENT.
-    MOVE HVD-LIE  TO ED-LIE
-    MOVE '0'      TO CAR-SAUT
-    MOVE L3       TO LIG-EDIT
-    WRITE ENR-EDIT
-    
-    MOVE ' '      TO CAR-SAUT
-    MOVE L4       TO LIG-EDIT
-    WRITE ENR-EDIT
-    
-    MOVE ' '      TO CAR-SAUT
-    MOVE L5       TO LIG-EDIT
-    WRITE ENR-EDIT
+            PERFORM DEBUT
+            PERFORM UNTIL FIN-LISTE
+       * EDITER LES LIGNES BATIMENT ET SAUVEGARDER LE BATIMENT EN COURS
+               PERFORM LIGNE-BATIMENT
+       * --> TEST DE LA RUPTURE SUR LE BATIMENT
+               PERFORM UNTIL HVD-LIE NOT = RES-LIE OR FIN-LISTE
+       * EDITER LES LIGNES DETAIL POUR LE MEME BATIMENT
+                  PERFORM LIGNE-DETAIL
+                  PERFORM FETCH-LISTE
+               END-PERFORM
+            END-PERFORM
+            PERFORM FIN
+            .
 
-* SAUVEGARDE DU BATIMENT
-     MOVE HVD-LIE    TO RES-LIE
-     .
+       * OUVERTIURE FICHIER EDITION ET CURSEUR, 1ER FETCH, ENTETE
+        DEBUT.
+            OPEN OUTPUT EDIT
+            IF FS-EDIT NOT = ZEROES
+               DISPLAY 'ERREUR OPEN EDIT, FS : ' FS-EDIT
+               PERFORM FIN-ERREUR
+            END-IF
 
-* EDITION DE LA LIGNE DETAIL
- LIGNE-DETAIL.
-     MOVE HVE-MAT    TO ED-MAT
-     MOVE HVE-NOM    TO ED-NOM
-     MOVE HVD-NOD    TO ED-NOD
-     MOVE HVD-NDE    TO ED-NDE
-     MOVE ' '        TO CAR-SAUT
-     MOVE L6         TO LIG-EDIT
-     WRITE ENR-EDIT
-     .
+            EXEC SQL OPEN LISTE END-EXEC
+            IF SQLCODE NOT = ZEROES
+               MOVE SQLCODE TO ED-SQLCODE
+               DISPLAY 'ERREUR OPEN CURSEUR LISTE, SQLCODE : '
+                       ED-SQLCODE
+               PERFORM FIN-ERREUR
+            END-IF
 
-* LECTURE DU CURSEUR LISTE
- FETCH-LISTE.
-     EXEC SQL
-      FETCH LISTE INTO
-           :HVE-MAT,
-           :HVE-NOM,
-           :HVD-NOD,
-           :HVD-NDE,
-           :HVD-LIE
-     END-EXEC
-     EVALUATE SQLCODE
-      WHEN ZEROES
-           ADD 1 TO CPT-EMPL
-      WHEN +100
-           SET FIN-LISTE TO TRUE
-      WHEN OTHER
-        MOVE SQLCODE TO ED-SQLCODE
-        DISPLAY 'ERREUR FETCH CURSEUR LISTE, SQLCODE : '
-                ED-SQLCODE
-        PERFORM FIN-ERREUR
-     END-EVALUATE
-     .
-     
- FIN-ERREUR.
-     MOVE 15 TO RETURN-CODE
-     PERFORM FIN
-     .
-     
- FIN.
-     DISPLAY 'NB EMPL LUS : ' CPT-EMPL
-     CLOSE EDIT
-     EXEC SQL CLOSE LISTE END-EXEC
-     STOP RUN
-     .
+       * 1ERE LECTURE DU CURSEUR LISTE
+            PERFORM FETCH-LISTE
+
+       * RECUPERATION DE LA DATE DU JOUR
+            MOVE FUNCTION CURRENT-DATE(7 : 2) TO ED-DATJ(1 : 2)
+            MOVE '/'                          TO ED-DATJ(3 : 1)
+            MOVE FUNCTION CURRENT-DATE(5 : 2) TO ED-DATJ(4 : 2)
+            MOVE '/'                          TO ED-DATJ(6 : 1)
+            MOVE FUNCTION CURRENT-DATE(1 : 4) TO ED-DATJ(7 : 4)
+
+       * EDITION DE L'ENTETE
+            MOVE '1'     TO CAR-SAUT
+            MOVE L1      TO LIG-EDIT
+            WRITE ENR-EDIT
+            MOVE ' '     TO CAR-SAUT
+            MOVE L2      TO LIG-EDIT
+            WRITE ENR-EDIT
+            .
+
+       * EDITION DES LIGNES DU BATIMENT
+       LIGNE-BATIMENT.
+           MOVE HVD-LIE  TO ED-LIE
+           MOVE '0'      TO CAR-SAUT
+           MOVE L3       TO LIG-EDIT
+           WRITE ENR-EDIT
+
+           MOVE ' '      TO CAR-SAUT
+           MOVE L4       TO LIG-EDIT
+           WRITE ENR-EDIT
+
+           MOVE ' '      TO CAR-SAUT
+           MOVE L5       TO LIG-EDIT
+           WRITE ENR-EDIT
+
+       * SAUVEGARDE DU BATIMENT
+            MOVE HVD-LIE    TO RES-LIE
+            .
+
+       * EDITION DE LA LIGNE DETAIL
+        LIGNE-DETAIL.
+            MOVE HVE-MAT    TO ED-MAT
+            MOVE HVE-NOM    TO ED-NOM
+            MOVE HVD-NOD    TO ED-NOD
+            MOVE HVD-NDE    TO ED-NDE
+            MOVE ' '        TO CAR-SAUT
+            MOVE L6         TO LIG-EDIT
+            WRITE ENR-EDIT
+            .
+
+       * LECTURE DU CURSEUR LISTE
+        FETCH-LISTE.
+            EXEC SQL
+             FETCH LISTE INTO
+                  :HVE-MAT,
+                  :HVE-NOM,
+                  :HVD-NOD,
+                  :HVD-NDE,
+                  :HVD-LIE
+            END-EXEC
+            EVALUATE SQLCODE
+             WHEN ZEROES
+                  ADD 1 TO CPT-EMPL
+             WHEN +100
+                  SET FIN-LISTE TO TRUE
+             WHEN OTHER
+               MOVE SQLCODE TO ED-SQLCODE
+               DISPLAY 'ERREUR FETCH CURSEUR LISTE, SQLCODE : '
+                       ED-SQLCODE
+               PERFORM FIN-ERREUR
+            END-EVALUATE
+            .
+
+        FIN-ERREUR.
+            MOVE 15 TO RETURN-CODE
+            PERFORM FIN
+            .
+
+        FIN.
+            DISPLAY 'NB EMPL LUS : ' CPT-EMPL
+            CLOSE EDIT
+            EXEC SQL CLOSE LISTE END-EXEC
+            STOP RUN
+            .
