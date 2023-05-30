@@ -32,203 +32,106 @@ PROGRAMME DB2P2 :
            EXEC SQL INCLUDE DEPT    END-EXEC.
            EXEC SQL INCLUDE EMPLOYE END-EXEC.
            EXEC SQL INCLUDE SQLCA   END-EXEC.
-           
+
        01  HVD-DEPARTEMENT.
- 01
-88 FIN-LISTE
-PIC X     VALUE SPACES.
-          VALUE '1'.
-05 HVD-NOD
-05 HVD-NDE
-05 HVD-LIE
-PIC X(3).
-PIC X(6).
-PIC X(4).
-* DECLARATION DES HOST-VARIABLES DE L'EMPLOYE
- 01  HVE-EMPLOYE.
-05 HVE-MAT
-05 HVE-NOD
-05 HVE-NOM
-PIC X(3).
-PIC X(3).
-PIC X(7).
-* SQLCODE EN PICTURE EDITION
- 01  ED-SQLCODE        PIC +(10) VALUE ZEROES.
-* INDICATEUR DE FIN DE LISTE
-* ZONE RESERVE POUR TEST RUPTURE
- 01  RES-LIE           PIC X(04) VALUE SPACES.
- 01  RES-NOD           PIC X(04) VALUE SPACES.
-* COMPTEURS
- 01  CPT-EMPL
- 01  CPT-NOD
- 01  CPT-LIE
- 01  CPT-TOT
-PIC 9
-PIC 9
-PIC 9
-PIC 9
-VALUE ZEROES.
-VALUE ZEROES.
-VALUE ZEROES.
-VALUE ZEROES.
-* REQUETE POUR LISTE DES EMPLOYES PAR BATIMENT
-     EXEC SQL DECLARE LISTE CURSOR FOR
-SELECT MAT,
-            NOM,
-            E.NOD,
-            NDE,
-            LIE
-      FROM
-            EMPLOYE E JOIN DEPARTEMENT D
-            ON E.NOD = D.NOD
-      ORDER BY LIE,
-               NDE,
-NOM END-EXEC
-* LIGNES EDITION
+           05 HVD-NOD         PIC X(3).
+           05 HVD-NDE         PIC X(6).
+           05 HVD-LIE         PIC X(4).
+          
+       01  HVE-EMPLOYE.
+           05 HVE-MAT          PIC X(3).
+           05 HVE-NOD          PIC X(3).
+           05 HVE-NOM          PIC X(7).
+
+       01  ED-SQLCODE        PIC +(10) VALUE ZEROES.
+       
+       01                     PIC X     VALUE SPACES.
+           88 FIN-LISTE                VALUE '1'.
+           
+       01  RES-LIE           PIC X(04) VALUE SPACES.
+       01  RES-NOD           PIC X(04) VALUE SPACES.
+
+       01  CPT-EMPL          PIC 9     VALUE ZEROES.
+       01  CPT-NOD           PIC 9     VALUE ZEROES.
+       01  CPT-LIE           PIC 9     VALUE ZEROES.
+       01  CPT-TOT           PIC 9     VALUE ZEROES.
+           
+           EXEC SQL DECLARE LISTE CURSOR FOR
+              SELECT MAT,
+                          NOM,
+                          E.NOD,
+                          NDE,
+                          LIE
+              FROM
+                          EMPLOYE E JOIN DEPARTEMENT D
+                          ON E.NOD = D.NOD
+              ORDER BY LIE,
+                       NDE,
+                       NOM
+           END-EXEC
 
 * LIGNES EDITION
         01  L1.
             05                      PIC X(30) VALUE SPACES.
-            05                      PIC X(18) VALUE 'LISTE DES EMPLOYES'.
+            05                      PIC X(19) VALUE 'LISTE DES EMPLOYES'.
+            05                      PIC X(11) VALUE 'PAR BAT/DEP'.
             05                      PIC X(10) VALUE SPACES.
             05                      PIC X(03) VALUE 'LE'.
             05 ED-DATJ              PIC X(10) VALUE SPACES.
 
        01  L2.
             05                      PIC X(30) VALUE SPACES.
-            05                      PIC X(18) VALUE ALL '-'.
+            05                      PIC X(30) VALUE ALL '-'.
 
        01  L3.
             05                      PIC X(11) VALUE 'BATIMENT : '.
             05 ED-LIE               PIC X(04) VALUE SPACES.
+            
+       01  L4.
+            05                      PIC X(10) VALUE ALL '-'.
+            05                      PIC X(01) VALUE SPACES.
+            05                      PIC X(04) VALUE ALL '-'.
 
-        01  L4.
+       01  L5.
+            05                      PIC X(05) VALUE SPACES.
+            05                      PIC X(14) VALUE 'DEPARTEMENT : '.
+            05 ED-NOD               PIC X(04) VALUE SPACES.
+            05                      PIC X(01) VALUE SPACES.
+            05 ED-NDE               PIC X(06) VALUE SPACES.
+
+       01  L6.
+            05                      PIC X(10) VALUE SPACES.
             05                      PIC X(03) VALUE 'MAT'.
             05                      PIC X(03) VALUE SPACES.
             05                      PIC X(08) VALUE 'NOM EMPL'.
-            05                      PIC X(03) VALUE SPACES.
-            05                      PIC X(08) VALUE 'NUM DEPT'.
-            05                      PIC X(03) VALUE SPACES.
-            05                      PIC X(08) VALUE 'NOM DEPT'.
-            05                      PIC X(03) VALUE SPACES.
 
-        01  L5.
+       01  L7.
+            05                      PIC X(10) VALUE SPACES.
             05                      PIC X(03) VALUE ALL '-'.
             05                      PIC X(03) VALUE SPACES.
             05                      PIC X(08) VALUE ALL '-'.
-            05                      PIC X(03) VALUE SPACES.
-            05                      PIC X(08) VALUE ALL '-'.
-            05                      PIC X(03) VALUE SPACES.
-            05                      PIC X(08) VALUE ALL '-'.
-            05                      PIC X(03) VALUE SPACES.
 
-       01  L6.
+       01  L8.
+            05                      PIC X(10) VALUE SPACES.
             05 ED-MAT               PIC X(03) VALUE SPACES.
             05                      PIC X(03) VALUE SPACES.
             05 ED-NOM               PIC X(08) VALUE SPACES.
-            05                      PIC X(03) VALUE SPACES.
-            05 ED-NOD.              PIC X(08) VALUE SPACES.
-            05                      PIC X(03) VALUE SPACES.
-            05 ED-NDE               PIC X(08) VALUE SPACES.
-            05                      PIC X(03) VALUE SPACES.
-
-
-
-
-
-
- 01  L1.
-     05          PIC X(30)
-     05          PIC X(19)
-     05          PIC X(11)
-     05          PIC X(10)
-     05          PIC X(03)
-     05 ED-DATJ  PIC X(10)
-VALUE SPACES.
-VALUE 'LISTE DES EMPLOYES '.
-VALUE 'PAR BAT/DEP'.
-VALUE SPACES.
-VALUE 'LE'.
-VALUE SPACES.
-VALUE SPACES.
-VALUE ALL '-'.
-VALUE 'BATIMENT : '.
-VALUE SPACES.
-VALUE ALL '-'.
-VALUE SPACES.
-VALUE ALL '-'.
-VALUE SPACES.
-VALUE 'DEPARTEMENT : '.
-VALUE SPACES.
-VALUE SPACES.
-VALUE SPACES.
-VALUE SPACES.
-VALUE 'MAT'.
-VALUE SPACES.
-VALUE 'NOM EMPL'.
-VALUE SPACES.
-VALUE ALL '-'.
-VALUE SPACES.
-VALUE ALL '-'.
-01 L2. 05
-05
-01 L3. 05
-05 ED-LIE
-01 L4. 05
-05 05
-01 L5. 05
-    05
-    05 ED-NOD
-    05
-    05 ED-NDE
-01 L6. 05
-05 05 05
-01 L7. 05
-05 05 05
-01 L8. 05
-PIC X(30)
-PIC X(30)
-PIC X(11)
-PIC X(04)
-PIC X(10)
-PIC X(01)
-PIC X(04)
-PIC X(05)
-PIC X(14)
-PIC X(04)
-PIC X(01)
-PIC X(06)
-PIC X(10)
-PIC X(03)
-PIC X(03)
-PIC X(08)
-PIC X(10)
-PIC X(03)
-PIC X(03)
-PIC X(08)
-PIC X(10)
-VALUE SPACES.
-
-    05 ED-MAT
-    05
-    05 ED-NOM
-01 L9. 05
-05
-PIC X(03)
-PIC X(03)
-PIC X(08)
-PIC X(05)
-PIC X(34)
-'NB EMPLOYES DANS LE DEPARTEMENT : '.
-     05 ED-CPT-NOD PIC 9       VALUE ZEROES.
- 01  L10.
-     05          PIC X(31)     VALUE
-                 'NB EMPLOYES DANS LE BATIMENT : '.
-     05 ED-CPT-LIE PIC 9       VALUE ZEROES.
- 01  L11.
-     05          PIC X(20)     VALUE
-                 'NB EMPLOYES TOTAL : '.
-     05 ED-CPT-TOT PIC 9       VALUE ZEROES.
+       
+       01  L9.
+            05                      PIC X(05) VALUE SPACES.
+            05                      PIC X(34) VALUE
+                                    'NB EMPLOYES DANS LE DEPARTEMENT : '.
+            05 ED-CPT-NOD           PIC 9       VALUE ZEROES.
+                                    
+       01  L10.
+            05                      PIC X(31)     VALUE
+                                    'NB EMPLOYES DANS LE BATIMENT : '.
+            05 ED-CPT-LIE           PIC 9       VALUE ZEROES.
+       01  L11.
+            05                      PIC X(20)     VALUE
+                                    'NB EMPLOYES TOTAL : '.
+            05 ED-CPT-TOT           PIC 9       VALUE ZEROES.
+            
  PROCEDURE DIVISION.
      PERFORM DEBUT
      PERFORM UNTIL FIN-LISTE
@@ -246,140 +149,110 @@ PIC X(34)
      PERFORM FIN-TOTAL
      PERFORM FIN
      .
-* OUVERTIURE FICHIER EDITION ET CURSEUR, 1ER FETCH, ENTETE
+     
+     
  DEBUT.
      OPEN OUTPUT EDIT
      IF FS-EDIT NOT = ZEROES
         DISPLAY 'ERREUR OPEN EDIT, FS : ' FS-EDIT
         PERFORM FIN-ERREUR
      END-IF
+     
      EXEC SQL OPEN LISTE END-EXEC
      IF SQLCODE NOT = ZEROES
         MOVE SQLCODE TO ED-SQLCODE
         DISPLAY 'ERREUR OPEN CURSEUR LISTE, SQLCODE : '
                 ED-SQLCODE
         PERFORM FIN-ERREUR
-END-IF
-* 1ERE LECTURE DU CURSEUR LISTE
+     END-IF
+    
      PERFORM FETCH-LISTE
-* RECUPERATION DE LA DATE DU JOUR
+     
      MOVE FUNCTION CURRENT-DATE(7 : 2) TO ED-DATJ(1 : 2)
      MOVE '/'                          TO ED-DATJ(3 : 1)
      MOVE FUNCTION CURRENT-DATE(5 : 2) TO ED-DATJ(4 : 2)
      MOVE '/'                          TO ED-DATJ(6 : 1)
      MOVE FUNCTION CURRENT-DATE(1 : 4) TO ED-DATJ(7 : 4)
-* EDITION DE L'ENTETE
+     
      MOVE '1'        TO CAR-SAUT
-VALUE SPACES.
-VALUE SPACES.
-VALUE SPACES.
-VALUE SPACES.
-VALUE
-
-MOVE L1
-WRITE ENR-EDIT
-MOVE ' '
-MOVE L2
-WRITE ENR-EDIT
-.
-TO LIG-EDIT
-TO CAR-SAUT
-TO LIG-EDIT
-* EDITION DES LIGNES DU BATIMENT
+     MOVE L1         TO LIG-EDIT
+     WRITE ENR-EDIT
+     MOVE ' '        TO CAR-SAUT
+     MOVE L2         TO LIG-EDIT
+     WRITE ENR-EDIT
+     .
+    
 LIGNE-BATIMENT.
-    MOVE HVD-LIE
-    MOVE '0'
-    MOVE L3
+    MOVE HVD-LIE     TO ED-LIE
+    MOVE '0'         TO CAR-SAUT
+    MOVE L3          TO LIG-EDIT
     WRITE ENR-EDIT
-    MOVE ' '
-    MOVE L4
+    MOVE ' '         TO CAR-SAUT
+    MOVE L4          TO LIG-EDIT
     WRITE ENR-EDIT
-TO ED-LIE
-TO CAR-SAUT
-TO LIG-EDIT
-TO CAR-SAUT
-TO LIG-EDIT
-* SAUVEGARDE DU BATIMENT
+
      MOVE HVD-LIE    TO RES-LIE
-* INITIALISATION DU COMPTEUR
+
      MOVE ZEROES     TO CPT-LIE
      .
-* EDITION DES LIGNES DU DEPARTEMENT
+     
  LIGNE-DEPARTEMENT.
-MOVE HVD-NOD
-MOVE HVD-NDE
-MOVE '0'
-MOVE L5
-WRITE ENR-EDIT
-MOVE ' '
-MOVE L6
-WRITE ENR-EDIT
-MOVE ' '
-MOVE L7
-WRITE ENR-EDIT
-TO ED-NOD
-TO ED-NDE
-TO CAR-SAUT
-TO LIG-EDIT
-TO CAR-SAUT
-TO LIG-EDIT
-TO CAR-SAUT
-TO LIG-EDIT
-* SAUVEGARDE DU DEPARTEMENT EN COURS
+     MOVE HVD-NOD    TO ED-NOD
+     MOVE HVD-NDE    TO ED-NDE
+     MOVE '0'        TO CAR-SAUT
+     MOVE L5         TO LIG-EDIT
+     WRITE ENR-EDIT
+     
+     MOVE ' '        TO CAR-SAUT
+     MOVE L6         TO LIG-EDIT
+     WRITE ENR-EDIT
+     
+     MOVE ' '        TO CAR-SAUT
+     MOVE L7         TO LIG-EDIT
+     WRITE ENR-EDIT
+    
      MOVE HVD-NOD    TO RES-NOD
-* INITIALISATION DU COMPTEUR
+
      MOVE ZEROES     TO CPT-NOD
      .
-* EDITION DE LA LIGNE DETAIL
+     
+
 LIGNE-DETAIL.
-    MOVE HVE-MAT
-    MOVE HVE-NOM
-    MOVE ' '
-    MOVE L8
-    WRITE ENR-EDIT
-TO ED-MAT
-TO ED-NOM
-TO CAR-SAUT
-TO LIG-EDIT
-* INCREMENTATION DU COMPTEUR DEPARTEMENT
+     MOVE HVE-MAT    TO ED-MAT
+     MOVE HVE-NOM    TO ED-NOM
+     MOVE ' '        TO CAR-SAUT
+     MOVE L8         TO LIG-EDIT
+     WRITE ENR-EDIT
+
      ADD 1           TO CPT-NOD
      .
-* EDITION DU COMPTEUR DEPARTEMENT
+     
 FIN-DEPARTEMENT.
-    MOVE CPT-NOD
-    MOVE ' '
-    MOVE L9
-    WRITE ENR-EDIT
-TO ED-CPT-NOD
-TO CAR-SAUT
-TO LIG-EDIT
-* INCREMENTATION DU COMPTEUR BATIMENT
+     MOVE CPT-NOD    TO ED-CPT-NOD
+     MOVE ' '        TO CAR-SAUT
+     MOVE L9         TO LIG-EDIT
+     WRITE ENR-EDIT
+     
      ADD CPT-NOD     TO CPT-LIE
+     .
 
-.
-• EDITION DU COMPTEUR BATIMENT
 FIN-BATIMENT.
-    MOVE CPT-LIE
-    MOVE '0'
-    MOVE L10
-    WRITE ENR-EDIT
-TO ED-CPT-LIE
-TO CAR-SAUT
-TO LIG-EDIT
-* INCREMENTATION DU COMPTEUR TOTAL
+     MOVE CPT-LIE    TO ED-CPT-LIE
+     MOVE '0'        TO CAR-SAUT
+     MOVE L10        TO LIG-EDIT
+     WRITE ENR-EDIT
+
      ADD CPT-LIE     TO CPT-TOT
      .
-* EDITION DU COMPTEUR TOTAL
+     
+
  FIN-TOTAL.
-MOVE CPT-TOT
-MOVE '-'
-MOVE L11
-WRITE ENR-EDIT
-.
-TO ED-CPT-TOT
-TO CAR-SAUT
-TO LIG-EDIT
-* LECTURE DU CURSEUR LISTE
+     MOVE CPT-TOT    TO ED-CPT-TOT
+     MOVE '-'        TO CAR-SAUT
+     MOVE L11        TO LIG-EDIT
+     WRITE ENR-EDIT
+     .
+
  FETCH-LISTE.
      EXEC SQL
       FETCH LISTE INTO
@@ -401,10 +274,12 @@ TO LIG-EDIT
         PERFORM FIN-ERREUR
      END-EVALUATE
      .
+     
  FIN-ERREUR.
      MOVE 15 TO RETURN-CODE
      PERFORM FIN
      .
+     
  FIN.
      DISPLAY 'NB EMPL LUS : ' CPT-EMPL
      CLOSE EDIT
