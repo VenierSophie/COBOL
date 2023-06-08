@@ -62,7 +62,7 @@ PROGRAMME DB2P3 :
        01  ED-SQLERRD        PIC +(10)    VALUE ZEROES.
        
        PROCEDURE DIVISION.
-      * AUGMENTATION DU SALAIRE DES EMPLOYES DU DEPARTEMENT COMMERCE
+      * 1) AUGMENTATION DU SALAIRE DES EMPLOYES DU DEPARTEMENT COMMER
       * DE 10% ET AUGMENTATION DE LA COMMISSION DE 1000
             EXEC SQL
              UPDATE EMPLOYE
@@ -72,6 +72,7 @@ PROGRAMME DB2P3 :
              WHERE NOD =
                    (SELECT NOD FROM DEPARTEMENT WHERE NDE = 'COMMER')
             END-EXEC
+            
             IF SQLCODE = ZEROES
                MOVE SQLERRD(3) TO ED-SQLERRD
                DISPLAY 'DEPARTEMENT COMMER'
@@ -79,10 +80,11 @@ PROGRAMME DB2P3 :
             ELSE
                MOVE SQLCODE TO ED-SQLCODE
                DISPLAY 'ERREUR UPDATE EMPLOYE, SQLCODE : '
-       ED-SQLCODE
+               ED-SQLCODE
                PERFORM FIN-ERREUR
             END-IF
-       * DEPARTEMENT PAIE ET COMPTA : AUGMENTATION DU SALAIRE DE 15%
+            
+      * DEPARTEMENT PAIE ET COMPTA : AUGMENTATION DU SALAIRE DE 15%
             EXEC SQL
              UPDATE EMPLOYE
              SET
@@ -91,6 +93,7 @@ PROGRAMME DB2P3 :
                (SELECT NOD FROM DEPARTEMENT WHERE NDE = 'COMPTA'
                                                OR NDE = 'PAIE')
             END-EXEC
+            
             IF SQLCODE = ZEROES
                MOVE SQLERRD(3) TO ED-SQLERRD
                DISPLAY SPACES
@@ -101,9 +104,10 @@ PROGRAMME DB2P3 :
                DISPLAY 'ERREUR UPDATE EMPLOYE, SQLCODE : '
                ED-SQLCODE
                PERFORM FIN-ERREUR
-       END-IF
-       * DEPARTEMENT INFO : AUGMENTATION DU SALAIRE DE 20% ET AUGMENTATIO
-       * N DE LA COMMISSION DE 1500
+            END-IF
+            
+      * DEPARTEMENT INFO : AUGMENTATION DU SALAIRE DE 20% ET
+      * AUGMENTATION DE LA COMMISSION DE 1500
             EXEC SQL
              UPDATE EMPLOYE
              SET
@@ -112,6 +116,7 @@ PROGRAMME DB2P3 :
              WHERE NOD =
                (SELECT NOD FROM DEPARTEMENT WHERE NDE = 'INFO')
             END-EXEC
+            
             IF SQLCODE = ZEROES
                MOVE SQLERRD(3) TO ED-SQLERRD
                DISPLAY SPACES
@@ -122,8 +127,9 @@ PROGRAMME DB2P3 :
                DISPLAY 'ERREUR UPDATE EMPLOYE, SQLCODE : '
                ED-SQLCODE
                PERFORM FIN-ERREUR
-       END-IF
-       * CREATION DU DEPARTEMENT MARKETING
+            END-IF
+            
+      * 2) CREATION DU DEPARTEMENT MARKETING
             EXEC SQL
              INSERT INTO DEPARTEMENT
              VALUES
@@ -132,6 +138,7 @@ PROGRAMME DB2P3 :
               'BAT1',
               '70')
             END-EXEC
+            
             IF SQLCODE = ZEROES
                DISPLAY SPACES
                DISPLAY 'CREATION DU DEPARTEMENT MARKET'
@@ -140,17 +147,18 @@ PROGRAMME DB2P3 :
                DISPLAY 'ERREUR INSERT DEPARTEMENT, SQLCODE : '
                ED-SQLCODE
                PERFORM FIN-ERREUR
-       END-IF
+            END-IF
 
-       * 3) CHANGEMENT DU CHEF DU DéPARTEMENT COMMER, LE NOUVEAU CHEF EST
-       *  BARI
+      * 3) CHANGEMENT DU CHEF DU DéPARTEMENT COMMER, LE NOUVEAU CHEF
+      * ET BARI
             EXEC SQL
                UPDATE DEPARTEMENT
                SET
-       CHE =
+                CHE =
                 (SELECT MAT FROM EMPLOYE WHERE NOM = 'BARI')
                WHERE NDE = 'COMMER'
             END-EXEC
+            
             IF SQLCODE = ZEROES
                DISPLAY SPACES
                DISPLAY 'MODIFICATION DU CHEF DU DEPARTEMENT COMMER'
@@ -159,12 +167,84 @@ PROGRAMME DB2P3 :
                DISPLAY 'ERREUR UPDATE DEPARTEMENT, SQLCODE : '
                ED-SQLCODE
                PERFORM FIN-ERREUR
-       END-IF
-       PERFORM FIN .
-        FIN-ERREUR.
-            MOVE 15 TO RETURN-CODE
-            PERFORM FIN
-            .
-        FIN.
-       * ARRET DU PROGRAMME
-       STOP RUN.
+            END-IF
+            
+       PERFORM FIN
+       .
+      
+       FIN-ERREUR.
+         MOVE 15 TO RETURN-CODE
+         PERFORM FIN
+         .
+      
+       FIN.
+         STOP RUN.
+         
+         
+        
+JCL :
+
+//API7DB JOB NOTIFY=&SYSUID,CLASS=A,MSGCLASS=H
+//*
+//PROCLIB  JCLLIB ORDER=SDJ.FORM.PROCLIB
+//*
+//         SET SYSUID=API7,
+//             NOMPGM=DB2P3
+//*
+//APPROC   EXEC  COMPDB2
+//STEPDB2.SYSLIB     DD DSN=API7.SOURCE.DCLGEN,DISP=SHR
+//                   DD DSN=API7.SOURCE.COPY,DISP=SHR
+//STEPDB2.SYSIN      DD DSN=API7.SOURCE.DB2(DB2P3),DISP=SHR
+//STEPDB2.DBRMLIB    DD DSN=API7.SOURCE.DBRMLIB(DB2P3),DISP=SHR
+//STEPLNK.SYSLMOD    DD DSN=API7.SOURCE.PGMLIB(DB2P3),DISP=SHR
+//*
+//*--- ETAPE DE BIND --------------------------------------
+//*
+//BIND     EXEC PGM=IKJEFT01,COND=(4,LT)
+//*DBRMLIB  DD  DSN=&SYSUID..DB2.DBRMLIB,DISP=SHR
+//DBRMLIB  DD  DSN=API7.SOURCE.DBRMLIB,DISP=SHR
+//SYSTSPRT DD  SYSOUT=*,OUTLIM=25000
+//SYSTSIN  DD  *
+  DSN SYSTEM (DSN1)
+  BIND PLAN      (DB2P3) -
+       QUALIFIER (API7)     -
+       ACTION    (REPLACE) -
+       MEMBER    (DB2P3) -
+       VALIDATE  (BIND)    -
+       ISOLATION (CS)      -
+       ACQUIRE   (USE)     -
+       RELEASE   (COMMIT)  -
+       EXPLAIN   (NO)
+//*
+//* EXECUTION DU PROGRAMME
+//STEPRUN  EXEC PGM=IKJEFT01,COND=(4,LT)
+//STEPLIB  DD DSN=API7.SOURCE.PGMLIB,DISP=SHR
+//SYSOUT   DD  SYSOUT=*,OUTLIM=1000
+//SYSTSPRT DD  SYSOUT=*,OUTLIM=2500
+//SYSTSIN  DD  *
+  DSN SYSTEM (DSN1)
+  RUN PROGRAM(DB2P3) PLAN (DB2P3) PARMS('11001')
+//
+**************************** Bottom of Data ****************************        
+
+
+SYSOUT :
+
+DEPARTEMENT COMMER
+NB EMPLOYES MAJ :         +3
+
+DEPARTEMENTS PAIE ET COMPTA
+NB EMPLOYES MAJ :         +2
+
+DEPARTEMENT INFO
+NB EMPLOYES MAJ :         +2
+
+CREATION DU DEPARTEMENT MARKET
+
+MODIFICATION DU CHEF DU DEPARTEMENT COMMER
+
+
+
+
+
+
