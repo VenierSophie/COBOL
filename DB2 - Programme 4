@@ -200,6 +200,7 @@ PROGRAMME DB2P4 :
                   ORGANIZATION IS SEQUENTIAL
                   ACCESS MODE  IS SEQUENTIAL
                   FILE STATUS  IS FS-MVT.
+
            SELECT MVTVAL      ASSIGN MVTVAL
                   ORGANIZATION IS SEQUENTIAL
                   ACCESS MODE  IS SEQUENTIAL
@@ -221,7 +222,7 @@ PROGRAMME DB2P4 :
            05 MVT-CODE-TAB     PIC X.
            05 MVT-SUITE        PIC X(48).
       *
-      *
+      * Suite pour la table EMPLOYE
            05 MVT-EMPLOYE     REDEFINES MVT-SUITE.
               10 MVT-MAT       PIC X(3).
               10 MVT-NOM       PIC X(7).
@@ -231,7 +232,7 @@ PROGRAMME DB2P4 :
               10 MVT-COM       PIC 9(5)V99.
               10               PIC X(13).
       *
-      *
+      * Suite pour la table DEPARTEMENT
            05 MVT-DEPARTEMENT REDEFINES MVT-SUITE.
               10 MVT-NOD2      PIC X(3).
               10 MVT-NDE       PIC X(6).
@@ -239,13 +240,13 @@ PROGRAMME DB2P4 :
               10 MVT-CHE       PIC X(3).
               10               PIC X(32).
 
-      * FILE STATUS MVT
+      * FILE STATUS fichier MVT
        01  FS-MVT              PIC 99 VALUE ZEROES.
 
-      * FILE STATUS MVTVAL
+      * FILE STATUS fichier MVTVAL
        01  FS-MVTVAL           PIC 99 VALUE ZEROES.
 
-      * INDICATEUR FIN DE FICHIER MVT
+      * INDICATEUR DE FIN DE FICHIER MVT
        01                      PIC X  VALUE SPACES.
            88 FIN-MVT                 VALUE '5'.
 
@@ -347,7 +348,7 @@ PROGRAMME DB2P4 :
            88 EMPLOYE-INEXISTANT         VALUE '1'.
 
       * DESCRIPTION DE LA ZONE DE COMMUNICATION AVEC LE SOUS-PROGRAMME
-      * DE CONTROLE DE DATE
+      * DE CONTROLE DE DATE (Nom : SPDAT)
        01  ZCOM.
            05 ZDATE.
               10 ZANNEE       PIC 9(4).
@@ -361,7 +362,7 @@ PROGRAMME DB2P4 :
 
 
        PROCEDURE DIVISION.
-      * OUVERTURE DES FICHIERS, 1ERE LECTURE MVT
+      * OUVERTURE DES FICHIERS ET PREMIERE LECTURE FICHIER MVT
            PERFORM DEBUT
 
       * BOUCLE DE CONTROLE ET TRAITEMENT D'UN MVT, LECTURE MVT SUIVANT
@@ -378,6 +379,7 @@ PROGRAMME DB2P4 :
            PERFORM FIN
            .
 
+
        DEBUT.
       * OUVERTURE MVT EN LECTURE
            OPEN INPUT MVT
@@ -393,7 +395,7 @@ PROGRAMME DB2P4 :
               PERFORM FIN-ERREUR-GRAVE
            END-IF
 
-      * 1ERE LECTURE MVT, TEST FICHIER VIDE
+      * PREMIERE LECTURE MVT, TEST FICHIER VIDE
            PERFORM READ-MVT
            IF FIN-MVT
               DISPLAY 'ERREUR FICHIER MVT VIDE'
@@ -411,23 +413,19 @@ PROGRAMME DB2P4 :
 
       * CONTROLE CODE MOUVEMENT
            IF NOT (MVT-CODE-MVT = 'C' OR 'M' OR 'S')
-      *     IF MVT-CODE-MVT NOT = 'C' AND 'M' AND 'S'
-      * --> CODE MOUVEMENT ERRONE
               DISPLAY POSTE-ERR(1)
               SET ERREUR TO TRUE
            END-IF
 
       * CONTROLE CODE TABLE
            IF NOT (MVT-CODE-TAB = 'D' OR 'E')
-      *    IF MVT-CODE-TAB NOT = 'D' AND 'E'
-      * --> CODE TABLE ERRONE
               DISPLAY POSTE-ERR(2)
               SET ERREUR TO TRUE
            END-IF
 
-      * SI PAS D'ERREUR ON TESTE LES CHAMPS SUIVANTS EN FONCTION
-      * DU CODE TABLE (EMPLOYE OU DEPARTEMENT) ET DU CODE MOUVEMENT
-      * (CREATION, MODIFICATION, SUPPRESSION)
+      * si pas d'erreurs dans le code mvt et code table, on teste les champs suivants
+      * en fonction du code table (EMPLOYE ou DEPARTEMENT) et du code mouvement (CREA
+      * TION, MODIFICATION, SUPPRESSION)
            IF OK
               EVALUATE MVT-CODE-MVT ALSO MVT-CODE-TAB
                WHEN    'C'          ALSO 'E'
@@ -475,7 +473,6 @@ PROGRAMME DB2P4 :
        CTRL-MAT-INEX.
            PERFORM SELECT-EMPLOYE
            IF EMPLOYE-EXISTANT
-      * ---> MATRICULE DEJA EXISTANT
               DISPLAY POSTE-ERR(4)
               SET ERREUR TO TRUE
            END-IF
@@ -485,7 +482,6 @@ PROGRAMME DB2P4 :
        CTRL-MAT-EXIST.
            PERFORM SELECT-EMPLOYE
            IF EMPLOYE-INEXISTANT
-      * ---> MATRICULE INEXISTANT
               DISPLAY POSTE-ERR(11)
               SET ERREUR TO TRUE
            END-IF
@@ -493,7 +489,6 @@ PROGRAMME DB2P4 :
 
        SELECT-EMPLOYE.
            IF MVT-MAT = SPACES
-      * ---> MATRICULE NON RENSEIGNE
               DISPLAY POSTE-ERR(3)
               SET ERREUR TO TRUE
            ELSE
@@ -519,7 +514,7 @@ PROGRAMME DB2P4 :
 
       * CONTROLE D'INTEGRITE FONCTIONNEL
        CTRL-CIF-DEPARTEMENT.
-      *     L'EMPLOYE NE DOIT PAS ETRE CHEF DE DEPARTEMENT
+      * L'EMPLOYE NE DOIT PAS ETRE CHEF DE DEPARTEMENT
            MOVE MVT-MAT TO HVD-CHE
 
            EXEC SQL
@@ -534,7 +529,6 @@ PROGRAMME DB2P4 :
       * RETOURNE PLUSIEURS LIGNES, MAIS COMME IL NE PEUT PAS IL MET
       * UN SQLCODE A -811
             WHEN -811
-      * ---> SUPPRESSION EMPLOYE IMPOSSIBLE, CONTRAINTE SUR DEP
              DISPLAY POSTE-ERR(17)
              SET ERREUR TO TRUE
             WHEN +100
