@@ -6,26 +6,171 @@
  dans la table adéquate s'il y a au moins une erreur dans l'enregistrement. Arrêter le programme pour toute erreur technique.
  Incrémenter le compteur d'enregistrements en erreur.
 
+
+# Informations :
+# Caractéristiques du fichier mouvements : format des enregistrements : fixe bloqué &  longueur d'un enregistrement : 50 octets
+# Description des enregistrements :
+- code mouvement : 1 caractère alphanumérique, valeurs possibles 'C' pour création, 'M' pour modification, 'S' pour suppression
+- code table : 1 caractère alphanumérique, valeurs possibles 'D' pour table DEPARTEMENT, 'E' pour table EMPLOYE
+
+# la suite de l'enregistrement dépend de la table à mettre à jour :
+# DEPARTEMENT : si code table = 'D' la suite de l'enregistrement est :
+- numéro de département : 3 caractères alphanumériques
+- nom du département : 6 caractères alphanumériques
+- bâtiment : 4 caractères alphanumériques
+- matricule du chef : 3 caractères alphanumériques
+
+# EMPLOYE : si code table = 'E' la suite de l'enregistrement est :
+- matricule : 3 caractères alphanumériques
+- nom : 7 caractères alphanumériques
+- numéro de département : 3 caractères alphanumériques
+- date entrée : 8 caractères numériques
+- salaire : 5 entiers, 2 décimales
+- commission : 5 entiers, 2 décimales
+
+
 # Contrôles par champ :
 - code mouvement : doit être égal à 'C', 'M' ou 'S' sinon afficher erreur 1
 - code table : doit être égal à 'D' ou 'E' sinon afficher erreur 2
 
-
-1) Si code mouvement = 'C' et code table = 'E' (création employé)
+1) CREATION EMPLOYE : si code mouvement = 'C' et code table = 'E'
 - matricule : doit être renseigné sinon erreur 3, ne doit pas exister en table EMPLOYE sinon erreur 4
 - nom : doit être renseigné sinon erreur 5
 - numéro de département : doit être renseigné sinon erreur 6, doit exister en table DEPARTEMENT sinon erreur 7
 - date entrée : doit être numérique et au format AAAAMMJJ, doit être cohérente sinon erreur 8 - salaire : doit être numérique supérieur à zéro sinon erreur 9
 - commission : doit être numérique, peut être égal à zéro sinon erreur 10
 
+2) MODIFICATION EMPLOYE : si code mouvement = 'M' et code table = 'E'
+- matricule : doit être renseigné sinon erreur 3, doit exister en table EMPLOYE sinon erreur 11
+- nom : doit être renseigné sinon erreur 5
+- numéro de département : doit être renseigné sinon erreur 6 , doit exister en table DEPARTEMENT sinon erreur 7
+- date entrée : doit être numérique et au format AAAAMMJJ, doit être cohérente sinon erreur 8 - salaire : doit être numérique supérieur à zéro sinon erreur 9
+- commission : doit être numérique, peut être égal à zéro sinon erreur 10
+
+3) SUPPRESSION EMPLOYE : si code mouvement = 'S' et code table = 'E'
+- matricule : doit être renseigné sinon erreur 3, doit exister en table EMPLOYE sinon erreur 11 pas de contrôle sur les autres zones
+
+4) CREATION DEPARTEMENT : si code mouvement = 'C' et code table = 'D'
+- numéro : doit être renseigné sinon erreur 6, ne doit pas exister en table DEPARTEMENT sinon erreur 12
+- nom : doit être renseigné sinon erreur 13
+- bâtiment : doit être renseigné sinon erreur 14
+- matricule du chef : doit être renseigné sinon erreur 15, doit exister en table EMPLOYE sinon erreur 13
+
+5) MODIFICATION DEPARTEMENT : si code mouvement = 'M' et code table = 'D'
+- numéro : doit être renseigné sinon erreur 6, doit exister en table DEPARTEMENT sinon erreur 13 - nom : doit être renseigné sinon erreur 13
+- bâtiment : doit être renseigné sinon erreur 14
+- matricule du chef : doit être renseigné sinon erreur 15, doit exister en table EMPLOYE sinon erreur 16
+
+6) SUPPRESSION DEPARTEMENT : si code mouvement = 'S' et code table = 'D'
+- numéro : doit être renseigné sinon erreur 6, doit exister en table DEPARTEMENT sinon erreur 13 pas de contrôle sur les autres zones
 
 
+#MISE A JOUR :
+7) CREATION EMPLOYE : si code mouvement = 'C' et code table = 'E'
+- Créer l'employé dans la table EMPLOYE avec les champs de l'enregistrement
+- Mettre la commission à NULL dans la table si elle est à zéro dans l'enregistrement
+- Incrémenter le compteur des employés créés
+
+8) MODIFICATION EMPLOYE : si code mouvement = 'M' et code table = 'E'
+- Modifier l'employé avec les champs de l'enregistrement
+- Mettre la commission à NULL dans la table si elle est à zéro dans l'enregistrement
+- Incrémenter le compteur des employés modifiés
+
+9) SUPPRESSION EMPLOYE : si code mouvement = 'S' et code table = 'E'
+- Supprimer l'employé de la table EMPLOYE
+- Incrémenter le compteur des employés supprimés
+
+10) CREATION DEPARTEMENT : si code mouvement = 'C' et code table = 'D'
+- Créer le département dans la table DEPARTEMENT avec les champs de l'enregistrement
+- Incrémenter le compteur des départements créés
+
+11) MODIFICATION DEPARTEMENT : si code mouvement = 'M' et code table = 'D'
+- Modifier le département avec les champs de l'enregistrement
+- Incrémenter le compteur des départements modifiés
+
+12) SUPPRESSION DEPARTEMENT : si code mouvement = 'S' et code table = 'D'
+- Supprimer le département de la table DEPARTEMENT
+- Incrémenter le compteur des départements supprimés
+
+#AFFICHAGE DES COMPTEURS : En fin de programme, affichage des compteurs
+– nb enregistrements lus
+– nb enregistrements erronés
+– nb employés créés
+– nb employés modifiés
+– nb employés supprimés
+– nb départements créés
+– nb départements modifiés
+– nb départements supprimés
+
+#TABLE DES ERREURS :
+Num     Libellé
+1       CODE MOUVEMENT ERRONE
+2       CODE TABLE ERRONE
+3       MATRICULE NON RENSEIGNE
+4       MATRICULE DEJA EXISTANT
+5       NOM NON RENSEIGNE
+6       DEPARTEMENT NON RENSEIGNE
+7       DEPARTEMENT INEXISTANT
+8       DATE ENTREE ERRONEE
+9       SALAIRE NON NUMERIQUE OU NUL
+10      COMMISSION NON NUMERIQUE
+11      MATRICULE INEXISTANT
+12      DEPARTEMENT DEJA EXISTANT
+13      NOM DEPARTEMENT NON RENSEIGNE
+14      BATIMENT NON RENSEIGNE
+15      MATRICULE DU CHEF NON RENSEIGNE
+16      MATRICULE DU CHEF INEXISTANT
 
 
-  
+#CONTENU DU FICHIER DES MOUVEMENTS
+********************************* Top of Data **********************************
+CD
+CE
+CDP01
+CE10
+MDAAA
+MEAAA
+SDAAA
+SEAAA
+ME100AAAAAAA   0000000000000000000000
+CE80 SARAH  M012023042702500000100000
+ME10 DURAND E102000021012000000500000
+ME60 PARIS  E102008042210000000000000
+MDE10PAIE  BAT140
+CE90 JEAN   M012023011010780000000000
+CDM02MARKETBAT270
+SDM01MARKETBAT170
+SE20 DUPOND P011998110115100500000000
+******************************** Bottom of Data ********************************
 
 
-  
+#CONTENU DES TABLES
+---------+---------+---------+---------+---------+--
+SELECT * FROM EMPLOYE;
+---------+---------+---------+---------+---------+--
+MAT  NOM      NOD  DAT               SAL        COM
+---------+---------+---------+---------+---------+--
+10   DURAND   E10  2000-02-10   11000.00    5000.00
+20   DUPOND   P01  1998-01-11   15100.50  ---------
+30   BARI     P02  2001-01-04    6000.00    3000.00
+40   JAVA     C04  2005-12-03   21000.50    1000.50
+50   CICS     P02  2006-06-20    8500.00    3500.50
+60   PARIS    P01  2008-04-22    9000.00    3500.00
+70   NOEL     P02  2007-05-18   10500.00     900.50
+DSNE610I NUMBER OF ROWS DISPLAYED IS 7
+
+---------+---------+---------+---------
+SELECT * FROM DEPARTEMENT;
+---------+---------+---------+---------
+NOD  NDE     LIE   CHE
+---------+---------+---------+---------
+C04  COMPTA  BAT1  40
+E10  PAIE    BAT2  10
+P01  INFO    BAT3  20
+P02  COMMER  BAT2  70
+DSNE610I NUMBER OF ROWS DISPLAYED IS 4
+
+
 
 # Programme DB2P4 + JCL + SYSOUT + EDITION
 
