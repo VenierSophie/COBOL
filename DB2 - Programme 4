@@ -176,3 +176,65 @@ DSNE610I NUMBER OF ROWS DISPLAYED IS 4
 
 
 PROGRAMME DB2P4 :
+
+
+
+
+//API8DB JOB NOTIFY=&SYSUID,CLASS=A,MSGCLASS=H,TIME=(,5)                
+//*                                                                     
+//PROCLIB  JCLLIB ORDER=SDJ.FORM.PROCLIB                                
+//*                                                                     
+//         SET SYSUID=API8,                                             
+//             NOMPGM=DB2P4                                             
+//*                                                                     
+ 000008 //APPROC   EXEC COMPDB2                                                 
+ 000009 //STEPDB2.SYSLIB   DD DSN=API8.SOURCE.DCLGEN,DISP=SHR                   
+ 000010 //STEPDB2.SYSIN    DD DSN=API8.SOURCE.DB2(DB2P4),DISP=SHR               
+ 000011 //STEPDB2.DBRMLIB  DD DSN=API8.SOURCE.DBRMLIB(DB2P4),DISP=SHR           
+ 000012 //STEPCOB.SYSLIB   DD DSN=API8.SOURCE.COPY,DISP=SHR                     
+ 000013 //STEPLNK.SYSLMOD  DD DSN=API8.SOURCE.PGMLIB(DB2P4),DISP=SHR            
+ 000014 //*                                                                     
+ 000015 //*--- ETAPE DE BIND --------------------------------------             
+ 000016 //*                                                                     
+ 000017 //BIND     EXEC PGM=IKJEFT01,COND=(4,LT)                                
+ 000018 //DBRMLIB  DD  DSN=API8.SOURCE.DBRMLIB,DISP=SHR                         
+ 000019 //SYSTSPRT DD  SYSOUT=*,OUTLIM=25000                                    
+ 000020 //SYSTSIN  DD  *                                                        
+ 000021   DSN SYSTEM (DSN1)                                                     
+ 000022   BIND PLAN      (DB2P4)   -                                            
+ 000023        QUALIFIER (API8)    -                                            
+ 000024        ACTION    (REPLACE) -                                            
+ 000025        MEMBER    (DB2P4)   -                                            
+ 000026        VALIDATE  (BIND)    -                                            
+ 000027        ISOLATION (CS)      -                                            
+ 000028        ACQUIRE   (USE)     -                                            
+ 000029        RELEASE   (COMMIT)  -                                            
+ 000030        EXPLAIN   (NO)                                                   
+ 000031 //*                                                                     
+ 000032 //* SUPPRESSION FICHIER DES MVTS VALIDES                                
+ 000033 //STEP1    EXEC PGM=IDCAMS,COND=(4,LT)                                  
+ 000034 //SYSPRINT DD SYSOUT=*                                                  
+ 000035 //SYSIN    DD *                                                         
+ 000036  DELETE API8.COB.MVTVAL.BASE.EMPLOYE                                    
+================================================================================
+   File  Edit  Edit_Settings  Menu  Utilities  Compilers  Test  Help            
+ ───────────────────────────────────────────────────────────────────────────────
+ EDIT       API0.SOURCE.DB2(DB2P4JCL) - 01.00               Columns 00001 00072 
+ Command ===>                                                  Scroll ===> CSR  
+ 000037  SET MAXCC = 0                                                          
+ 000038 //*                                                                     
+ 000039 //* EXECUTION DU PROGRAMME                                              
+ 000040 //STEPRUN  EXEC PGM=IKJEFT01,COND=(4,LT)                                
+ 000041 //STEPLIB  DD DSN=API8.SOURCE.PGMLIB,DISP=SHR                           
+ 000042 //         DD DSN=API0.COBOL.LOAD,DISP=SHR                              
+ 000043 //MVT      DD DSN=API0.COB.MVT.BASE.EMPLOYE,DISP=SHR                    
+ 000044 //MVTVAL   DD DSN=API8.COB.MVTVAL.BASE.EMPLOYE,DISP=(,CATLG,DELETE),    
+ 000045 //         LIKE=API0.COB.MVT.BASE.EMPLOYE                               
+ 000046 //SYSOUT   DD  SYSOUT=*,OUTLIM=1000                                     
+ 000047 //SYSTSPRT DD  SYSOUT=*,OUTLIM=2500                                     
+ 000048 //SYSTSIN  DD  *                                                        
+ 000049   DSN SYSTEM (DSN1)                                                     
+ 000050   RUN PROGRAM(DB2P4) PLAN (DB2P4) PARMS('11001')                        
+ 000051 //                                                                      
+ ****** **************************** Bottom of Data ****************************
+                                
