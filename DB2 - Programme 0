@@ -113,13 +113,170 @@ PROGRAMME DB2P0 :
             ORDER BY NOM
            END-EXEC
 
+      * LIGNES EDITION
+       01  L1.
+            05                      PIC X(30) VALUE SPACES.
+            05                      PIC X(18) VALUE 'LISTE DES EMPLOYES'.
+       01  L2.
+            05                      PIC X(30) VALUE SPACES.
+            05                      PIC X(18) VALUE ALL '-'.
 
+       01  L3.
+            05                      PIC X(03) VALUE 'MAT'.
+            05                      PIC X(03) VALUE SPACES.
+            05                      PIC X(07) VALUE 'NOM'.
+            05                      PIC X(03) VALUE SPACES.
+            05                      PIC X(03) VALUE 'NOD'.
+            05                      PIC X(03) VALUE SPACES.
+            05                      PIC X(10) VALUE 'DAT'.
+            05                      PIC X(03) VALUE SPACES.
+            05                      PIC X(10) VALUE 'SAL'.
+            05                      PIC X(03) VALUE SPACES.
+            05                      PIC X(10) VALUE 'COM'.
 
+        01  L4.
+            05                      PIC X(03) VALUE ALL '-'.
+            05                      PIC X(03) VALUE SPACES.
+            05                      PIC X(07) VALUE ALL '-'.
+            05                      PIC X(03) VALUE SPACES.
+            05                      PIC X(03) VALUE ALL '-'.
+            05                      PIC X(03) VALUE SPACES.
+            05                      PIC X(10) VALUE ALL '-'.
+            05                      PIC X(03) VALUE SPACES.
+            05                      PIC X(10) VALUE ALL '-'.
+            05                      PIC X(03) VALUE SPACES.
+            05                      PIC X(10) VALUE ALL '-'.
 
+       01  L5.
+            05 ED-MAT               PIC X(03) VALUE SPACES.
+            05                      PIC X(03) VALUE SPACES.
+            05 ED-NOM               PIC X(07) VALUE SPACES.
+            05                      PIC X(03) VALUE SPACES.
+            05 ED-NOD               PIC X(03) VALUE SPACES.
+            05                      PIC X(03) VALUE SPACES.
+            05 ED-DAT               PIC X(10) VALUE SPACES.
+            05                      PIC X(03) VALUE SPACES.
+            05 ED-SAL               PIC ZZ.ZZZ,ZZ VALUE ZEROES.
+            05                      PIC X(03) VALUE SPACES.
+            05 ED-COM               PIC ZZ.ZZZ,ZZ VALUE ZEROES.
 
+       PROCEDURE DIVISION.
+      * LECTURE D'UNE LIGNE DE LA TABLE EMPLOYE
+             MOVE '10'     TO WS-MAT
+             DISPLAY 'LECTURE DE L''EMPLOYE DE MATRICULE : ' WS-MAT
+             EXEC SQL
+              SELECT MAT,
+                     NOM,
+                     NOD,
+                     DAT,
+                     SAL,
+                     VALUE(COM, 0)
+              INTO
+                    :HVE-MAT,
+                    :HVE-NOM,
+                    :HVE-NOD,
+                    :HVE-DAT,
+                    :HVE-SAL,
+                    :HVE-COM
+              FROM EMPLOYE
+              WHERE MAT = :WS-MAT
+             END-EXEC
 
+             DISPLAY 'SQLCODE : ' SQLCODE
 
+      * AFFICHAGE DES COLONNES SI SQLCODE = 0
+             EVALUATE SQLCODE
+              WHEN ZEROES
+                DISPLAY 'EMPLOYE : '
+                        HVE-MAT ', '
+                        HVE-NOM ', '
+                        HVE-NOD ', '
+                        HVE-DAT ', '
+                        HVE-SAL ', '
+                        HVE-COM
+              WHEN +100
+                DISPLAY 'EMPLOYE : ' WS-MAT ' INCONNU EN TEBLE'
+              WHEN OTHER
+                DISPLAY 'ERREUR SELECT EMPLOYE, SQLCODE : ' SQLCODE
+                PERFORM FIN
+             END-EVALUATE
 
+      * OUVERTURE DU FICHIER D'EDITION
+             OPEN OUTPUT EDIT
+             IF FS-EDIT NOT = ZEROES
+                DISPLAY 'ERREUR OPEN EDIT, FS : ' FS-EDIT
+                PERFORM FIN
+             END-IF
+
+      * ECRITURE DE L'ENTETE
+      * 1ERE FACON : AVEC GESTION AUTOMATIQUE DU CARACTERE DE SAUT
+      *    MOVE L1   TO LIG-EDIT
+      *    WRITE ENR-EDIT AFTER ADVANCING PAGE
+      *    MOVE L2   TO LIG-EDIT
+      *    WRITE ENR-EDIT AFTER ADVANCING 2 LINES
+      *    MOVE L3   TO LIG-EDIT
+      *    WRITE ENR-EDIT
+      *    MOVE L4   TO LIG-EDIT
+      *    WRITE ENR-EDIT
+
+      * 2EME FACON: EN RENSEIGNANT LE CARACTERE DE SAUT
+      *   1 : SAUT DE PAGE
+      *   0 : SAUT DE LIGNE
+      *   BLANC : RETOUR CHARIOT
+             MOVE '1'  TO CAR-SAUT
+             MOVE L1   TO LIG-EDIT
+             WRITE ENR-EDIT
+             MOVE ' '  TO CAR-SAUT
+             MOVE L2   TO LIG-EDIT
+             WRITE ENR-EDIT
+             MOVE '0'  TO CAR-SAUT
+             MOVE L3   TO LIG-EDIT
+             WRITE ENR-EDIT
+             MOVE ' '  TO CAR-SAUT
+             MOVE L4   TO LIG-EDIT
+             WRITE ENR-EDIT
+
+      * LECTURE DES EMPLOYES : UTILISATION DU CURSEUR
+             DISPLAY SPACES
+             DISPLAY 'LECTURE DE TOUS LES EMPLOYES'
+
+      * --> 1- OUVERTURE DU CURSEUR (OPEN)
+             EXEC SQL OPEN LISTE END-EXEC
+             IF SQLCODE NOT = ZEROES
+                DISPLAY 'ERREUR OPEN LISTE : ' SQLCODE
+                PERFORM FIN
+             END-IF
+
+      * --> 2- BOUCLE DE LECTURE DU CURSEUR (FETCH)
+             PERFORM UNTIL SQLCODE = +100
+                EXEC SQL
+                   FETCH LISTE
+                   INTO
+                         :HVE-MAT,
+                         :HVE-NOM,
+                         :HVE-NOD,
+                         :HVE-DAT,
+                         :HVE-SAL,
+                         :HVE-COM
+                END-EXEC
+                IF SQLCODE = ZEROES
+                   MOVE HVE-MAT TO ED-MAT
+                   MOVE HVE-NOM TO ED-NOM
+                   MOVE HVE-NOD TO ED-NOD
+                   MOVE HVE-DAT TO ED-DAT
+                   MOVE HVE-SAL TO ED-SAL
+                   MOVE HVE-COM TO ED-COM
+                   MOVE L5      TO LIG-EDIT
+                   MOVE ' '     TO CAR-SAUT
+                   WRITE ENR-EDIT
+                END-IF
+             END-PERFORM
+
+      * --> 3- FERMETURE DU CURSEUR (CLOSE)
+             EXEC SQL CLOSE LISTE END-EXEC
+             .
+       FIN.
+             STOP RUN.
 
 
 
