@@ -58,7 +58,72 @@ b) Host-variables utilisées dans le programme: API8.SOURCE.COPY(EMPLOYE2)
 
 PROGRAMME DB2P0 :
        IDENTIFICATION DIVISION.
+       PROGRAM-ID. DB2P1.
+       AUTHOR. OTEUR.
+       DATE-WRITTEN. 29/03/2023.
+      ******************************************************************
+      *  FONCTION DU PROGRAMME: EDITION DES DEPARTEMENTS               *
+      *  250429 : CREATION DU PROGRAMME                                *
+      ******************************************************************
+       ENVIRONMENT DIVISION.
+       CONFIGURATION SECTION.
+       SPECIAL-NAMES.
+           DECIMAL-POINT IS COMMA.
+       INPUT-OUTPUT SECTION.
+       FILE-CONTROL.
+      * DECLARATION DU FICHIER D'EDITION
+           SELECT EDIT ASSIGN TO EDIT
+                  ORGANIZATION IS SEQUENTIAL
+                  ACCESS MODE  IS SEQUENTIAL
+                  FILE STATUS  IS FS-EDIT.
+       DATA DIVISION.
+      * DECLARATION DU BUFFER
+       FILE SECTION.
+       FD  EDIT RECORDING MODE IS F.
+       01  ENR-EDIT.
+           05 CAR-SAUT       PIC X.
+           05 LIG-EDIT       PIC X(132).
+
+       WORKING-STORAGE SECTION.
+      * FILE STATUS
+       01  FS-EDIT           PIC 99 VALUE ZEROES.
+
+      * DECLARATION DE LA TABLE DEPARTEMENT
+           EXEC SQL INCLUDE DEPT    END-EXEC.
+      * DECLARATION DE LA TABLE EMPLOYE
+           EXEC SQL INCLUDE EMPLOYE END-EXEC.
+      * DECLARATION DE LA SQLCA
+           EXEC SQL INCLUDE SQLCA   END-EXEC.
+
+      * DECLARATION DES HOST-VARIABLES DU DEPARTEMENT
+       01  HVD-DEPARTEMENT.
+           05 HVD-NOD         PIC X(3).
+           05 HVD-NDE         PIC X(6).
+           05 HVD-LIE         PIC X(4).
+           05 HVD-CHE         PIC X(3).
   
+      * DECLARATION DES HOST-VARIABLES DE L'EMPLOYE
+       01  HVE-EMPLOYE.
+           05 HVE-NOD         PIC X(3).
+           05 HVE-NOM         PIC X(7).
+
+      * DECLARATION DU CURSEUR POUR LA LISTE
+           EXEC SQL DECLARE LISTE CURSOR FOR
+             SELECT
+                    D.NOD,
+                    NDE,
+                    LIE,
+                    CHE,
+                    NOM
+             FROM
+                   EMPLOYE E JOIN DEPARTEMENT D
+                   ON E.MAT = D.CHE
+             ORDER BY NDE
+           END-EXEC.
+
+
+
+
 
 
 
