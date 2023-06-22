@@ -1,0 +1,33 @@
+# Énoncé de l'exercice : Dans la bibliothèque userid.SOURCE.DB2, écrire le programme DB2P4 qui met à jour la table EMPLOYE
+# à partir du fichier séquentiel mouvements API0.COB.MVT.BASE.EMPLOYE en fonction d'un code mouvement indiquant
+# l'action à réaliser (création, modification, suppression) et d'un code indiquant la table à mettre à jour.
+  
+# Règles de gestion : Contrôler chaque champ de chaque enregistrement, afficher toutes les erreurs rencontrées. Ne pas faire la MAJ
+ dans la table adéquate s'il y a au moins une erreur dans l'enregistrement. Arrêter le programme pour toute erreur technique.
+ Incrémenter le compteur d'enregistrements en erreur.
+
+# Contrôles par champ :
+- code mouvement : doit être égal à 'C', 'M' ou 'S' sinon afficher erreur 1
+- code table : doit être égal à 'D' ou 'E' sinon afficher erreur 2
+
+
+1) Si code mouvement = 'C' et code table = 'E' (création employé)
+- matricule : doit être renseigné sinon erreur 3, ne doit pas exister en table EMPLOYE sinon erreur 4
+- nom : doit être renseigné sinon erreur 5
+- numéro de département : doit être renseigné sinon erreur 6, doit exister en table DEPARTEMENT sinon erreur 7
+- date entrée : doit être numérique et au format AAAAMMJJ, doit être cohérente sinon erreur 8 - salaire : doit être numérique supérieur à zéro sinon erreur 9
+- commission : doit être numérique, peut être égal à zéro sinon erreur 10
+
+
+
+
+
+  
+
+
+  
+
+# Programme DB2P4 + JCL + SYSOUT + EDITION
+
+
+PROGRAMME DB2P4 :
