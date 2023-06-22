@@ -177,6 +177,843 @@ DSNE610I NUMBER OF ROWS DISPLAYED IS 4
 
 PROGRAMME DB2P4 :
 
+  CBL DYNAM
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. DB2P4.
+      ******************************************************************
+      * BUT : MISE A JOUR DE LA BASE EMPLOYE                           *
+      * PRINCIPALES FONCTIONS :                                        *
+      *  - CONTROLE DES MOUVEMENTS DU JOUR                             *
+      *  - CREATION, MODIFICATION, SUPPRESSION DANS LES TABLES         *
+      *    EMPLOYE ET DEPARTEMENT                                      *
+      *  - RECONDUCTION DES MOUVEMENTS VALIDES POUR EDITION ULTERIEURE *
+      ******************************************************************
+       AUTHOR. SV.
+       DATE-WRITTEN. 03/05/23.
+       ENVIRONMENT DIVISION.
+       CONFIGURATION SECTION.
+       SPECIAL-NAMES.
+           DECIMAL-POINT IS COMMA.
+       INPUT-OUTPUT SECTION.
+       FILE-CONTROL.
+           SELECT MVT         ASSIGN MVT
+                  ORGANIZATION IS SEQUENTIAL
+                  ACCESS MODE  IS SEQUENTIAL
+                  FILE STATUS  IS FS-MVT.
+           SELECT MVTVAL      ASSIGN MVTVAL
+                  ORGANIZATION IS SEQUENTIAL
+                  ACCESS MODE  IS SEQUENTIAL
+                  FILE STATUS  IS FS-MVTVAL.
+
+       DATA DIVISION.
+       FILE SECTION.
+       FD  MVT
+           RECORDING MODE IS F.
+       01  ENR-MVT             PIC X(50).
+
+       FD  MVTVAL
+           RECORDING MODE IS F.
+       01  ENR-MVTVAL          PIC X(50).
+
+       WORKING-STORAGE SECTION.
+       01  MVT-ENR.
+           05 MVT-CODE-MVT     PIC X.
+           05 MVT-CODE-TAB     PIC X.
+           05 MVT-SUITE        PIC X(48).
+      *
+      *
+           05 MVT-EMPLOYE     REDEFINES MVT-SUITE.
+              10 MVT-MAT       PIC X(3).
+              10 MVT-NOM       PIC X(7).
+              10 MVT-NOD1      PIC X(3).
+              10 MVT-DAT       PIC 9(8).
+              10 MVT-SAL       PIC 9(5)V99.
+              10 MVT-COM       PIC 9(5)V99.
+              10               PIC X(13).
+      *
+      *
+           05 MVT-DEPARTEMENT REDEFINES MVT-SUITE.
+              10 MVT-NOD2      PIC X(3).
+              10 MVT-NDE       PIC X(6).
+              10 MVT-LIE       PIC X(4).
+              10 MVT-CHE       PIC X(3).
+              10               PIC X(32).
+
+      * FILE STATUS MVT
+       01  FS-MVT              PIC 99 VALUE ZEROES.
+
+      * FILE STATUS MVTVAL
+       01  FS-MVTVAL           PIC 99 VALUE ZEROES.
+
+      * INDICATEUR FIN DE FICHIER MVT
+       01                      PIC X  VALUE SPACES.
+           88 FIN-MVT                 VALUE '5'.
+
+      * DECLARATION DE LA SQLCA
+           EXEC SQL INCLUDE SQLCA   END-EXEC.
+
+      * DECLARATION DE LA TABLE EMPLOYE
+           EXEC SQL INCLUDE EMPLOYE END-EXEC.
+
+      * DECLARATION DE LA TABLE DEPARTEMENT
+           EXEC SQL INCLUDE DEPART  END-EXEC.
+
+      * DECLARATION DES HOST VARIABLES DE LA TABLE EMPLOYE
+       01  HVE-EMP.
+           05 HVE-MAT          PIC X(3).
+           05 HVE-NOD          PIC X(3).
+           05 HVE-NOM          PIC X(7).
+           05 HVE-SAL          PIC S9(5)V99 COMP-3.
+           05 HVE-COM          PIC S9(5)V99 COMP-3.
+           05 HVE-DAT          PIC X(10).
+
+      * DECLARATION DES HOST VARIABLES DE LA TABLE DEPARTEMENT
+       01  HVD-DEP.
+           05 HVD-NOD          PIC X(3).
+           05 HVD-LIE          PIC X(4).
+           05 HVD-CHE          PIC X(3).
+           05 HVD-NDE          PIC X(6).
+
+      * INDICATEURS DE NULLITE
+       01  IND-COM             PIC S9(4) COMP VALUE ZEROES.
+
+      * COMPTEURS
+       01  COMPTEURS.
+           05 CPT-MVT-LUS      PIC 99  VALUE ZEROES.
+           05 CPT-MVT-ERR      PIC 99  VALUE ZEROES.
+           05 CPT-MVT-VAL      PIC 99  VALUE ZEROES.
+           05 CPT-EMP-CRE      PIC 99  VALUE ZEROES.
+           05 CPT-EMP-MAJ      PIC 99  VALUE ZEROES.
+           05 CPT-EMP-SUP      PIC 99  VALUE ZEROES.
+           05 CPT-DEP-CRE      PIC 99  VALUE ZEROES.
+           05 CPT-DEP-MAJ      PIC 99  VALUE ZEROES.
+           05 CPT-DEP-SUP      PIC 99  VALUE ZEROES.
+
+      * SQLCODE EN PICTURE D'EDITION
+       01  ED-SQLCODE          PIC +(10) VALUE ZEROES.
+
+      * TABLE DES ERREURS
+       01  TAB-ERR.
+           05                  PIC X(50) VALUE
+           'CODE MOUVEMENT ERRONE'.
+           05                  PIC X(50) VALUE
+           'CODE TABLE ERRONE'.
+           05                  PIC X(50) VALUE
+           'MATRICULE NON RENSEIGNE'.
+           05                  PIC X(50) VALUE
+           'MATRICULE DEJA EXISTANT'.
+           05                  PIC X(50) VALUE
+           'NOM NON RENSEIGNE'.
+           05                  PIC X(50) VALUE
+           'DEPARTEMENT NON RENSEIGNE'.
+           05                  PIC X(50) VALUE
+           'DEPARTEMENT INEXISTANT'.
+           05                  PIC X(50) VALUE
+           'DATE ENTREE ERRONEE'.
+           05                  PIC X(50) VALUE
+           'SALAIRE NON NUMERIQUE OU NUL'.
+           05                  PIC X(50) VALUE
+           'COMMISSION NON NUMERIQUE'.
+           05                  PIC X(50) VALUE
+           'MATRICULE INEXISTANT'.
+           05                  PIC X(50) VALUE
+           'DEPARTEMENT DEJA EXISTANT'.
+           05                  PIC X(50) VALUE
+           'NOM DEPARTEMENT NON RENSEIGNE'.
+           05                  PIC X(50) VALUE
+           'BATIMENT NON RENSEIGNE'.
+           05                  PIC X(50) VALUE
+           'MATRICULE DU CHEF NON RENSEIGNE'.
+           05                  PIC X(50) VALUE
+           'MATRICULE DU CHEF INEXISTANT'.
+           05                  PIC X(50) VALUE
+           'SUPPRESSION EMPLOYE IMPOSSIBLE, CONTRAINTE SUR DEP'.
+           05                  PIC X(50) VALUE
+           'SUPPRESSION DEP IMPOSSIBLE, CONTRAINTE SUR EMPLOYE'.
+       01  REDEFINES TAB-ERR.
+           05 POSTE-ERR        PIC X(50) OCCURS 18.
+
+      * INDICATEUR DE BALAYAGE DE LA TABLE D'ERREUR
+       01  I                   PIC 99    VALUE ZEROES.
+
+      * INDICATEUR D'ERREUR
+       01                      PIC XX    VALUE SPACES.
+           88 OK                         VALUE 'OK'.
+           88 ERREUR                     VALUE 'KO'.
+
+      * INDICATEUR D'EXISTENCE DE L'EMPLOYE EN TABLE EMPLOYE
+       01                      PIC X     VALUE SPACES.
+           88 EMPLOYE-EXISTANT           VALUE '0'.
+           88 EMPLOYE-INEXISTANT         VALUE '1'.
+
+      * DESCRIPTION DE LA ZONE DE COMMUNICATION AVEC LE SOUS-PROGRAMME
+      * DE CONTROLE DE DATE
+       01  ZCOM.
+           05 ZDATE.
+              10 ZANNEE       PIC 9(4).
+              10 ZMOIS        PIC 9(2).
+              10 ZJOUR        PIC 9(2).
+           05 ZCDRET          PIC 9.
+              88 ZCDRET-OK    VALUE 0.
+              88 ZCDRET-KO    VALUE 1.
+           05 ZDATE-EDIT      PIC X(17).
+       01  SPDAT              PIC X(8) VALUE 'SPDAT'.
+
+
+       PROCEDURE DIVISION.
+      * OUVERTURE DES FICHIERS, 1ERE LECTURE MVT
+           PERFORM DEBUT
+
+      * BOUCLE DE CONTROLE ET TRAITEMENT D'UN MVT, LECTURE MVT SUIVANT
+           PERFORM UNTIL FIN-MVT
+              PERFORM CONTROLES
+              IF OK
+                 PERFORM MAJ
+                 PERFORM RECONDUCTION
+              END-IF
+              PERFORM READ-MVT
+           END-PERFORM
+
+      * FERMETURE DES FICHIERS, AFFICHAGE DES COMPTEURS
+           PERFORM FIN
+           .
+
+       DEBUT.
+      * OUVERTURE MVT EN LECTURE
+           OPEN INPUT MVT
+           IF FS-MVT NOT = ZEROES
+              DISPLAY 'ERREUR OPEN MVT, FS : ' FS-MVT
+              PERFORM FIN-ERREUR-GRAVE
+           END-IF
+
+      * OUVERTURE MVTVAL EN ECRITURE
+           OPEN OUTPUT MVTVAL
+           IF FS-MVTVAL NOT = ZEROES
+              DISPLAY 'ERREUR OPEN MVTVAL, FS : ' FS-MVTVAL
+              PERFORM FIN-ERREUR-GRAVE
+           END-IF
+
+      * 1ERE LECTURE MVT, TEST FICHIER VIDE
+           PERFORM READ-MVT
+           IF FIN-MVT
+              DISPLAY 'ERREUR FICHIER MVT VIDE'
+              PERFORM FIN-ERREUR-GRAVE
+           END-IF
+           .
+
+      * CONTROLE DU MVT
+       CONTROLES.
+           DISPLAY SPACES
+           DISPLAY 'ENR ' CPT-MVT-LUS ' : ' MVT-ENR
+
+      * INITIALISATION INDICATEUR ERREUR
+           SET OK TO TRUE
+
+      * CONTROLE CODE MOUVEMENT
+           IF NOT (MVT-CODE-MVT = 'C' OR 'M' OR 'S')
+      *     IF MVT-CODE-MVT NOT = 'C' AND 'M' AND 'S'
+      * --> CODE MOUVEMENT ERRONE
+              DISPLAY POSTE-ERR(1)
+              SET ERREUR TO TRUE
+           END-IF
+
+      * CONTROLE CODE TABLE
+           IF NOT (MVT-CODE-TAB = 'D' OR 'E')
+      *    IF MVT-CODE-TAB NOT = 'D' AND 'E'
+      * --> CODE TABLE ERRONE
+              DISPLAY POSTE-ERR(2)
+              SET ERREUR TO TRUE
+           END-IF
+
+      * SI PAS D'ERREUR ON TESTE LES CHAMPS SUIVANTS EN FONCTION
+      * DU CODE TABLE (EMPLOYE OU DEPARTEMENT) ET DU CODE MOUVEMENT
+      * (CREATION, MODIFICATION, SUPPRESSION)
+           IF OK
+              EVALUATE MVT-CODE-MVT ALSO MVT-CODE-TAB
+               WHEN    'C'          ALSO 'E'
+                PERFORM CTRL-MAT-INEX
+                PERFORM CTRL-NOM
+                PERFORM CTRL-NOD1
+                PERFORM CTRL-DAT
+                PERFORM CTRL-SAL
+                PERFORM CTRL-COM
+               WHEN    'M'          ALSO 'E'
+                PERFORM CTRL-MAT-EXIST
+                PERFORM CTRL-NOM
+                PERFORM CTRL-NOD1
+                PERFORM CTRL-DAT
+                PERFORM CTRL-SAL
+                PERFORM CTRL-COM
+               WHEN    'S'          ALSO 'E'
+                PERFORM CTRL-MAT-EXIST
+                PERFORM CTRL-CIF-DEPARTEMENT
+               WHEN    'C'          ALSO 'D'
+                PERFORM CTRL-NOD2-INEX
+                PERFORM CTRL-NDE
+                PERFORM CTRL-LIE
+                PERFORM CTRL-CHE
+               WHEN    'M'          ALSO 'D'
+                PERFORM CTRL-NOD2-EXIST
+                PERFORM CTRL-NDE
+                PERFORM CTRL-LIE
+                PERFORM CTRL-CHE
+               WHEN    'S'          ALSO 'D'
+                PERFORM CTRL-NOD2-EXIST
+                PERFORM CTRL-CIF-EMPLOYE
+              END-EVALUATE
+           END-IF
+
+      * INCREMENTATION COMPTEURS MVT OK, MVT ERREUR
+           IF OK
+              ADD 1 TO CPT-MVT-VAL
+           ELSE
+              ADD 1 TO CPT-MVT-ERR
+           END-IF
+           .
+
+      * CONTROLE MATRICULE INEXISTANT
+       CTRL-MAT-INEX.
+           PERFORM SELECT-EMPLOYE
+           IF EMPLOYE-EXISTANT
+      * ---> MATRICULE DEJA EXISTANT
+              DISPLAY POSTE-ERR(4)
+              SET ERREUR TO TRUE
+           END-IF
+           .
+
+      * CONTROLE MATRICULE EXISTANT
+       CTRL-MAT-EXIST.
+           PERFORM SELECT-EMPLOYE
+           IF EMPLOYE-INEXISTANT
+      * ---> MATRICULE INEXISTANT
+              DISPLAY POSTE-ERR(11)
+              SET ERREUR TO TRUE
+           END-IF
+           .
+
+       SELECT-EMPLOYE.
+           IF MVT-MAT = SPACES
+      * ---> MATRICULE NON RENSEIGNE
+              DISPLAY POSTE-ERR(3)
+              SET ERREUR TO TRUE
+           ELSE
+              MOVE MVT-MAT TO HVE-MAT
+              EXEC SQL
+               SELECT MAT
+               INTO :HVE-MAT
+               FROM EMPLOYE
+               WHERE MAT = :HVE-MAT
+              END-EXEC
+              EVALUATE SQLCODE
+               WHEN ZEROES
+                SET EMPLOYE-EXISTANT   TO TRUE
+               WHEN +100
+                SET EMPLOYE-INEXISTANT TO TRUE
+               WHEN OTHER
+                MOVE SQLCODE TO ED-SQLCODE
+                DISPLAY 'ERREUR SELECT EMPLOYE, SQLCODE : ' ED-SQLCODE
+                PERFORM FIN-ERREUR-GRAVE
+              END-EVALUATE
+           END-IF
+           .
+
+      * CONTROLE D'INTEGRITE FONCTIONNEL
+       CTRL-CIF-DEPARTEMENT.
+      *     L'EMPLOYE NE DOIT PAS ETRE CHEF DE DEPARTEMENT
+           MOVE MVT-MAT TO HVD-CHE
+
+           EXEC SQL
+            SELECT NOD
+            INTO :HVD-NOD
+            FROM DEPARTEMENT
+            WHERE CHE = :HVD-CHE
+           END-EXEC
+           EVALUATE SQLCODE
+            WHEN ZEROES
+      * SI L'EMPLOYE EST CHEF DE PLUSIEURS DEPARTEMENTS, ALORS DB2
+      * RETOURNE PLUSIEURS LIGNES, MAIS COMME IL NE PEUT PAS IL MET
+      * UN SQLCODE A -811
+            WHEN -811
+      * ---> SUPPRESSION EMPLOYE IMPOSSIBLE, CONTRAINTE SUR DEP
+             DISPLAY POSTE-ERR(17)
+             SET ERREUR TO TRUE
+            WHEN +100
+             CONTINUE
+            WHEN OTHER
+             MOVE SQLCODE TO ED-SQLCODE
+             DISPLAY 'ERREUR SELECT DEPART, SQLCODE : ' ED-SQLCODE
+             PERFORM FIN-ERREUR-GRAVE
+           END-EVALUATE
+           .
+
+      * CONTROLE NOM EMPLOYE
+       CTRL-NOM.
+           IF MVT-NOM = SPACES
+      * ---> NOM NON RENSEIGNE
+              DISPLAY POSTE-ERR(5)
+              SET ERREUR TO TRUE
+           END-IF
+           .
+
+      * CONTROLE NUMERO DEPARTEMENT
+       CTRL-NOD1.
+           IF MVT-NOD1 = SPACES
+      * ---> DEPARTEMENT NON RENSEIGNE
+              DISPLAY POSTE-ERR(6)
+              SET ERREUR TO TRUE
+           ELSE
+              MOVE MVT-NOD1 TO HVD-NOD
+              EXEC SQL
+               SELECT NOD
+                INTO :HVD-NOD
+                FROM DEPARTEMENT
+                WHERE NOD = :HVD-NOD
+              END-EXEC
+              EVALUATE SQLCODE
+               WHEN ZEROES
+                CONTINUE
+               WHEN +100
+      * ---> DEPARTEMENT INEXISTANT
+                DISPLAY POSTE-ERR(7)
+                SET ERREUR TO TRUE
+               WHEN OTHER
+                MOVE SQLCODE TO ED-SQLCODE
+                DISPLAY 'ERREUR SELECT DEPART, SQLCODE : ' ED-SQLCODE
+                PERFORM FIN-ERREUR-GRAVE
+              END-EVALUATE
+           END-IF
+           .
+
+      * CONTROLE DATE ENTREE
+       CTRL-DAT.
+           IF MVT-DAT NOT NUMERIC
+           OR MVT-DAT = ZEROES
+      * ---> DATE ENTREE ERRONEE
+              DISPLAY POSTE-ERR(8)
+              SET ERREUR TO TRUE
+           ELSE
+              MOVE MVT-DAT TO ZDATE
+              CALL SPDAT USING ZCOM
+              IF ZCDRET-KO
+      * ---> DATE ENTREE ERRONEE
+                 DISPLAY POSTE-ERR(8)
+                 SET ERREUR TO TRUE
+              END-IF
+           END-IF
+           .
+
+      * CONTROLE SALAIRE
+       CTRL-SAL.
+           IF MVT-SAL NOT NUMERIC
+           OR MVT-SAL = ZEROES
+      * ---> SALAIRE NON NUMERIQUE OU NUL
+              DISPLAY POSTE-ERR(9)
+              SET ERREUR TO TRUE
+           END-IF
+           .
+
+      * CONTROLE COMMISSION
+       CTRL-COM.
+           IF MVT-COM NOT NUMERIC
+      * ---> COMMISSION NON NUMERIQUE
+              DISPLAY POSTE-ERR(10)
+              SET ERREUR TO TRUE
+           END-IF
+           .
+
+      * CONTROLE NUMERO DEPARTEMENT DOIT ETRE INEXISTANT
+       CTRL-NOD2-INEX.
+           IF MVT-NOD2 = SPACES
+      * ---> NUMERO DEPARTEMENT DOIT ETRE RENSEIGNE
+              DISPLAY POSTE-ERR(06)
+              SET ERREUR TO TRUE
+           ELSE
+      * ---> NE DOIT PAS EXISTER EN TABLE DEPARTEMENT
+              MOVE MVT-NOD2 TO HVD-NOD
+              EXEC SQL
+               SELECT NOD
+                INTO :HVD-NOD
+                FROM DEPARTEMENT
+                WHERE NOD = :HVD-NOD
+              END-EXEC
+              EVALUATE SQLCODE
+               WHEN ZEROES
+      * ---> DEPARTEMENT EXISTANT : ERREUR
+                DISPLAY POSTE-ERR(12)
+                SET ERREUR TO TRUE
+               WHEN +100
+      * ---> DEPARTEMENT INEXISTANT : OK
+                CONTINUE
+               WHEN OTHER
+                MOVE SQLCODE TO ED-SQLCODE
+                DISPLAY 'ERREUR SELECT DEPART, SQLCODE : ' ED-SQLCODE
+                PERFORM FIN-ERREUR-GRAVE
+              END-EVALUATE
+           END-IF
+           .
+
+      * CONTROLE NUMERO DEPARTEMENT DOIT EXISTER
+       CTRL-NOD2-EXIST.
+           IF MVT-NOD2 = SPACES
+      * ---> NUMERO DEPARTEMENT DOIT ETRE RENSEIGNE
+              DISPLAY POSTE-ERR(06)
+              SET ERREUR TO TRUE
+           ELSE
+      * ---> DOIT EXISTER EN TABLE DEPARTEMENT
+              MOVE MVT-NOD2 TO HVD-NOD
+              EXEC SQL
+               SELECT NOD
+                INTO :HVD-NOD
+                FROM DEPARTEMENT
+                WHERE NOD = :HVD-NOD
+              END-EXEC
+              EVALUATE SQLCODE
+               WHEN ZEROES
+      * ---> DEPARTEMENT EXISTANT : OK
+                CONTINUE
+               WHEN +100
+      * ---> DEPARTEMENT INEXISTANT : ERREUR
+                DISPLAY POSTE-ERR(07)
+                SET ERREUR TO TRUE
+               WHEN OTHER
+                MOVE SQLCODE TO ED-SQLCODE
+                DISPLAY 'ERREUR SELECT DEPART, SQLCODE : ' ED-SQLCODE
+                PERFORM FIN-ERREUR-GRAVE
+              END-EVALUATE
+           END-IF
+           .
+
+      * CONTROLE NOM DEPARTEMENT
+       CTRL-NDE.
+           IF MVT-NDE = SPACES
+      * ---> NOM DEPARTEMENT DOIT ETRE RENSEIGNE
+              DISPLAY POSTE-ERR(13)
+              SET ERREUR TO TRUE
+           END-IF
+           .
+
+      * CONTROLE BATIMENT
+       CTRL-LIE.
+           IF MVT-LIE = SPACES
+      * ---> BATIMENT DOIT ETRE RENSEIGNE
+              DISPLAY POSTE-ERR(14)
+              SET ERREUR TO TRUE
+           END-IF
+           .
+
+      * CONTROLE MATRICULE DU CHEF
+       CTRL-CHE.
+           IF MVT-CHE = SPACES
+      * ---> MATRICULE DU CHEF DOIT ETRE RENSEIGNE
+              DISPLAY POSTE-ERR(15)
+              SET ERREUR TO TRUE
+           ELSE
+              MOVE MVT-CHE TO HVE-MAT
+              EXEC SQL
+               SELECT MAT
+               INTO :HVE-MAT
+               FROM EMPLOYE
+               WHERE MAT = :HVE-MAT
+              END-EXEC
+              EVALUATE SQLCODE
+               WHEN ZEROES
+                CONTINUE
+               WHEN +100
+      * ---> MATRICULE DU CHEF INEXISTANT EN TABLE EMPLOYE
+                 DISPLAY POSTE-ERR(16)
+                 SET ERREUR TO TRUE
+               WHEN OTHER
+                MOVE SQLCODE TO ED-SQLCODE
+                DISPLAY 'ERREUR SELECT EMPLOYE, SQLCODE : ' ED-SQLCODE
+                PERFORM FIN-ERREUR-GRAVE
+              END-EVALUATE
+           END-IF
+           .
+
+      * CONTROLE DEPARTEMENT DANS TABLE EMPLOYE
+       CTRL-CIF-EMPLOYE.
+           MOVE MVT-NOD2 TO HVE-NOD
+
+           EXEC SQL
+            SELECT NOD INTO :HVE-NOD
+            FROM EMPLOYE
+            WHERE NOD = :HVE-NOD
+           END-EXEC
+
+           EVALUATE SQLCODE
+            WHEN ZEROES
+            WHEN -811
+      * ---> SUPPRESSION IMPOSSIBLE: DEPARTEMENT EXISTE EN TABLE EMPLOYE
+              DISPLAY POSTE-ERR(18)
+              SET ERREUR TO TRUE
+            WHEN +100
+             CONTINUE
+            WHEN OTHER
+             MOVE SQLCODE TO ED-SQLCODE
+             DISPLAY 'ERREUR SELECT EMPLOYE, SQLCODE : ' ED-SQLCODE
+             PERFORM FIN-ERREUR-GRAVE
+           END-EVALUATE
+           .
+
+      ******************************************************************
+      ******************************************************************
+      * MISE A JOUR DES TABLES
+      ******************************************************************
+      ******************************************************************
+       MAJ.
+           DISPLAY 'ICI ON MET A JOUR LA TABLE'
+           EVALUATE MVT-CODE-MVT ALSO MVT-CODE-TAB
+      * CREATION D'UN EMPLOYE
+            WHEN    'C'          ALSO 'E'
+             PERFORM CREATION-EMPLOYE
+      * MODIFICATION EMPLOYE
+            WHEN    'M'          ALSO 'E'
+             PERFORM MODIFICATION-EMPLOYE
+      * SUPPRESSION EMPLOYE
+            WHEN    'S'          ALSO 'E'
+             PERFORM SUPPRESSION-EMPLOYE
+      * CREATION DEPARTEMENT
+            WHEN    'C'          ALSO 'D'
+             PERFORM CREATION-DEPARTEMENT
+      * MODIFICATION DEPARTEMENT
+            WHEN    'M'          ALSO 'D'
+             PERFORM MODIFICATION-DEPARTEMENT
+      * SUPPRESSION DEPARTEMENT
+            WHEN    'S'          ALSO 'D'
+             PERFORM SUPPRESSION-DEPARTEMENT
+           END-EVALUATE
+           .
+
+       CREATION-EMPLOYE.
+      * ALIMENTATION DES COLONNES DE LA TABLE PAR LES CHAMPS DE L'ENREG
+           PERFORM ALIM-EMPLOYE
+
+      * INSERT DE L'EMPLOYE
+           EXEC SQL
+            INSERT INTO EMPLOYE
+             VALUES
+             (:HVE-MAT,
+              :HVE-NOM,
+              :HVE-NOD,
+              :HVE-DAT,
+              :HVE-SAL,
+              :HVE-COM :IND-COM)
+           END-EXEC
+
+           IF SQLCODE = ZEROES
+              ADD 1 TO CPT-EMP-CRE
+              DISPLAY '           CREATION EMPLOYE'
+           ELSE
+              MOVE SQLCODE TO ED-SQLCODE
+              DISPLAY 'ERREUR INSERT EMPLOYE, SQLCODE : ' ED-SQLCODE
+              PERFORM FIN-ERREUR-GRAVE
+           END-IF
+           .
+
+       MODIFICATION-EMPLOYE.
+      * ALIMENTATION DES COLONNES DE LA TABLE PAR LES CHAMPS DE L'ENREG
+           PERFORM ALIM-EMPLOYE
+
+      * INSERT DE L'EMPLOYE
+           EXEC SQL
+            UPDATE EMPLOYE
+             SET
+              NOM = :HVE-NOM,
+              NOD = :HVE-NOD,
+              DAT = :HVE-DAT,
+              SAL = :HVE-SAL,
+              COM = :HVE-COM :IND-COM
+            WHERE
+             MAT = :HVE-MAT
+           END-EXEC
+
+           IF SQLCODE = ZEROES
+              ADD 1 TO CPT-EMP-MAJ
+              DISPLAY '           MODIFICATION EMPLOYE'
+           ELSE
+              MOVE SQLCODE TO ED-SQLCODE
+              DISPLAY 'ERREUR UPDATE EMPLOYE, SQLCODE : ' ED-SQLCODE
+              PERFORM FIN-ERREUR-GRAVE
+           END-IF
+           .
+
+       SUPPRESSION-EMPLOYE.
+           MOVE MVT-MAT TO HVE-MAT
+      * DELETE DE L'EMPLOYE
+           EXEC SQL
+            DELETE FROM EMPLOYE
+            WHERE
+             MAT = :HVE-MAT
+           END-EXEC
+
+           IF SQLCODE = ZEROES
+              ADD 1 TO CPT-EMP-SUP
+              DISPLAY '           SUPPRESSION EMPLOYE'
+           ELSE
+              MOVE SQLCODE TO ED-SQLCODE
+              DISPLAY 'ERREUR DELETE EMPLOYE, SQLCODE : ' ED-SQLCODE
+              PERFORM FIN-ERREUR-GRAVE
+           END-IF
+           .
+
+       ALIM-EMPLOYE.
+      * ALIMENTATION DES COLONNES DE LA TABLE PAR LES CHAMPS DE L'ENREG
+      * CE PARAGRAPHE EST APPELE A PLUSIEURS ENDROITS
+           MOVE MVT-MAT    TO HVE-MAT
+           MOVE MVT-NOM    TO HVE-NOM
+           MOVE MVT-NOD1   TO HVE-NOD
+      * ALIMENTATION DE LA DATE AU FORMAT AAAA-MM-JJ
+      * SINON SQLCODE -180 OU -181
+           STRING MVT-DAT(1 : 4) DELIMITED BY SIZE
+                  '-'            DELIMITED BY SIZE
+                  MVT-DAT(5 : 2) DELIMITED BY SIZE
+                  '-'            DELIMITED BY SIZE
+                  MVT-DAT(7 : 2) DELIMITED BY SIZE
+                         INTO HVE-DAT
+           END-STRING
+           MOVE MVT-SAL    TO HVE-SAL
+           MOVE MVT-COM    TO HVE-COM
+
+      * POSITIONNEMENT DE L'INDICATEUR DE NULLITE
+      * --> -1 INDIQUE A DB2 DE METTRE LA COLONNE A NULL
+      * -->  0 INDIQUE A DB2 DE COPIER LA HOST-VARIABLE DANS LA COLONNE
+           IF HVE-COM = ZEROES
+              MOVE -1     TO IND-COM
+           ELSE
+              MOVE ZEROES TO IND-COM
+           END-IF
+           .
+
+       CREATION-DEPARTEMENT.
+      * ALIMENTATION DES COLONNES DE LA TABLE PAR LES CHAMPS DE L'ENREG
+           PERFORM ALIM-DEPARTEMENT
+
+      * INSERT DU DEPARTEMENT
+           EXEC SQL
+            INSERT INTO DEPARTEMENT
+             VALUES
+             (:HVD-NOD,
+              :HVD-NDE,
+              :HVD-LIE,
+              :HVD-CHE)
+           END-EXEC
+
+           IF SQLCODE = ZEROES
+              ADD 1 TO CPT-DEP-CRE
+              DISPLAY '           CREATION DEPARTEMENT'
+           ELSE
+              MOVE SQLCODE TO ED-SQLCODE
+              DISPLAY 'ERREUR INSERT DEPARTE, SQLCODE : ' ED-SQLCODE
+              PERFORM FIN-ERREUR-GRAVE
+           END-IF
+           .
+
+       MODIFICATION-DEPARTEMENT.
+      * ALIMENTATION DES COLONNES DE LA TABLE PAR LES CHAMPS DE L'ENREG
+           PERFORM ALIM-DEPARTEMENT
+
+      * UPDATE DU DEPARTEMENT
+           EXEC SQL
+            UPDATE DEPARTEMENT
+             SET
+              NDE = :HVD-NDE,
+              LIE = :HVD-LIE,
+              CHE = :HVD-CHE
+            WHERE
+              NOD = :HVD-NOD
+           END-EXEC
+
+           IF SQLCODE = ZEROES
+              ADD 1 TO CPT-DEP-MAJ
+              DISPLAY '           MODIFICATION DEPARTEMENT'
+           ELSE
+              MOVE SQLCODE TO ED-SQLCODE
+              DISPLAY 'ERREUR INSERT DEPARTE, SQLCODE : ' ED-SQLCODE
+              PERFORM FIN-ERREUR-GRAVE
+           END-IF
+           .
+
+       SUPPRESSION-DEPARTEMENT.
+           MOVE MVT-NOD2 TO HVD-NOD
+
+      * DELETE DU DEPARTEMENT
+           EXEC SQL
+            DELETE FROM DEPARTEMENT
+            WHERE
+              NOD = :HVD-NOD
+           END-EXEC
+
+           IF SQLCODE = ZEROES
+              ADD 1 TO CPT-DEP-SUP
+              DISPLAY '           SUPPRESSION DEPARTEMENT'
+           ELSE
+              MOVE SQLCODE TO ED-SQLCODE
+              DISPLAY 'ERREUR INSERT DEPARTE, SQLCODE : ' ED-SQLCODE
+              PERFORM FIN-ERREUR-GRAVE
+           END-IF
+           .
+
+       ALIM-DEPARTEMENT.
+      * ALIMENTATION DES COLONNES DE LA TABLE PAR LES CHAMPS DE L'ENREG
+      * CE PARAGRAPHE EST APPELE A PLUSIEURS ENDROITS
+           MOVE MVT-NOD2   TO HVD-NOD
+           MOVE MVT-NDE    TO HVD-NDE
+           MOVE MVT-LIE    TO HVD-LIE
+           MOVE MVT-CHE    TO HVD-CHE
+           .
+
+      * RECONDUCTION DU MVT VALIDE DANS MVTVAL
+       RECONDUCTION.
+           DISPLAY 'ICI ON RECONDUIT LE MVT DANS LE FICHIER DES MVTS OK'
+           WRITE ENR-MVTVAL FROM ENR-MVT
+           IF FS-MVTVAL NOT = ZEROES
+              DISPLAY 'ERREUR WRITE MVTVAL, FS : ' FS-MVTVAL
+              PERFORM FIN-ERREUR-GRAVE
+           END-IF
+           .
+
+       READ-MVT.
+      * LECTURE MVT
+           READ MVT INTO MVT-ENR
+            AT END      SET FIN-MVT TO TRUE
+            NOT AT END  ADD 1 TO CPT-MVT-LUS
+           END-READ
+           IF FS-MVT NOT = ZEROES AND 10
+      *    IF NOT (FS-MVT = ZEROES OR 10)
+              DISPLAY 'ERREUR READ MVT, FS : ' FS-MVT
+              PERFORM FIN-ERREUR-GRAVE
+           END-IF
+           .
+
+       FIN-ERREUR-GRAVE.
+      * PLUSIEURS POSSIBILITES POUR ARRETER UN PROGRAMME (DEPEND
+      * DES NORMES DE L'ENTREPRISE)
+      * --> POSITIONNER UNE VALEUR DANS LE RETURN CODE (MAXCC)
+      * --> PLANTER LE PROGRAMME EN APPELANT UN SOUS-PROGRAMME
+      * --> INEXISTANT (ABEND S806)
+      * --> APPELER UN SOUS-PROGRAMME QUI RECUPERE LES INFORMATIONS ET
+      * --> FAIT PLANTER LE STEP
+           MOVE 15 TO RETURN-CODE
+           PERFORM FIN
+           .
+
+       FIN.
+           CLOSE MVT MVTVAL
+
+      * AFFICHAGE DES COMPTEURS
+           DISPLAY 'NB MVT LUS : '  CPT-MVT-LUS
+           DISPLAY 'NB MVT ERR : '  CPT-MVT-ERR
+           DISPLAY 'NB MVT VAL : '  CPT-MVT-VAL
+           DISPLAY 'NB EMP CRE : '  CPT-EMP-CRE
+           DISPLAY 'NB EMP MAJ : '  CPT-EMP-MAJ
+           DISPLAY 'NB EMP SUP : '  CPT-EMP-SUP
+           DISPLAY 'NB DEP CRE : '  CPT-DEP-CRE
+           DISPLAY 'NB DEP MAJ : '  CPT-DEP-MAJ
+           DISPLAY 'NB DEP SUP : '  CPT-DEP-SUP
+
+           STOP RUN
+           .
+
 
 
 JCL :
