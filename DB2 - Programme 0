@@ -121,7 +121,47 @@ PROGRAMME DB2P0 :
              ORDER BY NDE
            END-EXEC.
 
+      * LIGNES EDITION
+       01  L1.
+            05                      PIC X(30) VALUE SPACES.
+            05                      PIC X(22) VALUE
+                                    'LISTE DES DEPARTEMENTS'.
+       01  L2.
+            05                      PIC X(30) VALUE SPACES.
+            05                      PIC X(22) VALUE ALL '-'.
 
+       01  L3.
+            05                      PIC X(03) VALUE 'NUM'.
+            05                      PIC X(03) VALUE SPACES.
+            05                      PIC X(08) VALUE 'NOM DEPT'.
+            05                      PIC X(03) VALUE SPACES.
+            05                      PIC X(04) VALUE 'LIEU'.
+            05                      PIC X(03) VALUE SPACES.
+            05                      PIC X(08) VALUE 'MAT CHEF'.
+            05                      PIC X(03) VALUE SPACES.
+            05                      PIC X(08) VALUE 'NOM CHEF'.
+
+        01  L4.
+            05                      PIC X(03) VALUE ALL '-'.
+            05                      PIC X(03) VALUE SPACES.
+            05                      PIC X(08) VALUE ALL '-'.
+            05                      PIC X(03) VALUE SPACES.
+            05                      PIC X(04) VALUE ALL '-'.
+            05                      PIC X(03) VALUE SPACES.
+            05                      PIC X(08) VALUE ALL '-'.
+            05                      PIC X(03) VALUE SPACES.
+            05                      PIC X(08) VALUE ALL '-'.
+
+       01  L5.
+            05 ED-NOD               PIC X(03) VALUE SPACES.
+            05                      PIC X(03) VALUE SPACES.
+            05 ED-NDE               PIC X(08) VALUE SPACES.
+            05                      PIC X(03) VALUE SPACES.
+            05 ED-LIE               PIC X(04) VALUE SPACES.
+            05                      PIC X(03) VALUE SPACES.
+            05 ED-CHE               PIC X(08) VALUE SPACES.
+            05                      PIC X(03) VALUE SPACES.
+            05 ED-NOM               PIC X(08) VALUE SPACES.
 
 
 
