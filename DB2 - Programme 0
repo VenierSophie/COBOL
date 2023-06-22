@@ -163,7 +163,15 @@ PROGRAMME DB2P0 :
             05                      PIC X(03) VALUE SPACES.
             05 ED-NOM               PIC X(08) VALUE SPACES.
 
+      * SQLCODE AU FORMAT EDITION
+       01  ED-SQLCODE               PIC +(10) VALUE ZEROES.
 
+      * COMPTEUR
+       01  CPT-DEPT                 PIC 9     VALUE ZEROES.
+
+      * INDICATEUR DE FIN DE LISTE
+       01                           PIC X     VALUE SPACES.
+            88 FIN-LISTE                      VALUE '1'.
 
 
 
