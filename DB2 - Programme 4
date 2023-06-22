@@ -525,9 +525,8 @@ PROGRAMME DB2P4 :
            END-EXEC
            EVALUATE SQLCODE
             WHEN ZEROES
-      * SI L'EMPLOYE EST CHEF DE PLUSIEURS DEPARTEMENTS, ALORS DB2
-      * RETOURNE PLUSIEURS LIGNES, MAIS COMME IL NE PEUT PAS IL MET
-      * UN SQLCODE A -811
+      * retour d'un code -811 si l'employe est chef de plusieurs
+      * departements donc DB2 retourne plusieurs lignes
             WHEN -811
              DISPLAY POSTE-ERR(17)
              SET ERREUR TO TRUE
@@ -543,7 +542,6 @@ PROGRAMME DB2P4 :
       * CONTROLE NOM EMPLOYE
        CTRL-NOM.
            IF MVT-NOM = SPACES
-      * ---> NOM NON RENSEIGNE
               DISPLAY POSTE-ERR(5)
               SET ERREUR TO TRUE
            END-IF
@@ -552,7 +550,6 @@ PROGRAMME DB2P4 :
       * CONTROLE NUMERO DEPARTEMENT
        CTRL-NOD1.
            IF MVT-NOD1 = SPACES
-      * ---> DEPARTEMENT NON RENSEIGNE
               DISPLAY POSTE-ERR(6)
               SET ERREUR TO TRUE
            ELSE
@@ -567,7 +564,6 @@ PROGRAMME DB2P4 :
                WHEN ZEROES
                 CONTINUE
                WHEN +100
-      * ---> DEPARTEMENT INEXISTANT
                 DISPLAY POSTE-ERR(7)
                 SET ERREUR TO TRUE
                WHEN OTHER
@@ -582,14 +578,12 @@ PROGRAMME DB2P4 :
        CTRL-DAT.
            IF MVT-DAT NOT NUMERIC
            OR MVT-DAT = ZEROES
-      * ---> DATE ENTREE ERRONEE
               DISPLAY POSTE-ERR(8)
               SET ERREUR TO TRUE
            ELSE
               MOVE MVT-DAT TO ZDATE
               CALL SPDAT USING ZCOM
               IF ZCDRET-KO
-      * ---> DATE ENTREE ERRONEE
                  DISPLAY POSTE-ERR(8)
                  SET ERREUR TO TRUE
               END-IF
@@ -600,7 +594,6 @@ PROGRAMME DB2P4 :
        CTRL-SAL.
            IF MVT-SAL NOT NUMERIC
            OR MVT-SAL = ZEROES
-      * ---> SALAIRE NON NUMERIQUE OU NUL
               DISPLAY POSTE-ERR(9)
               SET ERREUR TO TRUE
            END-IF
@@ -609,7 +602,6 @@ PROGRAMME DB2P4 :
       * CONTROLE COMMISSION
        CTRL-COM.
            IF MVT-COM NOT NUMERIC
-      * ---> COMMISSION NON NUMERIQUE
               DISPLAY POSTE-ERR(10)
               SET ERREUR TO TRUE
            END-IF
@@ -618,11 +610,9 @@ PROGRAMME DB2P4 :
       * CONTROLE NUMERO DEPARTEMENT DOIT ETRE INEXISTANT
        CTRL-NOD2-INEX.
            IF MVT-NOD2 = SPACES
-      * ---> NUMERO DEPARTEMENT DOIT ETRE RENSEIGNE
               DISPLAY POSTE-ERR(06)
               SET ERREUR TO TRUE
            ELSE
-      * ---> NE DOIT PAS EXISTER EN TABLE DEPARTEMENT
               MOVE MVT-NOD2 TO HVD-NOD
               EXEC SQL
                SELECT NOD
@@ -632,11 +622,9 @@ PROGRAMME DB2P4 :
               END-EXEC
               EVALUATE SQLCODE
                WHEN ZEROES
-      * ---> DEPARTEMENT EXISTANT : ERREUR
                 DISPLAY POSTE-ERR(12)
                 SET ERREUR TO TRUE
                WHEN +100
-      * ---> DEPARTEMENT INEXISTANT : OK
                 CONTINUE
                WHEN OTHER
                 MOVE SQLCODE TO ED-SQLCODE
@@ -649,11 +637,9 @@ PROGRAMME DB2P4 :
       * CONTROLE NUMERO DEPARTEMENT DOIT EXISTER
        CTRL-NOD2-EXIST.
            IF MVT-NOD2 = SPACES
-      * ---> NUMERO DEPARTEMENT DOIT ETRE RENSEIGNE
               DISPLAY POSTE-ERR(06)
               SET ERREUR TO TRUE
            ELSE
-      * ---> DOIT EXISTER EN TABLE DEPARTEMENT
               MOVE MVT-NOD2 TO HVD-NOD
               EXEC SQL
                SELECT NOD
@@ -663,10 +649,8 @@ PROGRAMME DB2P4 :
               END-EXEC
               EVALUATE SQLCODE
                WHEN ZEROES
-      * ---> DEPARTEMENT EXISTANT : OK
                 CONTINUE
                WHEN +100
-      * ---> DEPARTEMENT INEXISTANT : ERREUR
                 DISPLAY POSTE-ERR(07)
                 SET ERREUR TO TRUE
                WHEN OTHER
@@ -680,7 +664,6 @@ PROGRAMME DB2P4 :
       * CONTROLE NOM DEPARTEMENT
        CTRL-NDE.
            IF MVT-NDE = SPACES
-      * ---> NOM DEPARTEMENT DOIT ETRE RENSEIGNE
               DISPLAY POSTE-ERR(13)
               SET ERREUR TO TRUE
            END-IF
@@ -689,7 +672,6 @@ PROGRAMME DB2P4 :
       * CONTROLE BATIMENT
        CTRL-LIE.
            IF MVT-LIE = SPACES
-      * ---> BATIMENT DOIT ETRE RENSEIGNE
               DISPLAY POSTE-ERR(14)
               SET ERREUR TO TRUE
            END-IF
@@ -698,7 +680,6 @@ PROGRAMME DB2P4 :
       * CONTROLE MATRICULE DU CHEF
        CTRL-CHE.
            IF MVT-CHE = SPACES
-      * ---> MATRICULE DU CHEF DOIT ETRE RENSEIGNE
               DISPLAY POSTE-ERR(15)
               SET ERREUR TO TRUE
            ELSE
@@ -713,7 +694,6 @@ PROGRAMME DB2P4 :
                WHEN ZEROES
                 CONTINUE
                WHEN +100
-      * ---> MATRICULE DU CHEF INEXISTANT EN TABLE EMPLOYE
                  DISPLAY POSTE-ERR(16)
                  SET ERREUR TO TRUE
                WHEN OTHER
@@ -737,7 +717,6 @@ PROGRAMME DB2P4 :
            EVALUATE SQLCODE
             WHEN ZEROES
             WHEN -811
-      * ---> SUPPRESSION IMPOSSIBLE: DEPARTEMENT EXISTE EN TABLE EMPLOYE
               DISPLAY POSTE-ERR(18)
               SET ERREUR TO TRUE
             WHEN +100
