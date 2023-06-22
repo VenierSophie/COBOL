@@ -55,15 +55,16 @@ b) Host-variables utilisées dans le programme: API8.SOURCE.COPY(EMPLOYE2)
 
 
 
-
 PROGRAMME DB2P0 :
+
        IDENTIFICATION DIVISION.
-       PROGRAM-ID. DB2P1.
+       PROGRAM-ID. ESSAI.
        AUTHOR. OTEUR.
        DATE-WRITTEN. 29/03/2023.
       ******************************************************************
-      *  FONCTION DU PROGRAMME: EDITION DES DEPARTEMENTS               *
-      *  250429 : CREATION DU PROGRAMME                                *
+      *  FONCTION DU PROGRAMME: LECTURE D'UN EMPLOYE ET                *
+      *   EDITION DE LA LISTE DES EMPLOYES DANS UN FICHIER D'EDITION   *
+      *  230329 : CREATION DU PROGRAMME                                *
       ******************************************************************
        ENVIRONMENT DIVISION.
        CONFIGURATION SECTION.
@@ -81,6 +82,8 @@ PROGRAMME DB2P0 :
        FILE SECTION.
        FD  EDIT RECORDING MODE IS F.
        01  ENR-EDIT.
+      * METTRE EN COMMENTAIRE LE CARACTERE DE SAUT SI ON UTILISE
+      * WRITE AFTER ADVANCING
            05 CAR-SAUT       PIC X.
            05 LIG-EDIT       PIC X(132).
 
@@ -88,183 +91,28 @@ PROGRAMME DB2P0 :
       * FILE STATUS
        01  FS-EDIT           PIC 99 VALUE ZEROES.
 
-      * DECLARATION DE LA TABLE DEPARTEMENT
-           EXEC SQL INCLUDE DEPT    END-EXEC.
-      * DECLARATION DE LA TABLE EMPLOYE
+      * COPY DES DECLARATIONS DE LA TABLE EMPLOYE
            EXEC SQL INCLUDE EMPLOYE END-EXEC.
-      * DECLARATION DE LA SQLCA
+      * COPY DES HOST VARIABLES DE LA TABLE EMPLOYE
+           EXEC SQL INCLUDE EMPLOYE2 END-EXEC.
+      * COPY DES ZONES UTILES A DB2
            EXEC SQL INCLUDE SQLCA   END-EXEC.
 
-      * DECLARATION DES HOST-VARIABLES DU DEPARTEMENT
-       01  HVD-DEPARTEMENT.
-           05 HVD-NOD         PIC X(3).
-           05 HVD-NDE         PIC X(6).
-           05 HVD-LIE         PIC X(4).
-           05 HVD-CHE         PIC X(3).
-  
-      * DECLARATION DES HOST-VARIABLES DE L'EMPLOYE
-       01  HVE-EMPLOYE.
-           05 HVE-NOD         PIC X(3).
-           05 HVE-NOM         PIC X(7).
+       01  WS-MAT PIC X(3) VALUE SPACES.
 
-      * DECLARATION DU CURSEUR POUR LA LISTE
+      * ECRITURE DE L'ORDRE POUR LISTER LA TABLE EMPLOYE
+      * UTILISATION D'UN CURSEUR CAR PLUSIEURS LIGNES
            EXEC SQL DECLARE LISTE CURSOR FOR
-             SELECT
-                    D.NOD,
-                    NDE,
-                    LIE,
-                    CHE,
-                    NOM
-             FROM
-                   EMPLOYE E JOIN DEPARTEMENT D
-                   ON E.MAT = D.CHE
-             ORDER BY NDE
-           END-EXEC.
-
-      * LIGNES EDITION
-       01  L1.
-            05                      PIC X(30) VALUE SPACES.
-            05                      PIC X(22) VALUE
-                                    'LISTE DES DEPARTEMENTS'.
-       01  L2.
-            05                      PIC X(30) VALUE SPACES.
-            05                      PIC X(22) VALUE ALL '-'.
-
-       01  L3.
-            05                      PIC X(03) VALUE 'NUM'.
-            05                      PIC X(03) VALUE SPACES.
-            05                      PIC X(08) VALUE 'NOM DEPT'.
-            05                      PIC X(03) VALUE SPACES.
-            05                      PIC X(04) VALUE 'LIEU'.
-            05                      PIC X(03) VALUE SPACES.
-            05                      PIC X(08) VALUE 'MAT CHEF'.
-            05                      PIC X(03) VALUE SPACES.
-            05                      PIC X(08) VALUE 'NOM CHEF'.
-
-        01  L4.
-            05                      PIC X(03) VALUE ALL '-'.
-            05                      PIC X(03) VALUE SPACES.
-            05                      PIC X(08) VALUE ALL '-'.
-            05                      PIC X(03) VALUE SPACES.
-            05                      PIC X(04) VALUE ALL '-'.
-            05                      PIC X(03) VALUE SPACES.
-            05                      PIC X(08) VALUE ALL '-'.
-            05                      PIC X(03) VALUE SPACES.
-            05                      PIC X(08) VALUE ALL '-'.
-
-       01  L5.
-            05 ED-NOD               PIC X(03) VALUE SPACES.
-            05                      PIC X(03) VALUE SPACES.
-            05 ED-NDE               PIC X(08) VALUE SPACES.
-            05                      PIC X(03) VALUE SPACES.
-            05 ED-LIE               PIC X(04) VALUE SPACES.
-            05                      PIC X(03) VALUE SPACES.
-            05 ED-CHE               PIC X(08) VALUE SPACES.
-            05                      PIC X(03) VALUE SPACES.
-            05 ED-NOM               PIC X(08) VALUE SPACES.
-
-      * SQLCODE AU FORMAT EDITION
-       01  ED-SQLCODE               PIC +(10) VALUE ZEROES.
-
-      * COMPTEUR
-       01  CPT-DEPT                 PIC 9     VALUE ZEROES.
-
-      * INDICATEUR DE FIN DE LISTE
-       01                           PIC X     VALUE SPACES.
-            88 FIN-LISTE                      VALUE '1'.
-
-
-       PROCEDURE DIVISION.
-           PERFORM DEBUT
-           PERFORM UNTIL FIN-LISTE
-              PERFORM TRAITEMENT
-              PERFORM FETCH-LISTE
-           END-PERFORM
-           PERFORM FIN
-           .
-
-       DEBUT.
-      * OUVERTURE DU FICHIER D'EDITION
-           OPEN OUTPUT EDIT
-           IF FS-EDIT NOT = ZEROES
-              DISPLAY 'ERREUR OPEN FICHIER EDIT, FS : ' FS-EDIT
-              PERFORM FIN-ERREUR
-           END-IF
-
-      * EDITION DE L'ENTETE
-           MOVE '1'      TO CAR-SAUT
-           MOVE L1       TO LIG-EDIT
-           WRITE ENR-EDIT
-           MOVE ' '      TO CAR-SAUT
-           MOVE L2       TO LIG-EDIT
-           WRITE ENR-EDIT
-           MOVE '0'      TO CAR-SAUT
-           MOVE L3       TO LIG-EDIT
-           WRITE ENR-EDIT
-           MOVE ' '      TO CAR-SAUT
-           MOVE L4       TO LIG-EDIT
-           WRITE ENR-EDIT 
-
-      * OUVERTURE DU CURSEUR
-           EXEC SQL OPEN LISTE END-EXEC
-           IF SQLCODE NOT = ZEROES
-              MOVE SQLCODE TO ED-SQLCODE
-              DISPLAY 'ERREUR OPEN CURSEUR LISTE, SQLCODE : ' ED-SQLCODE
-              PERFORM FIN-ERREUR
-           END-IF
-
-      * 1ER FETCH
-           PERFORM FETCH-LISTE
-           .
-
-       TRAITEMENT.
-      * EDITION D'UNE LIGNE DETAIL
-           MOVE ' '      TO CAR-SAUT
-           MOVE HVD-NOD  TO ED-NOD
-           MOVE HVD-NDE  TO ED-NDE
-           MOVE HVD-LIE  TO ED-LIE
-           MOVE HVD-CHE  TO ED-CHE
-           MOVE HVE-NOM  TO ED-NOM
-           MOVE L5       TO LIG-EDIT
-           WRITE ENR-EDIT
-           .
-
-      FETCH-LISTE.
-           EXEC SQL FETCH LISTE
-             INTO
-                 :HVD-NOD,
-                 :HVD-NDE,
-                 :HVD-LIE,
-                 :HVD-CHE,
-                 :HVE-NOM
+            SELECT MAT,
+                   NOM,
+                   NOD,
+                   DAT,
+                   SAL,
+                   VALUE(COM, 0)
+            FROM EMPLOYE
+            ORDER BY NOM
            END-EXEC
-           EVALUATE SQLCODE
-             WHEN ZEROES
-                  ADD 1 TO CPT-DEPT
-             WHEN +100
-                  SET FIN-LISTE TO TRUE
-             WHEN OTHER
-                  MOVE SQLCODE TO ED-SQLCODE
-                  DISPLAY
-                  'ERREUR FETCH CURSEUR LISTE, SQLCODE : ' ED-SQLCODE
-                  PERFORM FIN-ERREUR
-           END-EVALUATE
-           .
 
-      FIN-ERREUR.
-           MOVE 15 TO RETURN-CODE
-           PERFORM FIN
-           .  
-
-      FIN.
-     * AFFICHAGE DES COMPTEURS
-           DISPLAY 'NB DEPARTEMENTS LUS : ' CPT-DEPT
-     * FERMETURE DES FICHIERS
-           CLOSE EDIT
-           EXEC SQL CLOSE LISTE END-EXEC
-     * ARRET DU PROGRAMME
-           STOP RUN
-           .
 
 
 
