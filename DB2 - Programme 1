@@ -168,38 +168,120 @@ PROGRAMME DB2P1 :
            PERFORM FIN
            .
 
+       DEBUT.
+      * OUVERTURE DU FICHIER D'EDITION
+           OPEN OUTPUT EDIT
+           IF FS-EDIT NOT = ZEROES
+              DISPLAY 'ERREUR OPEN FICHIER EDIT, FS : ' FS-EDIT
+              PERFORM FIN-ERREUR
+           END-IF
+
+      * EDITION DE L'ENTETE
+           MOVE '1'      TO CAR-SAUT
+           MOVE L1       TO LIG-EDIT
+           WRITE ENR-EDIT
+           MOVE ' '      TO CAR-SAUT
+           MOVE L2       TO LIG-EDIT
+           WRITE ENR-EDIT
+           MOVE '0'      TO CAR-SAUT
+           MOVE L3       TO LIG-EDIT
+           WRITE ENR-EDIT
+           MOVE ' '      TO CAR-SAUT
+           MOVE L4       TO LIG-EDIT
+           WRITE ENR-EDIT 
+
+      * OUVERTURE DU CURSEUR
+           EXEC SQL OPEN LISTE END-EXEC
+           IF SQLCODE NOT = ZEROES
+              MOVE SQLCODE TO ED-SQLCODE
+              DISPLAY 'ERREUR OPEN CURSEUR LISTE, SQLCODE : ' ED-SQLCODE
+              PERFORM FIN-ERREUR
+           END-IF
+
+      * 1ER FETCH
+           PERFORM FETCH-LISTE
+           .
+
+       TRAITEMENT.
+      * EDITION D'UNE LIGNE DETAIL
+           MOVE ' '      TO CAR-SAUT
+           MOVE HVD-NOD  TO ED-NOD
+           MOVE HVD-NDE  TO ED-NDE
+           MOVE HVD-LIE  TO ED-LIE
+           MOVE HVD-CHE  TO ED-CHE
+           MOVE HVE-NOM  TO ED-NOM
+           MOVE L5       TO LIG-EDIT
+           WRITE ENR-EDIT
+           .
+
+      FETCH-LISTE.
+           EXEC SQL FETCH LISTE
+             INTO
+                 :HVD-NOD,
+                 :HVD-NDE,
+                 :HVD-LIE,
+                 :HVD-CHE,
+                 :HVE-NOM
+           END-EXEC
+           EVALUATE SQLCODE
+             WHEN ZEROES
+                  ADD 1 TO CPT-DEPT
+             WHEN +100
+                  SET FIN-LISTE TO TRUE
+             WHEN OTHER
+                  MOVE SQLCODE TO ED-SQLCODE
+                  DISPLAY
+                  'ERREUR FETCH CURSEUR LISTE, SQLCODE : ' ED-SQLCODE
+                  PERFORM FIN-ERREUR
+           END-EVALUATE
+           .
+
+      FIN-ERREUR.
+           MOVE 15 TO RETURN-CODE
+           PERFORM FIN
+           .  
+
+      FIN.
+     * AFFICHAGE DES COMPTEURS
+           DISPLAY 'NB DEPARTEMENTS LUS : ' CPT-DEPT
+     * FERMETURE DES FICHIERS
+           CLOSE EDIT
+           EXEC SQL CLOSE LISTE END-EXEC
+     * ARRET DU PROGRAMME
+           STOP RUN
+           .
+
 
 
 JCL du programme DB2P1 :
-
-
-
-//API7DB JOB NOTIFY=&SYSUID,CLASS=A,MSGCLASS=H
+//API8DB JOB NOTIFY=&SYSUID,CLASS=A,MSGCLASS=H
 //*
-//PROCLIB JCLLIB ORDER=SDJ.FORM.PROCLIB
+//PROCLIB  JCLLIB ORDER=SDJ.FORM.PROCLIB
 //*
-//        SET SYSUID=API7,
-//            NOMPGM=DB2P2
+SET SYSUID=API8,
+    NOMPGM=DB2P1
+//
+//
 //*
-//APPROC  EXEC COMPDB2 
-//STEPDB2.SYSLIB   DD DSN=API7.SOURCE.DCLGEN,DISP=SHR
-//                 DD DSN=API7.SOURCE.COPY,DISP=SHR
-//STEPDB2.SYSIN    DD DSN=API7.SOURCE.DB2(DB2P2),DISP=SHR
-//STEPDB2.DBRMLIB  DD DSN=API7.SOURCE.DBRMLIB(DB2P2),DISP=SHR
-//STEPLNK.SYSLMOD  DD DSN=API7.SOURCE.PGMLIB(DB2P2),DISP=SHR
+//APPROC
+//STEPDB2.SYSLIB
+//
+//STEPDB2.SYSIN
+//STEPDB2.DBRMLIB DD DSN=API8.SOURCE.DBRMLIB(DB2P1),DISP=SHR
+//STEPLNK.SYSLMOD  DD DSN=API8.SOURCE.PGMLIB(DB2P1),DISP=SHR
 //*
 //*--- ETAPE DE BIND --------------------------------------
 //*
-//BIND    EXEC PGM=IKJEFT01,COND=(4,LT)
-//*DBRMLIB         DD DSN=&SYSUID..DB2.DBRMLIB,DISP=SHR
-//DBRMLIB          DD DSN=API7.SOURCE.DBRMLIB,DISP=SHR
-//SYSTSPRT         DD SYSOUT=*,OUTLIM=25000
-//SYSTSIN          DD *
+//BIND     EXEC PGM=IKJEFT01,COND=(4,LT)
+//*DBRMLIB  DD  DSN=&SYSUID..DB2.DBRMLIB,DISP=SHR
+//DBRMLIB  DD  DSN=API8.SOURCE.DBRMLIB,DISP=SHR
+//SYSTSPRT DD  SYSOUT=*,OUTLIM=25000
+//SYSTSIN  DD  *
   DSN SYSTEM (DSN1)
-  BIND PLAN      (DB2P2) -
-       QUALIFIER (API7)     -
+  BIND PLAN      (DB2P1) -
+       QUALIFIER (API8)     -
        ACTION    (REPLACE) -
-       MEMBER    (DB2P2) -
+       MEMBER    (DB2P1) -
        VALIDATE  (BIND)    -
        ISOLATION (CS)      -
        ACQUIRE   (USE)     -
@@ -210,45 +292,36 @@ JCL du programme DB2P1 :
 //DEL      EXEC PGM=IDCAMS
 //SYSPRINT DD   SYSOUT=*
 //SYSIN    DD   *
-  DELETE API7.EDITION
+  DELETE API8.EDITION
   SET MAXCC = 0
 //*
 //* EXECUTION DU PROGRAMME
 //STEPRUN  EXEC PGM=IKJEFT01,COND=(4,LT)
-//STEPLIB  DD DSN=API7.SOURCE.PGMLIB,DISP=SHR
-//EDIT     DD  DSN=API7.EDITION,DISP=(,CATLG,DELETE),
+//STEPLIB  DD DSN=API8.SOURCE.PGMLIB,DISP=SHR
+//EDIT     DD  DSN=API8.EDITION,DISP=(,CATLG,DELETE),
 //         DCB=(DSORG=PS,RECFM=FB,LRECL=133),
 //         SPACE=(TRK,(1))
 //SYSOUT   DD  SYSOUT=*,OUTLIM=1000
 //SYSTSPRT DD  SYSOUT=*,OUTLIM=2500
 //SYSTSIN  DD  *
   DSN SYSTEM (DSN1)
-  RUN PROGRAM(DB2P2) PLAN (DB2P2) PARMS('11001')
+  RUN PROGRAM(DB2P1) PLAN (DB2P1) PARMS('11001')
 //
 
 
 SYSOUT :
-NB EMPL LUS : 7
+NB DEPARTEMENTS LUS : 4
 
 
 EDITION :
+FICHIER EDITION :
 ********************************* Top of Data **********************************
-1                              LISTE DES EMPLOYES         LE 26/04/2023
-                               ------------------
-0BATIMENT : BAT1
- MAT   NOM EMPL   NUM DEPT   NOM DEPT
- ---   --------   --------   --------
- 40    JAVA       C04        COMPTA
-0BATIMENT : BAT2
- MAT   NOM EMPL   NUM DEPT   NOM DEPT
- ---   --------   --------   --------
- 30    BARI       P02        COMMER
- 50    CICS       P02        COMMER
- 70    NOEL       P02        COMMER
- 10    DURAND     E10        PAIE
-0BATIMENT : BAT3
- MAT   NOM EMPL   NUM DEPT   NOM DEPT
- ---   --------   --------   --------
- 20    DUPOND     P01        INFO
- 60    PARIS      P01        INFO
+1                              LISTE DES DEPARTEMENTS
+                               ----------------------
+0NUM   NOM DEPT   LIEU   MAT CHEF   NOM CHEF
+ ---   --------   ----   --------   --------
+ P02   COMMER     BAT2   70         NOEL
+ C04   COMPTA     BAT1   40         JAVA
+ P01   INFO       BAT3   20         DUPOND
+ E10   PAIE       BAT2   10         DURAND
 ******************************** Bottom of Data ********************************
