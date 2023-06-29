@@ -2,7 +2,10 @@
 #  ÉNONCÉ : Exemples de fonction COBOL : MODULO ; REMAINDER ; CURRENT DATE ; RANDOM ; MAX, MIN                       #
 #********************************************************************************************************************#
 
-PROGRAMME FONCTIONS COBOL :
+#*******************************************************************#
+#                            PROGRAMME                              #
+#*******************************************************************#
+
         IDENTIFICATION DIVISION.
                PROGRAM-ID. EXO10.
                AUTHOR. OTEUR.
@@ -80,7 +83,9 @@ PROGRAMME FONCTIONS COBOL :
 
 
 
-Résultat d'exécution :
+#*******************************************************************#
+#                 SYSOUT : COMPTE-RENDU D'EXECUTION                 #
+#*******************************************************************#
 
 COMPUTE RESTE = FUNCTION MOD(2023, 4) ---> 3
 COMPUTE RESTE = FUNCTION REM(2023, 4) ---> 3
