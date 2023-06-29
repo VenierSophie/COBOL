@@ -4,7 +4,10 @@
 
 #PROGRAMME - SOUS-PROGRAMME - JCL - CONTENU FICHIER COB.MVT - COMPTE-RENDU D'EXECUTION
 
-PROGRAMME :
+
+#*******************************************************************#
+#                            PROGRAMME                              #
+#*******************************************************************#
  CBL DYNAM
      IDENTIFICATION DIVISION.
      PROGRAM-ID. FEXO2.
@@ -228,8 +231,9 @@ PROGRAMME :
 
 
 
-
-SOUS-PROGRAMME : contrôle du numéro de département en table
+#*******************************************************************#
+#                          SOUS PROGRAMME                           #
+#*******************************************************************#
 
      IDENTIFICATION DIVISION.
      PROGRAM-ID. SPDEPT.
@@ -281,7 +285,10 @@ SOUS-PROGRAMME : contrôle du numéro de département en table
 
 
 
-JCL :
+#*******************************************************************#
+#                         JCL D'EXECUTION                           #
+#*******************************************************************#
+
 //API7F2   JOB 'SDJ FORMATION',MSGLEVEL=(1,1),MSGCLASS=H,CLASS=A,
 //   NOTIFY=&SYSUID,COND=(4,LT),TIME=(,3),RESTART=*
 //*
@@ -313,7 +320,11 @@ JCL :
 
 
 
-CONTENU DU FICHIER APIn.COB.MVT :
+
+#*******************************************************************#
+#                    CONTENU DU FICHIER APIn.COB.MVT                #
+#*******************************************************************#
+
 AAAAAAA
 BBBBBB1
 134000W
@@ -351,7 +362,9 @@ BBBBBB1
 
 
 
-COMPTE-RENDU D'EXECUTION :
+#*******************************************************************#
+#                 SYSOUT : COMPTE-RENDU D'EXECUTION                 #
+#*******************************************************************#
  ------------------------------------------
 ENR NUM 01, MATRICULE : AAAAAA
 MATRICULE NON NUMERIQUE
