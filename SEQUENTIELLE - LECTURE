@@ -1,10 +1,15 @@
+#********************************************************************************************************************#
+#  ÉNONCÉ : Écrire et tester un programme qui lit tous les enregistrements d'un fichier séquentiel et affiche leur   #
+#           contenu dans un format d'édition. Une compagnie d’assurances désire réaliser une chaîne batch pour       #
+#           traiter le fichier des assurés (description ci-après).                                                   #
+#                                                                                                                    #
+#           Écrire un programme qui va imprimer sur un fichier d’édition la quittance suivant le modèle fourni en    #
+#           annexe en ajoutant le jour, date du jour et heure et en supprimant les zéros non significatifs des       #
+#           montants affichés.                                                                                       #
+#********************************************************************************************************************#
+
 PROGRAMME DE LECTURE D'UN FICHIER SEQUENTIEL
 
-#Énoncé : Écrire et tester un programme qui lit tous les enregistrements d'un fichier séquentiel et affiche leur
-contenu dans un format d'édition. Une compagnie d’assurances désire réaliser une chaîne batch pour traiter le fichier
-des assurés (description ci-après). Écrire un programme qui va imprimer sur un fichier d’édition la quittance suivant
-le modèle fourni en annexe en ajoutant le jour, date du jour et heure et en supprimant les zéros non significatifs des
-montants affichés.
 Description des enregistrements du fichier des assurés :
 Dataset Name : APIn.COB.ASSURES
 Longueur fixe : 80 caractères
