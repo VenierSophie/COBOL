@@ -1,30 +1,30 @@
 #*******************************************************************************************************************#
 #  ÉNONCÉ : Écrire et tester un sous-programme qui contrôle une date au format AAAAMMJJ renseignée par un programme #
 #           principal et la retourne au format JJ libellé du mois AAAA (ex : 28 MARS 2023, 12 SEPTEMBRE 1999).      #
+#                                                                                                                   #
+#           La zone de communication comporte :                                                                     #
+#             - une date au format AAAAMMJJ renseignée par le programme principal                                   #
+#             - un code retour renseigné par le sous-programme (0 si pas d'erreur, 1 si erreur)                     #
+#             - une date formatée renseignée par le sous-programme (la variable doit être suffisamment grande pour  #
+#                contenir le format désiré)                                                                         #
+#                                                                                                                   #
+#           Fonctions du sous-programme                                                                             #
+#            1) Contrôles à effectuer sur la date :                                                                 #
+#             - test de numéricité : la date doit être numérique                                                    #
+#             - test de cohérence :                                                                                 #
+#                - sur le mois (de 1 à 12),                                                                         #
+#                - sur les jours (de 1 au nombre de jours du mois, effectuer le contrôle en fonction des            #
+#                   années bissextiles pour le mois de février : les années divisibles par 400 sont                 #
+#                   bissextiles, les centenaires ne le sont pas, les années divisibles par 4 le sont),              # 
+#                - pas de contrôle sur l'année à part la numéricité déjà effectuée                                  #
+#                                                                                                                   #
+#           S'il y a une erreur le sous-programme positionne le code retour à 1 et rend la main au programme        #
+#           principal, sinon il effectue le formatage de la date avec le libellé du mois                            #
+#                                                                                                                   #
+#           2) Formatage de la date : Décrire une table des mois de l'année en working-storage comportant pour      #
+#              chaque mois le nombre de jours maximum. En procédure faire un traitement particulier pour le mois de #
+#              février.                                                                                             #
 #*******************************************************************************************************************#
-
-# La zone de communication comporte :
-- une date au format AAAAMMJJ renseignée par le programme principal,
-- un code retour renseigné par le sous-programme (0 si pas d'erreur, 1 si erreur),
-- une date formatée renseignée par le sous-programme (la variable doit être suffisamment
-grande pour contenir le format désiré)
-
-# Fonctions du sous-programme
-  1) Contrôles à effectuer sur la date :
-      - test de numéricité : la date doit être numérique
-      - test de cohérence :
-          - sur le mois (de 1 à 12),
-          - sur les jours (de 1 au nombre de jours du mois, effectuer le contrôle en fonction des
-            années bissextiles pour le mois de février : les années divisibles par 400 sont
-            bissextiles, les centenaires ne le sont pas, les années divisibles par 4 le sont),
-          - pas de contrôle sur l'année à part la numéricité déjà effectuée
-
-S'il y a une erreur le sous-programme positionne le code retour à 1 et rend la main au programme principal,
-sinon il effectue le formatage de la date avec le libellé du mois
-
-  2) Formatage de la date : Décrire une table des mois de l'année en working-storage comportant pour chaque mois le
-     nombre de jours maximum. En procédure faire un traitement particulier pour le mois de février.
-
 
 Jeu de test :
 Date à contrôler ; Année bissextile ; Date valide ; Date formatée
@@ -40,7 +40,6 @@ Date à contrôler ; Année bissextile ; Date valide ; Date formatée
   20230228              Non              Oui        28 FEVRIER 2023
   20000229              Oui              Oui        29 FEVRIER 2000
   20240229              Oui              Oui        29 FEVRIER 2024
-
 
 
 
