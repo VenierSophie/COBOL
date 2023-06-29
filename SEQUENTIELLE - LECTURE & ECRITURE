@@ -1,10 +1,14 @@
-#Énoncé : Le fichier STOCK (trié par ordre croissant sur le numéro de produit) doit servir à alimenter un fichier comptable COMPTA, 
-un fichier de dépassement DEPAS et à transmettre des messages d'alerte.
-  - Pour chaque enregistrement du fichier Stock : Création d'un enregistrement dans le fichier COMPTA comptabilisant chaque article
-    - Si le nombre de produit est < au nombre minimun
-          ▶︎ Afficher une ligne d'alerte ("Réapprovisionnement du produit N° xxxxx")
-    - Si le nombre de produit est > ou = au nombre minimun et que le pric du produit est > ou = à 5€
-          ▶︎ Création d'un enregistrement dans le fichier DEPAS avec le numéro de produit et le prix total
+#********************************************************************************************************************#
+#  ÉNONCÉ : Le fichier STOCK (trié par ordre croissant sur le numéro de produit) doit servir à alimenter un fichier  #
+#           comptable COMPTA, un fichier de dépassement DEPAS et à transmettre des messages d'alerte.                #
+#                                                                                                                    #
+#           Pour chaque enregistrement du fichier Stock : Création d'un enregistrement dans le fichier COMPTA        #
+#           comptabilisant chaque article                                                                            #
+#              - Si le nombre de produit est < au nombre minimun                                                     #
+#                    ▶︎ Afficher une ligne d'alerte ("Réapprovisionnement du produit N° xxxxx")                       #
+#              - Si le nombre de produit est > ou = au nombre minimun et que le pric du produit est > ou = à 5€      #
+#                    ▶︎ Création d'un enregistrement dans le fichier DEPAS avec le numéro de produit et le prix total #
+#********************************************************************************************************************#
 
 #Annexe : Contenu du fichier STOCK
 NUMPRD ; NBPRD ; PRIX ; NBMIN
