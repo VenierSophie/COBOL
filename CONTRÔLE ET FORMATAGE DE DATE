@@ -15,7 +15,7 @@
 #                - sur le mois (de 1 à 12),                                                                         #
 #                - sur les jours (de 1 au nombre de jours du mois, effectuer le contrôle en fonction des            #
 #                   années bissextiles pour le mois de février : les années divisibles par 400 sont                 #
-#                   bissextiles, les centenaires ne le sont pas, les années divisibles par 4 le sont),              # 
+#                   bissextiles, les centenaires ne le sont pas, les années divisibles par 4 le sont),              #
 #                - pas de contrôle sur l'année à part la numéricité déjà effectuée                                  #
 #                                                                                                                   #
 #           S'il y a une erreur le sous-programme positionne le code retour à 1 et rend la main au programme        #
@@ -26,7 +26,11 @@
 #              février.                                                                                             #
 #*******************************************************************************************************************#
 
-Jeu de test :
+
+#*******************************************************************#
+#                            JEU DE TEST                            #
+#*******************************************************************#
+
 Date à contrôler ; Année bissextile ; Date valide ; Date formatée
   AABCDEFGH                              Non
   21000001                               Non
@@ -43,7 +47,9 @@ Date à contrôler ; Année bissextile ; Date valide ; Date formatée
 
 
 
-PROGRAMME APPELANT :
+#*******************************************************************#
+#                        PROGRAMME APPELANT                         #
+#*******************************************************************#
 
 CBL DYNAM
     IDENTIFICATION DIVISION.
@@ -263,9 +269,10 @@ SOUS-PROGRAMME :
             GOBACK.
 
 
+#*******************************************************************#
+#                         JCL D'EXECUTION                           #
+#*******************************************************************#
 
-
-JCL D'EXECUTION :
 //API8PP   JOB 'SDJ FORMATION',MSGLEVEL=(1,1),MSGCLASS=H,CLASS=A,
 //   NOTIFY=&SYSUID,COND=(4,LT),TIME=(,3),RESTART=*
 //*
@@ -294,9 +301,10 @@ JCL D'EXECUTION :
 
 
 
+#*******************************************************************#
+#                 SYSOUT : COMPTE-RENDU D'EXECUTION                 #
+#*******************************************************************#
 
-
-SYSOUT : COMPTE-RENDU D'EXECUTION
 -----------------------------------
 ZDATE : ABCDEFGH
        DATE INVALIDE
