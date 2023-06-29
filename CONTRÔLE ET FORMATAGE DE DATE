@@ -39,11 +39,11 @@ Date à contrôler | Année bissextile | Date valide | Date formatée
   21000532       |                  |     Non     |
   20230229       |        Non       |     Non     |
   21000229       |        Non       |     Non     |
-  20230301       |                  |     Oui        01 MARS 2023
-  20230430       |                  |     Oui        30 AVRIL 2023
-  20230228       |        Non       |     Oui        28 FEVRIER 2023
-  20000229       |        Oui       |     Oui        29 FEVRIER 2000
-  20240229       |        Oui       |     Oui        29 FEVRIER 2024
+  20230301       |                  |     Oui     | 01 MARS 2023
+  20230430       |                  |     Oui     | 30 AVRIL 2023
+  20230228       |        Non       |     Oui     | 28 FEVRIER 2023
+  20000229       |        Oui       |     Oui     | 29 FEVRIER 2000
+  20240229       |        Oui       |     Oui     | 29 FEVRIER 2024
 
 
 
