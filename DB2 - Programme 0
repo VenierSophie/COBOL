@@ -1,6 +1,8 @@
-# Énoncé de l'exercice : Dans la bibliothèque userid.SOURCE.DB2, écrire le programme DB2P0 qui lit et affiche
-# toutes les colonnes de l'employé ayant le matricule '10'. Puis lecture et affichage de tous les employés de la table EMPLOYE
-# triés sur le NOM. Dans un second temps, remplacer les display par un fichier d'édition.
+#*******************************************************************************************************************#
+#  ÉNONCÉ : Dans la bibliothèque userid.SOURCE.DB2, écrire le programme DB2P0 qui lit et affiche toutes les         #
+#           colonnes de l'employé ayant le matricule '10'. Puis lecture et affichage de tous les employés de la     #
+#           table EMPLOYE triés sur le NOM. Dans un second temps, remplacer les display par un fichier d'édition.   #
+#*******************************************************************************************************************#
 
 # Programme DB2P0 + JCL + SYSOUT + EDITION
 
