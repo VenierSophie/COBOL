@@ -107,9 +107,30 @@ SOUS-PROGRAMME : contrôle du numéro de département en table
               10 COD      PIC X.
               10 NOM      PIC X(10).
 
+      * INDICE DE BALAYAGE
+       01  I              PIC 9 VALUE ZEROES.
+      * DECLARER LA ZONE DE COMMUNICATION EN LINKAGE
+       LINKAGE SECTION.
+       01  ZCOM.
+           05 ZCODE       PIC X.
+           05 ZCDRET      PIC 9.
+              88 ZCDRET-OK         VALUE ZERO.
+              88 ZCDRET-NON-TROUVE VALUE 1.
+           05 ZNOM        PIC X(10).
+       PROCEDURE DIVISION USING ZCOM.
+      * POSITIONNEMENT A NON TROUVE
+           SET ZCDRET-NON-TROUVE TO TRUE
+      * RECHERCHE DANS LE TABLEAU
+      * SI LE CODE EST TROUVE ON RETOURNE LE NOM
+           PERFORM VARYING I FROM 1 BY 1 UNTIL I > 6 OR ZCDRET-OK
+              IF ZCODE = COD(I)
+                 SET ZCDRET-OK TO TRUE
+                 MOVE NOM(I) TO ZNOM
+              END-IF
+           END-PERFORM
 
-
-
+           GOBACK
+           .
 
 
 
