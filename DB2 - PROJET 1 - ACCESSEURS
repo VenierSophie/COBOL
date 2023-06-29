@@ -35,7 +35,11 @@ Description de la zone de communication :
 * LE ZLIBERR CORRESPOND AU LIBELLÉ DE L'ERREUR DANS LA TABLE DES ERREURS
       05 ZLIBERR        PIC X(50).
 
-JEU DE TEST :
+
+#*******************************************************************#
+#                            JEU DE TEST                            #
+#*******************************************************************#
+
 1) CREATION EMPLOYE MAT 100, NOM = MAGUY, N° DÉPARTEMENT : P01, DATE ENTRÉE : 20230515,
    SALAIRE : 3000 - CODE RETOUR UNIQUE DE L'ACCESSEUR = 0  
 2) LECTURE EMPLOYE MAT 100 - ACCESSEUR RETOURNE LES INFORMATIONS DE MAGUY
@@ -44,7 +48,10 @@ JEU DE TEST :
 5) SUPPRESSION EMPLOYE MAT 100 - CODE RETOUR UNIQUE DE L'ACCESSEUR = 0  
 6) LECTURE EMPLOYE MAT 100 - CODE RETOUR DE L'ACCESSEUR = 11
 
-TABLE DES ERREURS : 
+
+#*******************************************************************#
+#                         TABLE DES ERREURS                         #
+#*******************************************************************#
 Num   Libellé
  1    CODE FONCTION ERRONE
  2    CODE TABLE ERRONE
@@ -68,7 +75,10 @@ Num   Libellé
  20   PROBLEME SUR TABLE
         
 
-PROGRAMME PRINCIPAL PROJ2 : 
+#*******************************************************************#
+#                        PROGRAMME PRINCIPAL                        #
+#*******************************************************************#
+
    CBL DYNAM
        IDENTIFICATION DIVISION.
        PROGRAM-ID. PROJ2.
@@ -429,7 +439,4 @@ PROGRAMME PRINCIPAL PROJ2 :
           FIN.
           STOP RUN
           .
-          
-          
-
 
