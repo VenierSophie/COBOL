@@ -142,7 +142,10 @@ CBL DYNAM
         .
 
 
-SOUS-PROGRAMME :
+#*******************************************************************#
+#                          SOUS PROGRAMME                           #
+#*******************************************************************#
+
        IDENTIFICATION DIVISION.
        PROGRAM-ID. EXO9SP.
        AUTHOR. OTEUR.
