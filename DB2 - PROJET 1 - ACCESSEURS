@@ -1,5 +1,9 @@
+#*******************************************************************************************************************#
+#  ÉNONCÉ : Développement d'accesseurs aux tables DB2 de la base EMPLOYE afin de rendre les programmes indépendants #
+#           des supports de l'information.                                                                          #
+#*******************************************************************************************************************#
+
 PROGRAMME PRINCIPAL : PROJ2 - ACCESSEUR : ACCESS2
-#But : Développer des accesseurs aux tables DB2 de la base EMPLOYE afin de rendre les programmes indépendants des supports de l'information.
 
 #Définition et intérêt d'un accesseur : Module d'accès aux ressources physiques. Il contient les ordres d'accès aux informations stockées
 sur disque. Les programmes devant accéder à ces ressources doivent le faire via ces accesseurs, aucun ordre ne doit être codé dans les
