@@ -1,5 +1,8 @@
-# Énoncé de l'exercice : Dans la bibliothèque userid.SOURCE.DB2, écrire le programme DB2P3 qui met à jour la table EMPLOYE
-# en augmentant le salaire des employés en fonction du département dans lequel il travaille :
+#********************************************************************************************************************#
+#  ÉNONCÉ : Dans la bibliothèque userid.SOURCE.DB2, écrire le programme DB2P3 qui met à jour la table EMPLOYE en     #
+#           augmentant le salaire des employés en fonction du département dans lequel il travaille.                  #                                         #
+#********************************************************************************************************************#
+
 # 1) Augmentation de salaire :
 #1 -  département COMMER : augmentation du salaire de 10% et augmentation de la commission de 1000,
 #2 -  département PAIE et COMPTA : augmentation du salaire de 15%,
