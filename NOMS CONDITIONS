@@ -1,29 +1,16 @@
 #********************************************************************************************************************#
-#  ÉNONCÉ : Utilisation des noms conditions ; Écrire les variables suivantes en déclarant les noms conditions        #
-#           adéquats :                                                                                               #
+#  ÉNONCÉ : Utilisation des noms conditions ; Utilisation de la fonction EVALUATE                                    #
+#           Écrire les variables suivantes en déclarant les noms conditions adéquats :                               #
 #               - le statut d'un compte ouvert s'il est égal à 'O', bloqué pour 'B', clôturé pour 'C' puis afficher  #
 #                 le statut ;                                                                                        #
 #               - le compte est créditeur si son solde est positif ou nul, débiteur s'il est négatif puis afficher   #
 #                 le sens créditeur ou débiteur                                                                      #
 #********************************************************************************************************************#
 
-# Utilisation de l'instruction EVALUATE : Réécrire le code ci-dessous en utilisant l'instruction EVALUATE :
-IF STATUT = 'O'
-      DISPLAY 'COMPTE OUVERT'
-ELSE
-      IF STATUT = 'B'
-        DISPLAY 'COMPTE BLOQUE'
-      ELSE
-        IF STATUT = 'C'
-          DISPLAY 'COMPTE CLOTURE'
-        ELSE
-          DISPLAY 'STATUT ERRONE'
-        END-IF
-      END-IF
-END-IF
+#*******************************************************************#
+#                            PROGRAMME                              #
+#*******************************************************************#
 
-
-# PROGRAMME
 IDENTIFICATION DIVISION.
  PROGRAM-ID. EXO6.
  AUTHOR. SV.
