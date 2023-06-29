@@ -1,10 +1,6 @@
-# Exemples de fonctions COBOL
-- MODULO
-- REMAINDER
-- CURRENT DATE
-- RANDOM
-- MAX, MIN
-
+#********************************************************************************************************************#
+#  ÉNONCÉ : Exemples de fonction COBOL : MODULO ; REMAINDER ; CURRENT DATE ; RANDOM ; MAX, MIN                       #
+#********************************************************************************************************************#
 
 PROGRAMME FONCTIONS COBOL :
         IDENTIFICATION DIVISION.
