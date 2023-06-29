@@ -24,11 +24,21 @@ Soit une zone de communication comprenant :
       88 ZCDRET-NON-TROUVE     VALUE 1.
     05 ZNOM PIC X(10).
 
+
+
 PROGRAMME :
  CBL DYNAM
      IDENTIFICATION DIVISION.
 
 
+
+
 SOUS-PROGRAMME : contrôle du numéro de département en table
 
      IDENTIFICATION DIVISION.
+
+
+
+
+
+JCL :
