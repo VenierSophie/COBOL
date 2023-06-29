@@ -24,7 +24,11 @@ Longueur fixe : 80 caractères
 - Taux : 2 entiers (indique un pourcentage)
 
 
-PROGRAMME :
+
+#*******************************************************************#
+#                            PROGRAMME                              #
+#*******************************************************************#
+
  IDENTIFICATION DIVISION.
  PROGRAM-ID. FEXO1.
  AUTHOR. OTEUR.
@@ -157,9 +161,13 @@ PROGRAMME :
      CLOSE ASSURES
      
      STOP RUN.
-     
+
+
     
-JCL :
+#*******************************************************************#
+#                         JCL D'EXECUTION                           #
+#*******************************************************************#
+
 //API7F1   JOB 'SDJ FORMATION',MSGLEVEL=(1,1),MSGCLASS=H,CLASS=A,
 //   NOTIFY=&SYSUID,COND=(4,LT),TIME=(,3),RESTART=*
 //*
@@ -182,7 +190,9 @@ JCL :
 //
 
 
-COMPTE-RENDU D'EXECUTION :
+#*******************************************************************#
+#                 SYSOUT / COMPTE-RENDU D'EXECUTION                 #
+#*******************************************************************#
 ------------------------------------------
 QUITTANCE DE PRIME
                *** 234563
