@@ -1,7 +1,11 @@
-#Énoncé : Utilisation des noms conditions
-Écrire les variables suivantes en déclarant les noms conditions adéquats :
-- le statut d'un compte ouvert s'il est égal à 'O', bloqué pour 'B', clôturé pour 'C' puis afficher le statut ;
-- le compte est créditeur si son solde est positif ou nul, débiteur s'il est négatif puis afficher le sens créditeur ou débiteur
+#********************************************************************************************************************#
+#  ÉNONCÉ : Utilisation des noms conditions ; Écrire les variables suivantes en déclarant les noms conditions        #
+#           adéquats :                                                                                               #
+#               - le statut d'un compte ouvert s'il est égal à 'O', bloqué pour 'B', clôturé pour 'C' puis afficher  #
+#                 le statut ;                                                                                        #
+#               - le compte est créditeur si son solde est positif ou nul, débiteur s'il est négatif puis afficher   #
+#                 le sens créditeur ou débiteur                                                                      #
+#********************************************************************************************************************#
 
 # Utilisation de l'instruction EVALUATE : Réécrire le code ci-dessous en utilisant l'instruction EVALUATE :
 IF STATUT = 'O'
