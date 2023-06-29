@@ -1,5 +1,7 @@
-# Énoncé : Écrire et tester un sous-programme qui contrôle une date au format AAAAMMJJ renseignée par 
-un programme  principal et la retourne au format JJ libellé du mois AAAA (ex : 28 MARS 2023, 12 SEPTEMBRE 1999).
+#*******************************************************************************************************************#
+#  ÉNONCÉ : Écrire et tester un sous-programme qui contrôle une date au format AAAAMMJJ renseignée par un programme #
+#           principal et la retourne au format JJ libellé du mois AAAA (ex : 28 MARS 2023, 12 SEPTEMBRE 1999).      #
+#*******************************************************************************************************************#
 
 # La zone de communication comporte :
 - une date au format AAAAMMJJ renseignée par le programme principal,
