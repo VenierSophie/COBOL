@@ -1,7 +1,10 @@
-#PROGRAMME D'ECRITURE DANS UN FICHIER SEQUENTIEL
+#********************************************************************************************************************#
+#  ÉNONCÉ : Écrire le programme FEXO3 qui alimente le nouveau fichier séquentiel APIn.COB.FEXO3 par des lignes       #
+#           renseignées dans la Sysin du step d'exécution du programme. Ce fichier sera créé dans ce step et         #
+#           préalablement supprimé dans un step précédant.                                                           #
+#********************************************************************************************************************#
 
-#Énoncé : Écrire le programme FEXO3 qui alimente le nouveau fichier séquentiel APIn.COB.FEXO3 par des lignes renseignées
-#dans la Sysin du step d'exécution du programme. Ce fichier sera créé dans ce step et préalablement supprimé dans un step précédant.
+#PROGRAMME D'ECRITURE DANS UN FICHIER SEQUENTIEL
 
 #Caractéristiques du fichier :
 #– organisation du fichier : séquentielle
