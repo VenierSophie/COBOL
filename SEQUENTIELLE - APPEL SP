@@ -26,6 +26,7 @@ Soit une zone de communication comprenant :
 
 
 
+
 PROGRAMME :
 CBL DYNAM
        IDENTIFICATION DIVISION.
@@ -78,10 +79,35 @@ CBL DYNAM
 
 
 
-
 SOUS-PROGRAMME : contrôle du numéro de département en table
 
      IDENTIFICATION DIVISION.
+       PROGRAM-ID. EXOSP.
+       AUTHOR. OTEUR.
+       DATE-WRITTEN. 14/03/2023.
+      ******************************************************************
+      *  FONCTION DU SOUS-PROGRAMME: RECHERCHE EN TABLE                *
+      *  230327 : CREATION DU PROGRAMME                                *
+      ******************************************************************
+       ENVIRONMENT DIVISION.
+       CONFIGURATION SECTION.
+       SPECIAL-NAMES.
+           DECIMAL-POINT IS COMMA.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+      * TABLEAU DES NOMS
+       01  TAB.
+           05             PIC X(11) VALUE '1JEAN'.
+           05             PIC X(11) VALUE '2JEANNE'.
+           05             PIC X(11) VALUE '3NOEMIE'.
+           05             PIC X(11) VALUE '4CORNELIUS'.
+           05             PIC X(11) VALUE '5ALBERTINE'.
+       01  REDEFINES TAB.
+           05 POSTE OCCURS 5.
+              10 COD      PIC X.
+              10 NOM      PIC X(10).
+
+
 
 
 
