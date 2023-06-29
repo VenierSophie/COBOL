@@ -57,7 +57,10 @@ b) Host-variables utilisées dans le programme: API8.SOURCE.COPY(EMPLOYE2)
 
 
 
-PROGRAMME DB2P0 :
+
+#*******************************************************************#
+#                            PROGRAMME                              #
+#*******************************************************************#
 
        IDENTIFICATION DIVISION.
        PROGRAM-ID. ESSAI.
@@ -282,9 +285,10 @@ PROGRAMME DB2P0 :
 
 
 
+#*******************************************************************#
+#                         JCL D'EXECUTION                           #
+#*******************************************************************#
 
-
-JCL du programme DB2P0 :
 //API8DB JOB NOTIFY=&SYSUID,CLASS=A,MSGCLASS=H
 //*
 //PROCLIB  JCLLIB ORDER=SDJ.FORM.PROCLIB
@@ -337,7 +341,11 @@ JCL du programme DB2P0 :
 //
 
 
-SYSOUT :
+
+#*******************************************************************#
+#                 SYSOUT : COMPTE-RENDU D'EXECUTION                 #
+#*******************************************************************#
+
 ********************************* TOP OF DATA **********************************
 LECTURE DE L'EMPLOYE DE MATRICULE : 10
 SQLCODE : 000000000
@@ -347,7 +355,10 @@ LECTURE DE TOUS LES EMPLOYES
 ******************************** BOTTOM OF DATA ********************************
 
 
-FICHIER D'EDITION :
+
+#*******************************************************************#
+#                          FICHIER D'EDITION                        #
+#*******************************************************************#
 1                              LISTE DES EMPLOYES
                                ------------------
 0MAT   NOM       NOD   DAT          SAL          COM
