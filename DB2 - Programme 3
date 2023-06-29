@@ -1,6 +1,6 @@
 #********************************************************************************************************************#
 #  ÉNONCÉ : Dans la bibliothèque userid.SOURCE.DB2, écrire le programme DB2P3 qui met à jour la table EMPLOYE en     #
-#           augmentant le salaire des employés en fonction du département dans lequel il travaille.                  #                                         #
+#           augmentant le salaire des employés en fonction du département dans lequel il travaille.                  #
 #********************************************************************************************************************#
 
 # 1) Augmentation de salaire :
