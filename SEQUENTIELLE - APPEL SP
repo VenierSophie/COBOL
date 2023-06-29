@@ -1,8 +1,11 @@
-#PREMIER PROGRAMME COMMUNICATION AVEC SOUS-PROGRAMME
+#********************************************************************************************************************#
+#  ÉNONCÉ : Écrire le programme principal EXOPP qui appelle le sous-programme EXOSP. Ce sous-programme recherche     #
+#           dans un tableau de 5 postes le nom à partir d'un code renseigné par le programme appelant. Si le code    #
+#           est trouvé dans la table, le sous-programme retourne le code retour 0 ainsi que le nom sinon il          #
+#           retourne le code retour 1 au programme appelant.                                                         #
+#********************************************************************************************************************#
 
-#Énoncé : Écrire le programme principal EXOPP qui appelle le sous-programme EXOSP. Ce sous-programme recherche dans un
-tableau de 5 postes le nom à partir d'un code renseigné par le programme appelant. Si le code est trouvé dans la table,
-le sous-programme retourne le code retour 0 ainsi que le nom sinon il retourne le code retour 1 au programme appelant.
+#PREMIER PROGRAMME COMMUNICATION AVEC SOUS-PROGRAMME
 
 Soit le tableau comprenant :
 01 TAB.
