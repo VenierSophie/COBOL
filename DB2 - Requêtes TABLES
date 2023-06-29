@@ -1,4 +1,6 @@
-# Requêtes sur les tables EMPLOYE et DEPARTEMENT
+#********************************************************************************************************************#
+#  ÉNONCÉ : Requêtes sur les tables EMPLOYE et DEPARTEMENT                                                           #
+#********************************************************************************************************************#
 
 -- LISTE DES EMPLOYES TRAVAILLANT DANS LE DEPARTEMENT P01
   SELECT * FROM EMPLOYE WHERE NOD = 'P01';
