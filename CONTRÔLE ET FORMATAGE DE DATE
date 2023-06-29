@@ -232,11 +232,39 @@ SOUS-PROGRAMME :
       *    DIVIDE ZANNEE BY 4 GIVING QUOTIENT REMAINDER RESTE
 
 
+           IF FUNCTION REM(ZANNEE, 400) = ZEROES
+              ADD 1 TO NB-JOURS(2)
+              DISPLAY '       ' ZANNEE ' BISSEXTILE'
+           ELSE
+              IF FUNCTION REM(ZANNEE, 100) = ZEROES
+                 DISPLAY '       ' ZANNEE ' NON BISSEXTILE'
+              ELSE
+                 IF FUNCTION REM(ZANNEE, 4) = ZEROES
+                    ADD 1 TO NB-JOURS(2)
+                    DISPLAY '      ' ZANNEE ' BISSEXTILE'
+                 ELSE
+                    DISPLAY '      ' ZANNEE ' NON BISSEXTILE'
+                 END-IF
+              END-IF
+           END-IF
+           .
+
+       FORMATAGE-DATE.
+           STRING ZJOUR            DELIMITED BY SIZE
+                  SPACES           DELIMITED BY SIZE
+                  LIB-MOIS(ZMOIS)  DELIMITED BY SPACES
+                  SPACES           DELIMITED BY SIZE
+                  ZANNEE           DELIMITED BY SIZE
+           INTO ZDATE-EDIT         DELIMITED BY SIZE
+           .
+
+       FIN.
+            GOBACK.
 
 
 
 
-JCL D'EXECUTION
+JCL D'EXECUTION :
 //API8PP   JOB 'SDJ FORMATION',MSGLEVEL=(1,1),MSGCLASS=H,CLASS=A,
 //   NOTIFY=&SYSUID,COND=(4,LT),TIME=(,3),RESTART=*
 //*
