@@ -30,7 +30,10 @@ Soit une zone de communication comprenant :
 
 
 
-PROGRAMME :
+#*******************************************************************#
+#                            PROGRAMME                              #
+#*******************************************************************#
+
 CBL DYNAM
        IDENTIFICATION DIVISION.
        PROGRAM-ID. EXOPP.
@@ -81,15 +84,16 @@ CBL DYNAM
 
 
 
-
-SOUS-PROGRAMME : contrôle du numéro de département en table
+#*******************************************************************#
+#                          SOUS PROGRAMME                           #
+#*******************************************************************#
 
      IDENTIFICATION DIVISION.
        PROGRAM-ID. EXOSP.
        AUTHOR. OTEUR.
        DATE-WRITTEN. 14/03/2023.
       ******************************************************************
-      *  FONCTION DU SOUS-PROGRAMME: RECHERCHE EN TABLE                *
+      *  FONCTION DU SOUS-PROGRAMME: contrôle du numéro de département *
       *  230327 : CREATION DU PROGRAMME                                *
       ******************************************************************
        ENVIRONMENT DIVISION.
@@ -137,7 +141,10 @@ SOUS-PROGRAMME : contrôle du numéro de département en table
 
 
 
-JCL :
+#*******************************************************************#
+#                         JCL D'EXECUTION                           #
+#*******************************************************************#
+
 //API8PP   JOB 'SDJ FORMATION',MSGLEVEL=(1,1),MSGCLASS=H,CLASS=A,
 //   NOTIFY=&SYSUID,COND=(4,LT),TIME=(,3),RESTART=*
 //*
