@@ -23,3 +23,7 @@ Soit une zone de communication comprenant :
       88 ZCDRET-OK             VALUE ZERO.
       88 ZCDRET-NON-TROUVE     VALUE 1.
     05 ZNOM PIC X(10).
+
+PROGRAMME :
+ CBL DYNAM
+     IDENTIFICATION DIVISION.
