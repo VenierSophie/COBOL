@@ -1,6 +1,9 @@
-# Énoncé de l'exercice : Dans la bibliothèque userid.SOURCE.DB2, écrire le programme DB2P4 qui met à jour la table EMPLOYE
-# à partir du fichier séquentiel mouvements API0.COB.MVT.BASE.EMPLOYE en fonction d'un code mouvement indiquant
-# l'action à réaliser (création, modification, suppression) et d'un code indiquant la table à mettre à jour.
+#********************************************************************************************************************#
+#  ÉNONCÉ : Dans la bibliothèque userid.SOURCE.DB2, écrire le programme DB2P4 qui met à jour la table EMPLOYE à      #
+#           partir du fichier séquentiel mouvements API0.COB.MVT.BASE.EMPLOYE en fonction d'un code mouvement        #
+#           indiquant l'action à réaliser (création, modification, suppression) et d'un code indiquant la table à    #
+#           mettre à jour                                                                                            #
+#********************************************************************************************************************#
   
 # Règles de gestion : Contrôler chaque champ de chaque enregistrement, afficher toutes les erreurs rencontrées. Ne pas faire la MAJ
  dans la table adéquate s'il y a au moins une erreur dans l'enregistrement. Arrêter le programme pour toute erreur technique.
