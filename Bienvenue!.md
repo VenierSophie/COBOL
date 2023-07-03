@@ -15,11 +15,9 @@ __Récapitulatif des programmes :__
 
 ----------------------------------------------------------------------------------------------------------------------------------------
 
-| PROGRAMMES        | Description          |
-| ------------- | ------:|
-| Fonctions     |  Exemple d'utilisation de fonctions : MODULO ; REMAINDER ; CURRENT DATE ; RANDOM ; MAX ; MIN ; etc |
-| col 2 is      |    $12 |
-| zebra stripes |     $1 |
+| PROGRAMMES              | Description          |
+| ----------------------- | :-------------------:|
+| Fonctions               |  Exemple d'utilisation de fonctions : MODULO ; REMAINDER ; CURRENT DATE ; RANDOM ; MAX ; MIN ; etc |
 
 There must be at least 3 dashes separating each header cell.
 The outer pipes (|) are optional, and you don't need to make the 
