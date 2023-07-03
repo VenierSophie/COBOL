@@ -15,13 +15,11 @@ __Récapitulatif des programmes :__
 
 ----------------------------------------------------------------------------------------------------------------------------------------
 
-Colons can be used to align columns.
-
-| Tables        | Are           | Cool  |
-| ------------- |:-------------:| -----:|
-| col 3 is      | right-aligned | $1600 |
-| col 2 is      | centered      |   $12 |
-| zebra stripes | are neat      |    $1 |
+| PROGRAMMES        | Description          |
+| ------------- | ------:|
+| Fonctions     |  Exemple d'utilisation de fonctions : MODULO ; REMAINDER ; CURRENT DATE ; RANDOM ; MAX ; MIN ; etc |
+| col 2 is      |    $12 |
+| zebra stripes |     $1 |
 
 There must be at least 3 dashes separating each header cell.
 The outer pipes (|) are optional, and you don't need to make the 
