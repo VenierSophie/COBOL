@@ -1,6 +1,6 @@
 #Exercice 1.6 : Écrire un algorithme permettant d’échanger les valeurs de deux variables A et B, et ce quel que soit leur contenu préalable.
 #Exemple : A vaut 1, B vaut 2. En fin de traitement, A doit valoir 2 et B doit valoir 1
-#Solution n°1 :
+_Solution n°1 :_
 Début
 A entier
 B entier
@@ -12,9 +12,28 @@ B ← A
 A ← C
 Fin
 
-#Solution n°2
+__Solution n°2__
 Début
 A ← A + B
 B ← A – B
 A ← A – B
 Fin
+
+
+#Exercice 1.7 : Écrire un algorithme transférant à B la valeur de A, à C la valeur de B et à A la valeur de C
+#(toujours quels que soient les contenus préalables de ces variables).
+Début
+A entier
+B entier
+C entier
+D entier
+A← 1
+B← 2
+C← 3
+D←A
+A← C
+C ←B
+B← D
+A = 3, B =1, C = 2
+2ème solution
+C ←A+ B + C A ← C – (B + A) B ← C – (B + A) C ← C – (B + A) Fin
