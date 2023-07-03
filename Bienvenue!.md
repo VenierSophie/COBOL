@@ -6,7 +6,7 @@ Bonjour à tous,
 Ci-dessous le récapitulatfs des programmes que j'ai développés durant ma formation "Développeur(se) Grands Systèmes Cobol" en 2023.  
 Bonne lecture !
 
-
+----------------------------------------------------------------------------------------------------------------------------------------
   
 Récapitulatif des programmes :
 - Fonctions                        Exemple d'utilisation de fonctions : MODULO ; REMAINDER ; CURRENT DATE ; RANDOM ; MAX ; MIN ; etc
@@ -26,6 +26,3 @@ Récapitulatif des programmes :
 - DB2 - Programme 2 - 2            Édition de la liste des employés par bâtiment et par numéro de département
 - DB2 - Programme 3                Mise à jour de la table EMPLOYE ; augmentation du salaire en fonction du département
 - DB2 - Programme 4                Mise à jour de la table EMPLOYE à partir d'un fichier séquentiel en fonction d'un code mouvement
-
-
-| Tables | Are | Cool | |----------|:-------------:|------:| | col 1 is| left-aligned | $1600 |
