@@ -15,7 +15,7 @@ __Récapitulatif des programmes :__
 
 ----------------------------------------------------------------------------------------------------------------------------------------
 
-| PROGRAMMES              | Description          |
+| PROGRAMME               | Description          |
 | ----------------------- | :-------------------:|
 | Fonctions               |  Exemple d'utilisation de fonctions : MODULO ; REMAINDER ; CURRENT DATE ; RANDOM ; MAX ; MIN ; etc |
 
