@@ -9,7 +9,7 @@ Bonne lecture !
 ----------------------------------------------------------------------------------------------------------------------------------------
   
 Récapitulatif des programmes :
-- Fonctions                        Exemple d'utilisation de fonctions : MODULO ; REMAINDER ; CURRENT DATE ; RANDOM ; MAX ; MIN ; etc
+- *Fonctions*                        Exemple d'utilisation de fonctions : MODULO ; REMAINDER ; CURRENT DATE ; RANDOM ; MAX ; MIN ; etc
 - ContrôleFormatageDate            Format de départ AAAAMMJJ - Format d'arrivée JJ MM AAAA
 - NomsConditions                   Utilisation de noms conditions + fonction EVALUATE
 - Séquentiel - SYSINJCL            Alimentation fichier séquentiel (SYSIN du JCL)
