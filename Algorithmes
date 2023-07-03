@@ -243,25 +243,73 @@ finsi
 Fin
 
 Jeu de test : Conditions testées par l'ordinateur selon les valeurs de TUTU, TOTO et TATA
-Condition testée  
-A ou B
-A ou non B
-Non A ou B
-Non A ou non B
 
-
-
-
-
-
-
-
+|                   |      A      |   B  |      |
+| Condition testée  | TUTU ; TOTO | TATA | TUTU |
+|-------------------|-------------|------|------|
+| A ou B            |   6  |   1  |  OK  |   7  |
+| A ou non B        |   6  |   1  |  KO  |   7  |
+| Non A ou B        |   4  |   1  |  OK  |   5  |
+| Non A ou non B    |   4  |   1  |  KO  |   3  |
 
 
 
 ----------------------------------------------------------------------------------------------------------------------------------
 
-#Exercice 3.6 :
+#Exercice 4.2 : Cet algorithme est destiné à prédire l'avenir, et il doit être infaillible !
+#Il lira au clavier l’heure et les minutes, et il affichera l’heure qu’il sera une minute plus tard.
+#Par exemple, si l'utilisateur tape 21 puis 32, l'algorithme doit répondre :
+#"Dans une minute, il sera 21 heure(s) 33".
+#NB : on suppose que l'utilisateur entre une heure valide. Pas besoin donc de la vérifier.
+
+HEURE entier
+MINUTE entier
+Début
+Écrire « Entrer l'heure : »
+Lire HEURE
+Écrire « Entrer les minutes : »
+Lire MINUTE
+Si MINUTE = 59
+   MINUTE ← 0
+   si HEURE = 23
+       HEURE ← 0
+   sinon
+       HEURE ← HEURE + 1
+   finsi
+sinon
+    MINUTE ← MINUTE + 1
+finsi
+Écrire « Dans une minute il sera » HEURE « h » MINUTE « mn »
+Fin
+
+
+Jeu de test :
+
+| HEURE(S) | MINUTE(S) | HEURE(S) | MINUTE(S) |
+|----------|-----------|----------|-----------|
+|    01    |     01    |    01    |     02    |
+|    01    |     59    |    02    |     00    |
+|    23    |     01    |    23    |     02    |
+|    23    |     59    |    00    |     00    |
+
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+#Exercice 4.2 : 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
