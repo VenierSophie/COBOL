@@ -1,4 +1,11 @@
-# COBOL
+# PROGRAMMES COBOL
 
-Programmes réalisé durant la formation Développeur(se) Grands Systèmes Cobol
-Du 21 février au 13 juillet 2023 chez M2I formation
+Bonjour à tous,
+Les programmes suivants ont été réalisés durant ma formation "Développeur(se) Grands Systèmes Cobol" en 2023.
+
+Récapitulatif des programmes :
+- Fonctions (Modulo ; 
+- Contrôle et formatage de date
+- 
+- 
+- DB2
