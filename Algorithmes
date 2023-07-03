@@ -194,52 +194,74 @@ AGE     entier
 Début
 Écrire « Entrer l'âge : »
 Lire AGE
-si AGE >= 12
-   écrire « Cadet »
-sinon
-   si AGE >= 10
-      écrire « minime »
+A) si AGE >= 12
+      écrire « Cadet »
    sinon
-      si AGE >= 8
-         écrire « pupille »
+B)    si AGE >= 10
+         écrire « minime »
       sinon
-         si AGE >= 6
-            écrire « poussin »
-         sinon 
-            écrire "moins de 6 ans"
+C)       si AGE >= 8
+            écrire « pupille »
+         sinon
+D)          si AGE >= 6
+               écrire « poussin »
+E)          sinon 
+               écrire "moins de 6 ans"
+            finsi
          finsi
       finsi
    finsi
+Fin
+
+Jeu de test : Conditions testées par l'ordinateur selon l'âge
+AGE = 1  ; Condition = A,B,C,D,E
+AGE = 6  ; Condition = A,B,C,D
+AGE = 7  ; Condition = A,B,C,D
+AGE = 8  ; Condition = A,B,C
+AGE = 9  ; Condition = A,B,C
+AGE = 10 ; Condition = A,B
+AGE = 11 ; Condition = A,B
+AGE = 12 ; Condition = A
+AGE = 13 ; Condition = A
+
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+#Exercice 4.1 : Formulez un algorithme équivalent à l’algorithme suivant :
+Si Tutu > Toto + 4 OU Tata = "OK" Alors
+    Tutu ← Tutu + 1
+Sinon
+    Tutu ← Tutu – 1
+Finsi
+
+Début
+Si TUTU <= (TOTO + 4) et TATA <> « OK »
+    TUTU ← TUTU - 1
+sinon
+    TUTU ← TUTU + 1
 finsi
-FIN
+Fin
 
-Conditions testées par l'ordinateur selon l'âge
-| AGE                  | Condition          |
-| -------------------- | -------------------|
-| 1                | [Lien vers les algorithmes ici](http://cours.pise.info/algo/introduction.htm) |
-| Fonctions                   | Utilisation de fonctions : MODULO ; REMAINDER ; CURRENT DATE ; RANDOM ; MAX ; MIN ; etc |
-
-
-AGE
-1
-6
-7
-8
-9
-10
-11
-Condition
-A,B,C,D,E
-A,B,C,D
-A,B,C,D
-A,B,C
-A,B,C
-A,B
-A,B
-12 A
-13 A
+Jeu de test : Conditions testées par l'ordinateur selon les valeurs de TUTU, TOTO et TATA
+Condition testée  
+A ou B
+A ou non B
+Non A ou B
+Non A ou non B
 
 
+
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+#Exercice 3.6 :
 
 
 
