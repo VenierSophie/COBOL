@@ -214,7 +214,10 @@ finsi
 FIN
 
 Conditions testées par l'ordinateur selon l'âge
-
+| AGE                  | Condition          |
+| -------------------- | -------------------|
+| 1                | [Lien vers les algorithmes ici](http://cours.pise.info/algo/introduction.htm) |
+| Fonctions                   | Utilisation de fonctions : MODULO ; REMAINDER ; CURRENT DATE ; RANDOM ; MAX ; MIN ; etc |
 
 
 AGE
