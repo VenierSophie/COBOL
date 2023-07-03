@@ -8,7 +8,7 @@ Bonne lecture !
 
 ----------------------------------------------------------------------------------------------------------------------------------------
   
-Récapitulatif des programmes :
+Récapitulatif des programmes :__underscores__
 
   
 *Fonctions* : Exemple d'utilisation de fonctions : MODULO ; REMAINDER ; CURRENT DATE ; RANDOM ; MAX ; MIN ; etc
