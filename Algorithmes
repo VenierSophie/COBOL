@@ -2,10 +2,10 @@
 #Exemple : A vaut 1, B vaut 2. En fin de traitement, A doit valoir 2 et B doit valoir 1
 
 Solution n°1 :
-Début
 A entier
 B entier
 C entier
+Début
 A ← 1
 B ← 2
 C ← B
@@ -26,11 +26,11 @@ Fin
 #(toujours quels que soient les contenus préalables de ces variables).
 
 Solution n°1 :
-Début
 A entier
 B entier
 C entier
 D entier
+Début
 A ← 1
 B ← 2
 C ← 3
@@ -49,47 +49,73 @@ B ← C – (B + A)
 C ← C – (B + A)
 Fin
 
+----------------------------------------------------------------------------------------------------------------------------------
+
 #Exercice 2.2 : Écrire un programme qui demande un nombre à l’utilisateur, puis qui calcule et affiche le carré de ce nombre.
-Début
 NBRE entier
 CARRE entier
+Début
 Écrire « entrer un nombre : »
 Lire NBRE
 CARRE ← NBRE * NBRE
 Écrire « son carré est : » CARRE
 Fin
 
+----------------------------------------------------------------------------------------------------------------------------------
 
 #Exercice 2.3 : Écrire un programme qui demande son prénom à l'utilisateur, et qui lui réponde par un charmant « Bonjour » suivi du prénom
-Début
 PRENOM alphanumérique
+Début
 Écrire « quel est ton prénom : »
 Lire PRENOM
 Écrire « Bonjour, » PRENOM « ! »
 Fin
 
+----------------------------------------------------------------------------------------------------------------------------------
 
-
-
-
-#Exercice 2.4 : 
-2.4) Écrire un programme qui lit le prix HT d’un article, le nombre d’articles et le taux de TVA, et qui fournit le prix total TTC correspondant. Faire en sorte que des libellés apparaissent clairement.
-Exemple :
-prix HT
-nb articles
-taux TVA
-résultat
-« Prix total TTC : 600
-NOMBRE
-PRIX-HT
-TAUX-TVA
-PRIX-TOTAL-TTC
+#Exercice 2.4 : Écrire un programme qui lit le prix HT d’un article, le nombre d’articles et le taux de TVA, et qui fournit le prix
+#total TTC correspondant. Faire en sorte que des libellés apparaissent clairement.
+NOMBRE entier
+PRIX-HT numérique
+TAUX-TVA numérique
+PRIX-TOTAL-TTC numérique
 Début
-écrire « Entrer le prix HT : »
-lire PRIX-HT
-écrire « Entrer le nombre d'articles : »
-lire NOMBRE
-écrire « Entrer le taux de TVA (en pourcentage) : »
-lire TAUX-TVA
-PRIX-TTC ← NOMBRE * PRIX-HT * (1 + TAUX-TVA / 100) écrire « Prix total TTC : » PRIX-TOTAL-TTC
+Écrire « Entrer le prix HT : »
+Lire PRIX-HT
+Écrire « Entrer le nombre d'articles : »
+Lire NOMBRE
+Écrire « Entrer le taux de TVA (en pourcentage) : »
+Lire TAUX-TVA
+PRIX-TTC ← NOMBRE * PRIX-HT * (1 + TAUX-TVA / 100)
+Écrire « Prix total TTC : » PRIX-TOTAL-TTC
 Fin
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+#Exercice 3.1 :  Écrire un algorithme qui demande un nombre à l’utilisateur, et l’informe ensuite si ce nombre est positif ou
+#négatif (on laisse de côté le cas où le nombre vaut zéro).
+NOMBRE entier signé
+Début
+écrire « Entrer un nombre différent de 0 : »
+Lire NOMBRE
+Si NOMBRE > 0
+  écrire « Nombre positif »
+sinon
+  écrire « Nombre négatif »
+finsi
+Fin
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------
