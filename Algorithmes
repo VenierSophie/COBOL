@@ -1,5 +1,7 @@
 #Exercice 1.6 : Écrire un algorithme permettant d’échanger les valeurs de deux variables A et B, et ce quel que soit leur contenu préalable.
 #Exemple : A vaut 1, B vaut 2. En fin de traitement, A doit valoir 2 et B doit valoir 1
+
+
 __Solution n°1 :__
 Début
 A entier
