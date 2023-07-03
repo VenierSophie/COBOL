@@ -1,8 +1,7 @@
 # PROGRAMMES COBOL
 
-#Bonjour à tous,
-#Ci-dessous le récapitulatfs des programmes que j'ai développés durant ma formation "Développeur(se) Grands Systèmes Cobol" en 2023.
-#Bonne lecture !
+Bonjour à tous, ci-dessous le récapitulatfs des programmes que j'ai développés durant ma formation "Développeur(se) Grands Systèmes Cobol" en 2023. Bonne lecture !
+
 
 Récapitulatif des programmes :
 - Fonctions                        Exemple d'utilisation de fonctions : MODULO ; REMAINDER ; CURRENT DATE ; RANDOM ; MAX ; MIN ; etc
