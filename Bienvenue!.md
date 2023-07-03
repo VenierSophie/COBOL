@@ -11,8 +11,8 @@ Bonne lecture !
 __Récapitulatif des programmes :__
 
   
-| PROGRAMME                 | Description          |
-| ------------------------- | :-------------------|
+| PROGRAMME                 | DESCRIPTION          |
+| ------------------------- | -------------------|
 | Fonctions                 | Exemple d'utilisation de fonctions : MODULO ; REMAINDER ; CURRENT DATE ; RANDOM ; MAX ; MIN ; etc |
 | ContrôleFormatageDate     | Format de départ AAAAMMJJ - Format d'arrivée JJ MM AAAA |
 | NomsConditions            | Utilisation de noms conditions + fonction EVALUATE |
