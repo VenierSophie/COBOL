@@ -11,26 +11,14 @@ Bonne lecture !
 __Récapitulatif des programmes :__
 
   
-*Fonctions* : Exemple d'utilisation de fonctions : MODULO ; REMAINDER ; CURRENT DATE ; RANDOM ; MAX ; MIN ; etc
-
-----------------------------------------------------------------------------------------------------------------------------------------
-
 | PROGRAMME               | Description          |
 | ----------------------- | :-------------------:|
 | Fonctions               |  Exemple d'utilisation de fonctions : MODULO ; REMAINDER ; CURRENT DATE ; RANDOM ; MAX ; MIN ; etc |
-
-There must be at least 3 dashes separating each header cell.
-The outer pipes (|) are optional, and you don't need to make the 
-raw Markdown line up prettily. You can also use inline Markdown.
-
-Markdown | Less | Pretty
---- | --- | ---
-*Still* | `renders` | **nicely**
-1 | 2 | 3
+| ContrôleFormatageDate   |  Format de départ AAAAMMJJ - Format d'arrivée JJ MM AAAA |
+| NomsConditions          |  Utilisation de noms conditions + fonction EVALUATE |
 
 
-- ContrôleFormatageDate            Format de départ AAAAMMJJ - Format d'arrivée JJ MM AAAA
-- NomsConditions                   Utilisation de noms conditions + fonction EVALUATE
+
 - Séquentiel - SYSINJCL            Alimentation fichier séquentiel (SYSIN du JCL)
 - Séquentiel - LectureÉdition      Lecture des enregistrements d'un fichier séquentiel ; affichage dans fichier d'édition
 - Séquentiel - LectureÉcriture     Lecture fichier STOCK pour alimentation fichier COMPTA et DEPASSEMENT
