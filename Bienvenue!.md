@@ -18,7 +18,7 @@ __Récapitulatif des programmes :__
 | NomsConditions                | Utilisation de noms conditions + fonction EVALUATE |
 | Séquentiel - SYSINJCL         | Alimentation fichier séquentiel (SYSIN du JCL) |
 | Séquentiel - LectureÉdition   | Lecture des enregistrements d'un fichier séquentiel ; affichage dans fichier d'édition |
-| Séquentiel - LectureÉcriture  | Lecture fichier STOCK pour alimentation fichier COMPTA et DEPASSEMENT  |
+| Séquentiel - MAJ              | Lecture fichier STOCK pour alimentation fichier COMPTA et DEPASSEMENT  |
 | Séquentiel - Contrôles        | Contrôle d'un fichier séquentiel  |
 | Séquentiel - AppelSP          | Appel d'un sous-programme ; Recherche dans tableau  |
 | DB2 - Création TABLES         | Création des tables EMPLOYE et DEPARTEMENT pour programmes de 0 à 3 (SQL)  |
