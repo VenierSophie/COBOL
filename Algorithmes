@@ -1,3 +1,38 @@
+#Les exercices ci-dessous proiviennent du site internet suivant : http://cours.pise.info/algo/introduction.htm
+Récapitulatif des algorithmes :
+Exercices
+
+| EXERCICE |                         DESCRIPTION                      |   LIGNE  | JEU DE TEST |
+|----------|----------------------------------------------------------|----------|-------------|
+|    1.6   | Échange de valeurs entre deux variables                  |          |      /      |
+|    1.7   | Transfère de valeurs entre trois variables               |          |      /      |
+|    2.2   | Calcul du carré d'un nombre                              |          |      /      |
+|    2.3   | Affichage de salutation & du nom d'une personne          |          |      /      |
+|    2.4   | Calcul du prix TTC                                       |          |      /      |
+|    3.2   | Calcul du produit et affichage du signe du nombre        |          |      /      |
+|    3.3   | Ordre alphabétique de noms                               |          |      /      |
+|    3.4   | Informe du signe du nombre                               |          |      /      |
+|    3.5   | Informe du signe du produit de deux nombres              |          |      /      |
+|    3.6   | Catégories d'âges                                        |          |     OUI     |
+|    4.1   | Conditions                                               |          |     OUI     |
+|    4.3   | Affichage de l'heure une minute/seconde plus tard        |          |     OUI     |
+|    4.4   | Calcul de la facturation de photocopies                  |          |     OUI     |
+|    4.5   | Calcul des impôts en fonction de règles basiques         |          |     OUI     |
+|    4.5   | Résultat d'éléctions                                     |          |     OUI     |
+|    4.8   | Date valide                                              |          |     OUI     |
+|  5.3;5.4 | Affichage des dix nombres suivants                       |          |     OUI     |
+|    5.5   | Table de multiplication d'un nombre                      |          |      /      |
+|    5.6   | Somme des entiers d'un nombre                            |          |      /      |
+|    5.7   | Calcul de la factorielle d'un nombre                     |          |      /      |
+|    5.10  | Calcul de la monnaie dû lors d'un achat                  |          |     OUI     |
+|    6.1   | Remplissage d'un tableau                                 |          |      /      |
+|    6.8   | Calcul nombre de valeurs positives et négatives entrées  |          |      /      |
+|    6.10  | Création tableau provenant de la somme de deux éléments  |          |      /      |
+|    6.11  | Multiplication d'éléments de tableau                     |          |     OUI     |
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+
 #Exercice 1.6 : Écrire un algorithme permettant d’échanger les valeurs de deux variables A et B, et ce quel que soit leur contenu préalable.
 #Exemple : A vaut 1, B vaut 2. En fin de traitement, A doit valoir 2 et B doit valoir 1
 
@@ -88,21 +123,6 @@ Lire NOMBRE
 Lire TAUX-TVA
 PRIX-TTC ← NOMBRE * PRIX-HT * (1 + TAUX-TVA / 100)
 Écrire « Prix total TTC : » PRIX-TOTAL-TTC
-Fin
-
-----------------------------------------------------------------------------------------------------------------------------------
-
-#Exercice 3.1 : Écrire un algorithme qui demande un nombre à l’utilisateur, et l’informe ensuite si ce nombre est positif ou
-#négatif (on laisse de côté le cas où le nombre vaut zéro).
-NOMBRE   entier signé
-Début
-écrire « Entrer un nombre différent de 0 : »
-Lire NOMBRE
-Si NOMBRE > 0
-  écrire « Nombre positif »
-sinon
-  écrire « Nombre négatif »
-finsi
 Fin
 
 ----------------------------------------------------------------------------------------------------------------------------------
@@ -251,45 +271,6 @@ Jeu de test : Conditions testées par l'ordinateur selon les valeurs de TUTU, TO
 | A ou non B        |   6  |   1  |  KO  |   7  |
 | Non A ou B        |   4  |   1  |  OK  |   5  |
 | Non A ou non B    |   4  |   1  |  KO  |   3  |
-
-
-
-----------------------------------------------------------------------------------------------------------------------------------
-
-#Exercice 4.2 : Cet algorithme est destiné à prédire l'avenir, et il doit être infaillible !
-#Il lira au clavier l’heure et les minutes, et il affichera l’heure qu’il sera une minute plus tard.
-#Par exemple, si l'utilisateur tape 21 puis 32, l'algorithme doit répondre :
-#"Dans une minute, il sera 21 heure(s) 33".
-#NB : on suppose que l'utilisateur entre une heure valide. Pas besoin donc de la vérifier.
-
-HEURE entier
-MINUTE entier
-Début
-Écrire « Entrer l'heure : »
-Lire HEURE
-Écrire « Entrer les minutes : »
-Lire MINUTE
-Si MINUTE = 59
-   MINUTE ← 0
-   si HEURE = 23
-       HEURE ← 0
-   sinon
-       HEURE ← HEURE + 1
-   finsi
-sinon
-    MINUTE ← MINUTE + 1
-finsi
-Écrire « Dans une minute il sera » HEURE « h » MINUTE « mn »
-Fin
-
-Jeu de test :
-
-| HEURE(S) | MINUTE(S) | HEURE(S) | MINUTE(S) |
-|----------|-----------|----------|-----------|
-|    01    |     01    |    01    |     02    |
-|    01    |     59    |    02    |     00    |
-|    23    |     01    |    23    |     02    |
-|    23    |     59    |    00    |     00    |
 
 
 ----------------------------------------------------------------------------------------------------------------------------------
@@ -715,7 +696,7 @@ Fin
 
 ----------------------------------------------------------------------------------------------------------------------------------
 
-#Exercice 6.11 : Écrivez un algorithme qui multiplie chaque élément du tableau 1 par chaque élément du tableau 2, et affitionner le tout.
+#Exercice 6.11 : Écrivez un algorithme qui multiplie chaque élément du tableau 1 par chaque élément du tableau 2, et additionner le tout.
 Tableau VAL1[3]      entier
 Tableau VAL2[1]      entier
 TOTAL                entier
