@@ -449,8 +449,301 @@ Jeu de test :
 
 ----------------------------------------------------------------------------------------------------------------------------------
 
-#Exercice 4.7 : 
+#Exercice 4.8 : Écrivez un algorithme qui après avoir demandé un numéro de jour, de mois et d'année à l'utilisateur, renvoie s'il
+#s'agit ou non d'une date valide.
+
+JOUR          entier
+MOIS          entier
+ANNEE         entier
+RESTE         entier
+IND-ERREUR    entier
+Début
+Écrire « entrer le jour : »
+Lire JOUR
+Écrire « entrer le mois: »
+Lire MOIS
+Écrire « entrer l'année : »
+Lire ANNEE
+
+IND-ERREUR ← 0
+
+Selon MOIS
+      1, 3, 5, 7, 8, 10, 12
+          si JOUR < 1 ou JOUR > 31
+              IND-ERREUR ← 1
+          finsi
+      4, 6, 9, 11
+          si JOUR < 1 ou JOUR > 30
+              IND-ERREUR ← 1
+          finsi
+      2
+          ANNEE / 4 (mettre le reste dans RESTE)
+          si (RESTE > 0 et JOUR > 28) ou (RESTE = 0 et JOUR > 29) ou JOUR < 1
+              IND-ERREUR ← 1
+          finsi
+      autre
+          IND-ERREUR ← 1
+fin selon
+
+Si IND-ERREUR == 1
+      écrire « date invalide »
+sinon
+      écrire « date valide »
+finsi
+Fin
+
+Jeu de test :
+
+| JOUR | MOIS | ANNEE |  RESULTAT ATTENDU  |        RESULTAT          |
+|------|------|-------|--------------------|--------------------------|
+|   1  |   1  |  2023 |    date valide     |        date valide       |
+|   0  |   1  |  2023 |   date invalide    |       date invalide      |
+|  31  |   1  |  2023 |    date valide     |        date valide       |
+|  32  |   1  |  2023 |   date invalide    |       date invalide      |
+|  31  |   4  |  2023 |   date invalide    |       date invalide      |
+|  30  |   4  |  2023 |    date valide     |        date valide       |
+|  28  |   2  |  2023 |    date valide     |        date valide       |
+|  29  |   2  |  2023 |   date invalide    |       date invalide      |
+|  29  |   2  |  2020 |    date valide     |        date valide       |
+|   1  |   0  |  2023 |   date invalide    |       date invalide      |
+|   1  |  13  |  2023 |   date invalide    |       date invalide      |
 
 
+----------------------------------------------------------------------------------------------------------------------------------
+
+#Exercice 5.3 et 5.4 : Écrire un algorithme qui demande un nombre de départ, et qui ensuite affiche les dix nombres suivants.
+#Par exemple, si l'utilisateur entre le nombre 17, le programme affichera les nombres de 18 à 27.
+#Utilisation de l'instruction TANT QUE
+N       entier
+CPT     entier
+Début
+CPT ← 0
+Écrire « entrer un nombre : »
+Lire N
+tant que CPT < 10
+    CPT ← CPT + 1
+    N ← N + 1
+    écrire N
+fin tant que
+Fin
+
+#Utilisation de l'instruction POUR
+N       entier
+CPT     entier
+Début
+Écrire « entrer un nombre : »
+Lire N
+Pour CPT de 1 à 10
+    N ← N + 1
+    écrire N
+CPT suivant
+Fin
+
+Jeu de test :
+|    N    |         RESULTAT ATTENDU        |            RESULTAT             |
+|---------|---------------------------------|---------------------------------|
+|    0    |       1 2 3 4 5 6 7 8 9 10      |       1 2 3 4 5 6 7 8 9 10      |
+|   57    |  58 59 60 61 62 63 64 65 66 67  |  58 59 60 61 62 63 64 65 66 67  |
+
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+#Exercice 5.5 : Écrire un algorithme qui demande un nombre de départ, et qui ensuite écrit la table de multiplication de ce nombre
+NB     entier
+I     entier
+Début
+Écrire « entrer un nombre : »
+Lire NB
+Écrire « Table de » NB
+Pour I de 1 à 10
+      écrire NB « x » I « = » NB * I
+I suivant
+Fin
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+#Exercice 5.6 : Écrire un algorithme qui demande un nombre de départ, et qui calcule la somme des entiers jusqu’à ce nombre.
+#NB : on souhaite afficher uniquement le résultat, pas la décomposition du calcul.
+X       entier
+N       entier
+SOMME   entier
+Début
+Écrire « entrer un nombre : »
+Lire X
+SOMME ← 0
+Pour N de 1 à X
+      SOMME ← SOMME + N
+N suivant
+Écrire « SOMME : » SOMME
+Fin
+
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+#Exercice 5.7 : Écrire un algorithme qui demande un nombre de départ, et qui calcule sa factorielle.
+X         entier
+N         entier
+PRODUIT   entier
+Début
+Écrire « entrer un nombre : »
+Lire X
+PRODUIT ← 0
+Pour N de 1 à X
+        PRODUIT ← PRODUIT * N
+N suivant
+Écrire « Factoriel de » X « : » PRODUIT
+Fin
+
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+#Exercice 5.10 : Lire la suite des prix (en euros entiers et terminée par zéro) des achats d’un client. Calculer la somme qu’il doit,
+#lire la somme qu’il paye, et simuler la remise de la monnaie en affichant les textes "10 Euros", "5 Euros" et "1 Euro" autant de
+#fois qu’il y a de coupures de chaque sorte à rendre.
+PRIX       entier
+SOMME      entier
+PAYE       entier
+DIF        entier
+Début
+SOMME ← 0
+Écrire « entrer un prix: »
+Lire PRIX
+tant que PRIX <> 0
+      SOMME ← SOMME + PRIX
+      écrire « entrer un prix : »
+      lire PRIX
+fin tant que
+
+Écrire « vous devez payer : » SOMME
+Écrire « somme payée : »
+Lire PAYE
+
+si PAYE < SOMME
+      écrire « ajouter encore ! »
+      lire PAYE
+finsi
+
+DIF ← PAYE – SOMME
+tant que DIF <> 0
+  si DIF >= 10
+      écrire « rendu 10 euros »
+      DIF ← DIF – 10
+  sinon
+      si DIF >= 5
+         écrire « rendu 5 euros »
+         DIF ← DIF – 5 sinon
+      sinon
+          si DIF >= 1
+              écrire « rendu 1 euros »
+              DIF ← DIF – 1
+          finsi
+      finsi
+  finsi
+fin tant que
+Écrire « merci pour vos achats et à bientôt chez ALGO »
+fin
+
+Jeu de test :
+
+| PRIX | SOMME | PAYE |        RENDU         |
+|------|-------|------|----------------------|
+|   2  |   2   |  20  |  10 + 5 + 1 + 1 + 1  |
+|   5  |   7   |  18  |        10 + 1        |    
+|  10  |   18  |  50  | 10 + 10 + 10 + 1 + 1 |
+|   1  |   18  |  25  |       5 + 1 + 1      |    
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+#Exercice 6.1 : Écrire un algorithme qui déclare et remplisse un tableau de 7 valeurs numériques en les mettant toutes à zéro.
+Tableau tab[6]     numérique
+I                  entier
+Début
+Pour I de 0 à 6
+      tab[i] ← 0
+      écrire « tab[ » I « ] : » tab[i]
+I suivant
+Fin
+
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+#Exercice 6.8 : Écrivez un algorithme permettant à l’utilisateur de saisir 10 valeurs positives ou négatives.
+Enfin, une fois la saisie terminée, le programme affichera le nombre de valeurs négatives et le nombre de valeurs positives.
+Tableau VAL[9]       entier signé
+I                    entier
+CPT1                 entier
+CPT2                 entier
+Début
+CPT1 ← 0
+CPT2 ← 0
+Pour I de 0 à 9
+        écrire « veuillez saisir une valeur : »
+        lire VAL[I]
+        si VAL[I] >= 0
+              CPT1 ← CPT1 + 1
+        sinon
+              CPT2 ← CPT2 + 1
+        finsi
+I suivant
+Écrire « nombre valeurs positives : » CPT1
+Écrire « nombre valeurs négatives: » CPT2
+Fin
+
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+#Exercice 6.10 : Écrivez un algorithme constituant un tableau, à partir de deux tableaux de même longueur préalablement saisis.
+#Le nouveau tableau sera la somme des éléments des deux tableaux de départ.
+Tableau VAL1[7]      entier
+Tableau VAL2[7]      entier
+Tableau VAL3[7]      entier
+I                    entier
+Début
+Pour I de 0 à 7
+          VAL3[I] ← VAL1[I] + VAL2[I]
+I suivant
+Fin
+
+#Variante : Faire la somme uniquement pour les postes d'indice pair
+Début
+pour I de 0 à 7 pas 2
+        VAL3[I] ← VAL1[I] + VAL2[I]
+I suivant
+Fin
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+#Exercice 6.11 : Écrivez un algorithme qui multiplie chaque élément du tableau 1 par chaque élément du tableau 2, et affitionner le tout.
+Tableau VAL1[3]      entier
+Tableau VAL2[1]      entier
+TOTAL                entier
+I                    entier
+J                    entier
+Début
+TOTAL ← 0
+Pour I de 0 à 3
+      pour J de 0 à 1
+            TOTAL ← TOTAL + (VAL1[I] * VAL2[J])
+      J suivant
+I suivant
+Écrire « Résultat : » TOTAL
+Fin
+
+Jeu de test :
+
+| I | VAL[I] | J | VAL[J] |  TOTAL  |
+|---|--------|---|--------|---------|
+| 0 |    4   | 0 |    3   |    12   |
+| 0 |    4   | 1 |    6   |    36   |
+| 1 |    8   | 0 |    3   |    60   |
+| 1 |    8   | 1 |    6   |   108   |
+| 2 |    7   | 0 |    3   |   129   |
+| 2 |    7   | 1 |    6   |   171   |
+| 3 |   12   | 0 |    3   |   207   |
+| 3 |   12   | 1 |    6   |   279   |
+
+Résultat : 279
 
 ----------------------------------------------------------------------------------------------------------------------------------
