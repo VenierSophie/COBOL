@@ -1,1 +1,15 @@
-#Mettre à jour le fichier KSDS des assurés à partir d'un fichier séquentiel via un accesseurmulti fonctions au fichier KSDS des assurés.
+#***********************************************************************************************************************#
+#  ÉNONCÉ : Mettre à jour le fichier KSDS API3.KSDS.ASSURES (VSAM, fixe, 80 caractères) à partir du fichier séquentiel  #
+#           API0.MVT.ASSURES (Séquentiel, fixe, 80 caractères) via un accesseur multifonctions ACCESS3                  #                                                        #
+#***********************************************************************************************************************#
+
+PROGRAMME PRINCIPAL : PROJ3 - ACCESSEUR : ACCESS3
+
+Le fichier séquentiel contient les informations des assurés à mettre à jour dans le fichier
+KSDS. Il s'agit de créer, modifier ou supprimer des assurés et en fin de traitement de lister tous les assurés.
+
+
+
+Description de la zone de communication :
+
+
