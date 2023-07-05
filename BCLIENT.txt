@@ -193,3 +193,36 @@
       * THE NUMBER OF COLUMNS DESCRIBED BY THIS DECLARATION IS 7       *
       ******************************************************************
 
+
+
+
+
+      ******************************************************************
+      * DCLGEN TABLE(API0.BAC_STATUT)                                  *
+      *        LIBRARY(API0.SOURCE.DCLGEN3(BSTATUT))                   *
+      *        ACTION(REPLACE)                                         *
+      *        LANGUAGE(COBOL)                                         *
+      *        NAMES(NO)                                               *
+      *        STRUCTURE(BAC-STATUT)                                   *
+      *        QUOTE                                                   *
+      *        LABEL(YES)                                              *
+      *        DBCSDELIM(NO)                                           *
+      * ... IS THE DCLGEN COMMAND THAT MADE THE FOLLOWING STATEMENTS   *
+      ******************************************************************
+           EXEC SQL DECLARE API0.BAC_STATUT TABLE
+           ( STATUT                         CHAR(1) NOT NULL,
+             LIBSTA                         CHAR(15) NOT NULL
+           ) END-EXEC.
+      ******************************************************************
+      * COBOL DECLARATION FOR TABLE API0.BAC_STATUT                    *
+      ******************************************************************
+       01  BAC-STATUT.
+      *    *************************************************************
+      *                       STATUT
+           10 NO1                  PIC X(1).
+      *    *************************************************************
+      *                       LIBSTA
+           10 NO2                  PIC X(15).
+      ******************************************************************
+      * THE NUMBER OF COLUMNS DESCRIBED BY THIS DECLARATION IS 2       *
+      ******************************************************************
