@@ -1,0 +1,41 @@
+      ******************************************************************
+      * DCLGEN TABLE(API0.BAC_COMPTE)                                  *
+      *        LIBRARY(API0.SOURCE.DCLGEN3(BCOMPTE))                   *
+      *        ACTION(REPLACE)                                         *
+      *        LANGUAGE(COBOL)                                         *
+      *        NAMES(NO)                                               *
+      *        STRUCTURE(BAC-COMPTE)                                   *
+      *        QUOTE                                                   *
+      *        LABEL(YES)                                              *
+      *        DBCSDELIM(NO)                                           *
+      * ... IS THE DCLGEN COMMAND THAT MADE THE FOLLOWING STATEMENTS   *
+      ******************************************************************
+           EXEC SQL DECLARE API0.BAC_COMPTE TABLE
+           ( NUMCPT                         SMALLINT NOT NULL,
+             STATUT                         CHAR(1) NOT NULL,
+             SOLDE0                         DECIMAL(11, 2) NOT NULL,
+             DATOUV                         DATE NOT NULL,
+             DATMAJ                         DATE NOT NULL
+           ) END-EXEC.
+      ******************************************************************
+      * COBOL DECLARATION FOR TABLE API0.BAC_COMPTE                    *
+      ******************************************************************
+       01  BAC-COMPTE.
+      *    *************************************************************
+      *                       NUMCPT
+           10 NO1                  PIC S9(4) USAGE COMP.
+      *    *************************************************************
+      *                       STATUT
+           10 NO2                  PIC X(1).
+      *    *************************************************************
+      *                       SOLDE0
+           10 NO3                  PIC S9(9)V9(2) USAGE COMP-3.
+      *    *************************************************************
+      *                       DATOUV
+           10 NO4                  PIC X(10).
+      *    *************************************************************
+      *                       DATMAJ
+           10 NO5                  PIC X(10).
+      ******************************************************************
+      * THE NUMBER OF COLUMNS DESCRIBED BY THIS DECLARATION IS 5       *
+      ******************************************************************
