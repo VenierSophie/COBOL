@@ -7,6 +7,9 @@ Bonjour à tous,
 Ci-dessous le récapitulatifs des programmes que j'ai développés durant ma formation "Développeur(se) Grands Systèmes Cobol" en 2023.  
 Bonne lecture !
 
+[Installation d'un IDE COBOL sur Mac ici !]([http://cours.pise.info/algo/introduction.htm](https://www.geeksforgeeks.org/how-to-install-cobol-on-macos/))
+
+
 ----------------------------------------------------------------------------------------------------------------------------------------
   
 __Récapitulatif des programmes :__
