@@ -16,7 +16,7 @@ __Récapitulatif des programmes :__
 
   
 | DOSSIER    | PROGRAMME                   | DESCRIPTION          |
-|            | --------------------------- | -------------------|
+| ---------  | --------------------------- | ---------------------|
 |            | Algorithmes                 | [Lien vers les algorithmes ici](http://cours.pise.info/algo/introduction.htm) |
 |            | Fonctions                   | Utilisation de fonctions : MODULO ; REMAINDER ; CURRENT DATE ; RANDOM ; MAX ; MIN ; etc |
 |            | ContrôleFormatageDate       | Format de départ AAAAMMJJ - Format d'arrivée JJ MM AAAA |
