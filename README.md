@@ -31,22 +31,22 @@ __Récapitulatif des programmes :__
 | DB2        | Programme 3                 | Mise à jour de la table EMPLOYE ; augmentation du salaire en fonction du département  |
 | DB2        | Programme 4                 | Mise à jour de la table EMPLOYE à partir d'un fichier séquentiel en fonction d'un code mouvement  |
 | DB2        | Requêtes TABLES             | Requêtes sur les tables EMPLOYE et DEPARTEMENT  |
-| PROJGRP    | ACCESSEURS - BACS1          | XXX |
-| PROJGRP    | ACCESSEURS - BACS2          | XXX |
-| PROJGRP    | ACCESSEURS - BACS3          | XXX |
-| PROJGRP    | COPY-ERR - CODEERR          | XXX |
+| PROJGRP    | ACCESSEURS - BACS1          | Restitution des informations client compte |
+| PROJGRP    | ACCESSEURS - BACS2          | Mise à jour du solde du compte |
+| PROJGRP    | ACCESSEURS - BACS3          | Calcul des commissions |
+| PROJGRP    | COPY-ERR - CODEERR          | Table des messages d'erreur |
 | PROJGRP    | Contrôles&TestsUnit - BAC1  | Projet Base CLIENT-COMPTE ; Programme BAC1 ; Jeu de test |
 | PROJGRP    | Contrôles&TestsUnit - BACS3 | Projet Base CLIENT-COMPTE ; Programme BACS3 ; Jeu de test |
-| PROJGRP    | DB2/DCLGEN - Créa TABLES    | XXX |
-| PROJGRP    | DB2/DCLGEN - SELECT         | XXX |
-| PROJGRP    | DB2/DCLGEN - TABLES         | XXX |
-| PROJGRP    | EDITION - BAC2ED            | XXX |
-| PROJGRP    | EDITION - BAC3ED            | XXX |
-| PROJGRP    | MAJ - BACMVT                | XXX |
-| PROJGRP    | PROG-DB2 - Init tables      | XXX |
-| PROJGRP    | PROG-EDITION - BAC2         | XXX |
-| PROJGRP    | PROG-EDITION - BAC3         | XXX |
-| PROJGRP    | PROG-PRINCIPAL - BAC1       | XXX |
+| PROJGRP    | DB2/DCLGEN - Créa TABLES    | Créations des tables |
+| PROJGRP    | DB2/DCLGEN - SELECT         | Selections des tables |
+| PROJGRP    | DB2/DCLGEN - TABLES         | Visualisation des tables |
+| PROJGRP    | EDITION - BAC2ED            | Édition des informations client et compte |
+| PROJGRP    | EDITION - BAC3ED            | Édition des opérations sur compte |
+| PROJGRP    | MAJ - BACMVT                | Fichier séquentiel pour mise à jour |
+| PROJGRP    | PROG-DB2 - Init tables      | Programme pour l'initialisation des tables |
+| PROJGRP    | PROG-EDITION - BAC2         | Programme pour l'édition des informations client et compte |
+| PROJGRP    | PROG-EDITION - BAC3         | Programme pour l'édition des opérations sur compte |
+| PROJGRP    | PROG-PRINCIPAL - BAC1       | Traitement fichier MAJ (BACMVT) pour mise à jour des tables BAC_CLIENT et BAC_COMPTE |
 | SEQUENTIEL | AppelSP                     | Appel d'un sous-programme ; Recherche dans tableau  |
 | SEQUENTIEL | Contrôles                   | Contrôle d'un fichier séquentiel  |
 | SEQUENTIEL | MAJ                         | Lecture fichier STOCK pour alimentation fichier COMPTA et DEPASSEMENT  |
